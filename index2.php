@@ -10,7 +10,7 @@
 ?>
 
 <!doctype html>
-<html class="no-js" lang="zxx">hhhh
+<html class="no-js" lang="zxx">
     <head>
         <!-- Meta Tags -->
 		<meta charset="utf-8">
