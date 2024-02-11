@@ -10,7 +10,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		
 		<!-- Title -->
-        <title>FanD</title>
+        <title>FanD</title>dsfdsfdsfsf
 		
 		<!-- Favicon -->
         <link rel="icon" href="img/logo5.png">
