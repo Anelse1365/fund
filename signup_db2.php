@@ -31,8 +31,8 @@
         } else if (empty($password)) {
             $_SESSION['error'] = 'กรุณากรอกรหัสผ่าน';
             header("location: home2.php");
-        } else if (strlen($_POST['password']) > 20 || strlen($_POST['password']) < 5) {
-            $_SESSION['error'] = 'รหัสผ่านต้องมีความยาวระหว่าง 5 ถึง 20 ตัวอักษร';
+        } else if (strlen($_POST['password']) > 20 || strlen($_POST['password']) < 3) {
+            $_SESSION['error'] = 'รหัสผ่านต้องมีความยาวระหว่าง 3 ถึง 20 ตัวอักษร';
             header("location: home2.php");
         } else if (empty($c_password)) {
             $_SESSION['error'] = 'กรุณายืนยันรหัสผ่าน';
