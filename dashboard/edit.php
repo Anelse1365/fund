@@ -31,7 +31,7 @@ if(isset($_GET['id'])) {
             $firstname = $_POST['firstname'];
             $lastname = $_POST['lastname'];
             $email = $_POST['email'];
-            $urole = $_POST['urole'];
+           
             $age = $_POST['age'];
             $gender = $_POST['gender'];
             $nationality = $_POST['nationality'];
@@ -39,11 +39,11 @@ if(isset($_GET['id'])) {
             $address = $_POST['address'];
 
             // Prepare SQL statement to update patient data
-            $update_stmt = $conn->prepare("UPDATE patien SET firstname=:firstname, lastname=:lastname, email=:email, urole=:urole, age=:age, gender=:gender, nationality=:nationality, phone_number=:phone_number, address=:address WHERE id=:id");
+            $update_stmt = $conn->prepare("UPDATE patien SET firstname=:firstname, lastname=:lastname, email=:email,  age=:age, gender=:gender, nationality=:nationality, phone_number=:phone_number, address=:address WHERE id=:id");
             $update_stmt->bindParam(':firstname', $firstname);
             $update_stmt->bindParam(':lastname', $lastname);
             $update_stmt->bindParam(':email', $email);
-            $update_stmt->bindParam(':urole', $urole);
+         
             $update_stmt->bindParam(':age', $age);
             $update_stmt->bindParam(':gender', $gender);
             $update_stmt->bindParam(':nationality', $nationality);
