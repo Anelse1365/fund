@@ -103,23 +103,23 @@
 
 
   <!-- Content -->
-  <div class="container mt-4">
-    <h2 class="mb-4">Patient List</h2>
+  <div class="container mt-5">
+    <h2 class="mb-7">Patient List</h2>
     <div class="table-responsive">
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>ชื่อ</th>
+            <th>นามสกุล</th>
             <th>Email</th>
-            <th>Role</th>
-            <th>Created At</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Nationality</th>
-            <th>Phone Number</th>
-            <th>Address</th>
-            <th>Action</th>
+     
+            <th>วัน/เวลา</th>
+            <th>อายุ</th>
+            <th>เพศ</th>
+            <th>สัญชาติ</th>
+            <th>เบอร์โทร</th>
+            <th>ที่อยู่</th>
+            <th>เเก้ไข</th>
           </tr>
         </thead>
         <tbody>
@@ -144,7 +144,7 @@
                         <td>".$row["firstname"]."</td>
                         <td>".$row["lastname"]."</td>
                         <td>".$row["email"]."</td>
-                        <td>".$row["urole"]."</td>
+                       
                         <td>".$row["created_at"]."</td>
                         <td>".$row["age"]."</td>
                         <td>".$row["gender"]."</td>
