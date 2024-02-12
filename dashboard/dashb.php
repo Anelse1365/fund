@@ -56,7 +56,7 @@
                           <td>".$row["phone_number"]."</td>
                           <td>".$row["address"]."</td>
                           <td>
-                              <a href='edit.php?id=".$row["id"]."' class='btn btn-primary'>Edit</a> <!-- Edit button -->
+                              <a href='dashboard/edit.php?id=".$row["id"]."' class='btn btn-primary'>Edit</a> <!-- Edit button -->
                               <a href='delete.php?id=".$row["id"]."' class='btn btn-danger'>Delete</a> <!-- Delete button -->
                           </td>
                         </tr>";
