@@ -16,13 +16,14 @@
           <th>First Name</th>
           <th>Last Name</th>
           <th>Email</th>
-      
+          <th>Role</th>
           <th>Created At</th>
           <th>Age</th>
           <th>Gender</th>
           <th>Nationality</th>
           <th>Phone Number</th>
           <th>Address</th>
+          <th>Action</th> <!-- New column for actions -->
         </tr>
       </thead>
       <tbody>
@@ -37,7 +38,7 @@
               $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
               // SQL query to fetch data from database
-              $sql = "SELECT * FROM patien";
+              $sql = "SELECT * FROM patient";
               $stmt = $conn->prepare($sql);
               $stmt->execute();
 
@@ -47,13 +48,17 @@
                           <td>".$row["firstname"]."</td>
                           <td>".$row["lastname"]."</td>
                           <td>".$row["email"]."</td>
-                     
+                          <td>".$row["urole"]."</td>
                           <td>".$row["created_at"]."</td>
                           <td>".$row["age"]."</td>
                           <td>".$row["gender"]."</td>
                           <td>".$row["nationality"]."</td>
                           <td>".$row["phone_number"]."</td>
                           <td>".$row["address"]."</td>
+                          <td>
+                              <a href='edit.php?id=".$row["id"]."' class='btn btn-primary'>Edit</a> <!-- Edit button -->
+                              <a href='delete.php?id=".$row["id"]."' class='btn btn-danger'>Delete</a> <!-- Delete button -->
+                          </td>
                         </tr>";
               }
           } catch(PDOException $e) {
