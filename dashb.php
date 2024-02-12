@@ -38,7 +38,7 @@
               $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
               // SQL query to fetch data from database
-              $sql = "SELECT * FROM patient";
+              $sql = "SELECT * FROM patien";
               $stmt = $conn->prepare($sql);
               $stmt->execute();
 
