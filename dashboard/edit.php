@@ -77,7 +77,7 @@ if(isset($_GET['id'])) {
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
+<div class="container">
     <h2>Edit Patient</h2>
     <form method="post">
       <div class="form-group">
@@ -92,9 +92,37 @@ if(isset($_GET['id'])) {
         <label for="email">Email:</label>
         <input type="email" class="form-control" id="email" name="email" value="<?php echo $patient['email']; ?>">
       </div>
-      <!-- Add other form fields here -->
-      <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-    </form>
+      
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input type="number" class="form-control" id="age" name="age" value="<?php echo $patient['age']; ?>">
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select class="form-control" id="gender" name="gender">
+          <option value="Male" <?php if($patient['gender'] == 'ชาย') echo 'selected'; ?>>ชาย</option>
+          <option value="Female" <?php if($patient['gender'] == 'หญิง') echo 'selected'; ?>>หญิง</option>
+          <option value="Female" <?php if($patient['gender'] == 'อื่นๆ') echo 'selected'; ?>>อื่นๆ</option>
+        </select>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="nationality">Nationality:</label>
+        <input type="text" class="form-control" id="nationality" name="nationality" value="<?php echo $patient['nationality']; ?>">
+      </div>
+      <div class="form-group">
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" class="form-control" id="phone_number" name="phone_number" value="<?php echo $patient['phone_number']; ?>">
+      </div>
+      <div class="form-group">
+        <label for="address">Address:</label>
+        <textarea class="form-control" id="address" name="address"><?php echo $patient['address']; ?></textarea>
+        </div>
+    <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+
+  <a href="dashb.php" class="btn btn-secondary mt-2">กลับหน้าเเรก</a>
+</div>
+  
   </div>
 </body>
 </html>
