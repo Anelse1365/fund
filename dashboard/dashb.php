@@ -88,7 +88,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="dashboard/dashbapomen.php">
+          <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
           </a>
         </li>
