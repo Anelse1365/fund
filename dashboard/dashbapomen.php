@@ -88,8 +88,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="dashboard/dashbapomen.php">
-            <i class="fas fa-users"></i> Appointment
+          <a class="nav-link" href="#">
+            <i class="fas fa-users"></i> Customers
           </a>
         </li>
         <li class="nav-item">
@@ -137,28 +137,32 @@
               $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
               // SQL query to fetch data from database
-              $sql = "SELECT * FROM patien";
+              $sql = "SELECT * FROM appointmen";
               $stmt = $conn->prepare($sql);
               $stmt->execute();
 
               // Output data of each row
               while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>
-                        <td>".$row["firstname"]."</td>
-                        <td>".$row["lastname"]."</td>
-                        <td>".$row["email"]."</td>
-                       
-                        <td>".$row["created_at"]."</td>
-                        <td>".$row["age"]."</td>
-                        <td>".$row["gender"]."</td>
-                        <td>".$row["nationality"]."</td>
-                        <td>".$row["phone_number"]."</td>
-                        <td>".$row["address"]."</td>
+                        <td>".$row["doctor"]."</td>
+                        <td>".$row["infomation"]."</td>
+                        <td>".$row["email"]."</td>                     
+                        <td>".$row["patient"]."</td>
+                        <td>".$row["state"]."</td>
+                      
                         <td>
                             <a href='edit.php?id=".$row["id"]."' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Edit</a>
                             <a href='delete.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>
                         </td>
                       </tr>";
+
+
+
+
+
+
+
+
             }
         } catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
