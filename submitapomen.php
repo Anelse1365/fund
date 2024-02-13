@@ -24,13 +24,16 @@ if (isset($_POST['summit'])) {
     $time = $_POST['timeInput'];
 
     $email = $_POST['email'];
-    $email = $_POST['firstname'];
-    $email = $_POST['lastname'];
+    $patient = $_POST['patient'];
+    $state = $_POST['state'];
+   
+
+    state
 
     
 
-    $sql = "INSERT INTO appointmen (user_id,doctor_id, information,appointment_date,appointment_time, email,firstname,lastname) VALUES ('$user_id' ,'$doctor', '$info',
-    '$date',' $time','$email','firstname','lastname')";
+    $sql = "INSERT INTO appointmen (user_id,doctor_id, information,appointment_date,appointment_time, email,patient,state) VALUES ('$user_id' ,'$doctor', '$info',
+    '$date',' $time','$email','$patient','$state')";
 
 
     if ($conn->query($sql) === TRUE) {

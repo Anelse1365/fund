@@ -235,8 +235,8 @@ if (isset($_SESSION['user_login'])) {
 		</div>
             <br>
 		
-
-			<button type="submit" name="summit" class="btn btn-primary" href ='receipt.php'>ยืนยัน</button>
+			<button type="submit" class="btn btn-primary">ยืนยัน</button>
+			 <!--  <button type="submit" name="summit" class="btn btn-primary" href ='receipt.php'>ยืนยัน</button> -->
             <a href="index2.php" class="btn btn-secondary">กลับหน้าหลัก</a>
             
         </form>
