@@ -15,18 +15,17 @@ if ($conn->connect_error) {
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
-    $doctor = $_POST['doctor'];
+  
     $info = $_POST['infomation'];
-    $date = $_POST['date'];
-    $time = $_POST['timeInput'];
+  
     $email = $_POST['email'];
     $patient = $_POST['patient'];
     $state = $_POST['state'];
 
     // Check if all required fields are filled
-    if (!empty($doctor) && !empty($info) && !empty($date) && !empty($time) && !empty($email) && !empty($patient) && !empty($state)) {
+    if (!empty($info) && !empty($email) && !empty($patient) && !empty($state)) {
         // Prepare SQL query
-        $sql = "INSERT INTO appointmen (doctor_id, information, appointment_date, appointment_time, email, patient, state) VALUES ('$doctor', '$info', '$date', '$time', '$email', '$patient', '$state')";
+        $sql = "INSERT INTO appointmen ( information, email, patient, state) VALUES ('$info', '$email', '$patient', '$state')";
 
         // Execute SQL query
         if ($conn->query($sql) === TRUE) {

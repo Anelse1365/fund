@@ -115,10 +115,7 @@
             <th>ชื่อ</th>
             <th>Email</th>
             <th>บริการ</th>
-            <th>หมอ</th>
             <th>คลินิก</th>
-            <th>วัน</th>
-            <th>เวลา</th>
             <th>เเก้ไข</th>
           </tr>
         </thead>
@@ -144,11 +141,8 @@
                        
                        <td>".$row["patient"]."</td>
                        <td>".$row["email"]."</td>
-                       <td>".$row["information"]."</td>  
-                       <td>".$row["doctor_id"]."</td>   
+                       <td>".$row["information"]."</td>    
                        <td>".$row["state"]."</td>
-                       <td>".$row["appointment_date"]."</td>  
-                       <td>".$row["appointment_time"]."</td>  
                         <td>
                             <a href='editappointment.php?id=".$row["id"]."' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Edit</a>
                             

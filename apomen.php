@@ -207,11 +207,12 @@ if (isset($_SESSION['user_login'])) {
                 <option value="" disabled selected>เลือกประเภทการนัด</option>
                 <option value="รักษาทันตกรรมทั่วไป">รักษาทันตกรรมทั่วไป</option>
                 <option value="ผ่าฟัน">ผ่าฟัน</option>
+				<option value="ถอนฟัน">ถอนฟัน</option>
                 <option value="อื่นๆ">บริการอื่นๆ</option>
             </select>
             <br>
             <br>
-            <select name="doctor">
+          <!--  <select name="doctor">
                 <option value="" disabled selected>เลือกหมอ</option>
                 <option value="หมอA">หมอA</option>
                 <option value="หมอB">หมอB</option>
@@ -226,7 +227,9 @@ if (isset($_SESSION['user_login'])) {
             <div class="time-input-container">
                 <label for="timeInput">เลือกเวลา:</label>
                 <input type="time" id="timeInput" name="timeInput">
-            </div>
+            </div> -->
+
+
             <br>
             <button type="submit" class="btn btn-primary">ยืนยัน</button>
             <a href="index2.php" class="btn btn-secondary">กลับหน้าหลัก</a>
