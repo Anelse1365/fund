@@ -146,22 +146,22 @@ if(isset($_GET['id'])) {
         <input type="email" class="form-control" id="email" name="email" value="<?php echo $row['email']; ?>">
       </div>
       <div class="form-group">
-        <label for="information">Service</label>
+        <label for="information">บริการ</label>
         <select class="form-control" id="information" name="information">
-          <option value="ดัดฟัน" <?php echo (isset($row['information']) && $row['information'] == 'ดัดฟัน') ? 'selected' : ''; ?>>Dental Braces</option>
-          <option value="ถอนฟัน" <?php echo (isset($row['information']) && $row['information'] == 'ถอนฟัน') ? 'selected' : ''; ?>>Tooth Extraction</option>
-          <option value="จัดฟัน" <?php echo (isset($row['information']) && $row['information'] == 'จัดฟัน') ? 'selected' : ''; ?>>Teeth Alignment</option>
+          <option value="ดัดฟัน" <?php echo ($patient['information'] == 'ดัดฟัน') ? 'selected' : ''; ?>>ดัดฟัน</option>
+          <option value="ถอนฟัน" <?php echo ($patient['information'] == 'ถอนฟัน') ? 'selected' : ''; ?>>ถอนฟัน</option>
+          <option value="จัดฟัน" <?php echo ($patient['information'] == 'จัดฟัน') ? 'selected' : ''; ?>>จัดฟัน</option>
         </select>
       </div>
       <div class="form-group">
         <label for="doctor_id">Doctor</label>
         <select class="form-control" id="doctor_id" name="doctor_id">
-          <option value="หมอA" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอA') ? 'selected' : ''; ?>>Doctor A</option>
-          <option value="หมอB" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอB') ? 'selected' : ''; ?>>Doctor B</option>
-          <option value="หมอC" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอC') ? 'selected' : ''; ?>>Doctor C</option>
-          <option value="หมอD" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอD') ? 'selected' : ''; ?>>Doctor D</option>
-          <option value="หมอE" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอE') ? 'selected' : ''; ?>>Doctor E</option>
-          <option value="หมอF" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอF') ? 'selected' : ''; ?>>Doctor F</option>
+          <option value="หมอA" <?php echo ($patient['doctor_id'] == 'หมอA') ? 'selected' : ''; ?>>หมอA</option>
+          <option value="หมอB" <?php echo ($patient['doctor_id'] == 'หมอB') ? 'selected' : ''; ?>>หมอB</option>
+          <option value="หมอC" <?php echo ($patient['doctor_id'] == 'หมอC') ? 'selected' : ''; ?>>หมอC</option>
+          <option value="หมอD" <?php echo ($patient['doctor_id'] == 'หมอD') ? 'selected' : ''; ?>>หมอD</option>
+          <option value="หมอE" <?php echo ($patient['doctor_id'] == 'หมอE') ? 'selected' : ''; ?>>หมอE</option>
+          <option value="หมอF" <?php echo ($patient['doctor_id'] == 'หมอF') ? 'selected' : ''; ?>>หมอF</option>
         </select>
       </div>
       <div class="form-group">

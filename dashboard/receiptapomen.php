@@ -62,14 +62,15 @@
               while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                   echo "<tr>
                             <td>".$row['id']."</td>
-                            <td>".$row['patient']."</td>
-                            <td>".$row['email']."</td>
-                            <td>".$row['service']."</td>
-                            <td>".$row['doctor']."</td>
-                            <td>".$row['status']."</td>
-                            <td>".$row['appointment_date']."</td>
-                            <td>".$row['appointment_time']."</td>
+                            <td>".$row["patient"]."</td>
+                            <td>".$row["email"]."</td>
+                            <td>".$row["information"]."</td>  
+                            <td>".$row["doctor_id"]."</td>   
+                            <td>".$row["state"]."</td>
+                            <td>".$row["appointment_date"]."</td>  
+                            <td>".$row["appointment_time"]."</td>  
                             <td>".$row['created_at']."</td>
+
                         </tr>";
               }
           } catch(PDOException $e) {
