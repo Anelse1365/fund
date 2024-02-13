@@ -1,3 +1,14 @@
+<?php 
+
+    session_start();
+    require_once '../config2/db2.php';
+    if (!isset($_SESSION['admin_login'])) {
+        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+        header('location:../signin2.php');
+  
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
