@@ -10,25 +10,36 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <!-- Custom CSS -->
   <style>
-    /* Your custom styles here */
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      padding-top: 20px;
+    }
+    .table-responsive {
+      margin-top: 20px;
+    }
+    th, td {
+      vertical-align: middle !important;
+    }
   </style>
 </head>
 <body>
-  <div class="container mt-5">
-    <h2 class="mb-4">Receipts</h2>
+  <div class="container">
+    <h2 class="mb-4">ใบเสร็จการนัดจอง</h2>
     <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
+      <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
           <tr>
             <th>ID</th>
-            <th>Patient</th>
+            <th>ชื่อนามสกุล</th>
             <th>Email</th>
-            <th>Service</th>
-            <th>Doctor</th>
-            <th>Status</th>
-            <th>Appointment Date</th>
-            <th>Appointment Time</th>
-            <th>Created At</th>
+            <th>บริการ</th>
+            <th>หมอ</th>
+            <th>คลินิก</th>
+            <th>วันที่</th>
+            <th>เวลา</th>
+            <th>เเก้ไขเมื่อ</th>
           </tr>
         </thead>
         <tbody>
@@ -68,6 +79,7 @@
         </tbody>
       </table>
     </div>
+    <a href="dashb.php" class="btn btn-secondary mt-3">กลับหน้าหลัก</a>
   </div>
   <!-- Bootstrap JS -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

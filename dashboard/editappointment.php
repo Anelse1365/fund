@@ -178,7 +178,8 @@ if(isset($_GET['id'])) {
       </div>
       <button type="submit" class="btn btn-primary" name="submit">Submit</button>
     </form>
-    <a href="dashb.php" class="btn btn-secondary mt-3">Back to Dashboard</a>
+  
+    <a href="dashb.php" class="btn btn-secondary mt-3">กลับหน้าหลัก</a>
   </div>
 
   <!-- Bootstrap JS -->
