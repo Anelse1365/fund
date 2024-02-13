@@ -73,7 +73,7 @@
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="#">
+          <a class="nav-link active" href="dashb.php">
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -107,21 +107,18 @@
 
   <!-- Content -->
   <div class="container mt-5">
-    <h2 class="mb-7">Patient List</h2>
+    <h2 class="mb-7">Appointment</h2>
     <div class="table-responsive">
-      <table class="table table-striped table-bordered">
+      <table class="table table-striped table-bordered"> 
         <thead>
           <tr>
             <th>ชื่อ</th>
-            <th>นามสกุล</th>
             <th>Email</th>
-     
-            <th>วัน/เวลา</th>
-            <th>อายุ</th>
-            <th>เพศ</th>
-            <th>สัญชาติ</th>
-            <th>เบอร์โทร</th>
-            <th>ที่อยู่</th>
+            <th>บริการ</th>
+            <th>หมอ</th>
+            <th>คลินิก</th>
+            <th>วัน</th>
+            <th>เวลา</th>
             <th>เเก้ไข</th>
           </tr>
         </thead>
@@ -137,28 +134,27 @@
               $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
               // SQL query to fetch data from database
-              $sql = "SELECT * FROM patien";
+              $sql = "SELECT * FROM appointmen";
               $stmt = $conn->prepare($sql);
               $stmt->execute();
 
               // Output data of each row
               while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>
-                        <td>".$row["firstname"]."</td>
-                        <td>".$row["lastname"]."</td>
-                        <td>".$row["email"]."</td>
                        
-                        <td>".$row["created_at"]."</td>
-                        <td>".$row["age"]."</td>
-                        <td>".$row["gender"]."</td>
-                        <td>".$row["nationality"]."</td>
-                        <td>".$row["phone_number"]."</td>
-                        <td>".$row["address"]."</td>
+                       <td>".$row["patient"]."</td>
+                       <td>".$row["email"]."</td>
+                       <td>".$row["information"]."</td>  
+                       <td>".$row["doctor_id"]."</td>   
+                       <td>".$row["state"]."</td>
+                       <td>".$row["appointment_date"]."</td>  
+                       <td>".$row["appointment_time"]."</td>  
                         <td>
-                            <a href='edit.php?id=".$row["id"]."' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Edit</a>
+                            <a href='editappointment.php?id=".$row["id"]."' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Edit</a>
                             <a href='delete.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>
                         </td>
                       </tr>";
+
             }
         } catch(PDOException $e) {
             echo "Error: " . $e->getMessage();

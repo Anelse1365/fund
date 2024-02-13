@@ -1,47 +1,44 @@
 <?php
-    session_start();
- $servername = "localhost";
- $username = "root";
- $password = "";
- $dbname = "fund";
- 
- // สร้างการเชื่อมต่อ
- $conn = new mysqli($servername, $username, $password, $dbname);
- 
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fund";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-}
 
-if (isset($_POST['summit'])) {
+// Check if form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
     $doctor = $_POST['doctor'];
     $info = $_POST['infomation'];
-   
     $date = $_POST['date'];
     $time = $_POST['timeInput'];
-
     $email = $_POST['email'];
     $patient = $_POST['patient'];
     $state = $_POST['state'];
-   
 
-    state
+    // Check if all required fields are filled
+    if (!empty($doctor) && !empty($info) && !empty($date) && !empty($time) && !empty($email) && !empty($patient) && !empty($state)) {
+        // Prepare SQL query
+        $sql = "INSERT INTO appointmen (doctor_id, information, appointment_date, appointment_time, email, patient, state) VALUES ('$doctor', '$info', '$date', '$time', '$email', '$patient', '$state')";
 
-    
-
-    $sql = "INSERT INTO appointmen (user_id,doctor_id, information,appointment_date,appointment_time, email,patient,state) VALUES ('$user_id' ,'$doctor', '$info',
-    '$date',' $time','$email','$patient','$state')";
-
-
-    if ($conn->query($sql) === TRUE) {
-        echo "Review submitted successfully!";
+        // Execute SQL query
+        if ($conn->query($sql) === TRUE) {
+            echo "บันทึกการนัดหมายเรียบร้อยแล้ว!";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "กรุณากรอกข้อมูลให้ครบถ้วน";
     }
 }
 
+// Close connection
 $conn->close();
 ?>

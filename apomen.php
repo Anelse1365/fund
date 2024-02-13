@@ -182,65 +182,54 @@ if (isset($_SESSION['user_login'])) {
 			</div>
 			<!--/ End Header Inner -->
 		</header>
-<form action = "submitapomen.php" method="post">
-		<section>
-    <div class="container"> 
-        <h1>การนัดหมอฟัน</h1>
-        <p>กรุณากรอกข้อมูลเพื่อนัดหมอฟัน</p>  
-		<div class="form-group">
-    <label for="name"> </label>
-    <input type="text" class="form-control" name="patient" value="<?php echo $row['firstname'] . ' ' . $row['lastname']?>" required> 
-</div>
-
-
-<div class="form-group">
-    <label for="name"> </label>
-    <input type="text" class="form-control" name="email" value="<?php echo $row['email']?>" required> 
-</div>
-
-
-	<br>
-			<select name="state">
+		<form action="submitapomen.php" method="post">
+    <section>
+        <div class="container"> 
+            <h1>การนัดหมอฟัน</h1>
+            <p>กรุณากรอกข้อมูลเพื่อนัดหมอฟัน</p>  
+            <div class="form-group">
+                <label for="name">ชื่อ</label>
+                <input type="text" class="form-control" name="patient" value="<?php echo $row['firstname'] . ' ' . $row['lastname']?>" required> 
+            </div>
+            <div class="form-group">
+                <label for="email">อีเมล์</label>
+                <input type="text" class="form-control" name="email" value="<?php echo $row['email']?>" required> 
+            </div>
+            <br>
+            <select name="state">
                 <option value="" disabled selected>เลือกคลิกนิก</option>
                 <option value="พิษณุโลก">พิษณุโลก</option>
                 <option value="กำเเพงเพชร">กำเเพงเพชร</option>
-               
             </select>
             <br>
             <br>
-            <select name ="infomation">
+            <select name="infomation">
                 <option value="" disabled selected>เลือกประเภทการนัด</option>
                 <option value="รักษาทันตกรรมทั่วไป">รักษาทันตกรรมทั่วไป</option>
                 <option value="ผ่าฟัน">ผ่าฟัน</option>
                 <option value="อื่นๆ">บริการอื่นๆ</option>
             </select>
             <br>
-			<br>
-			<select name = "doctor">
+            <br>
+            <select name="doctor">
                 <option value="" disabled selected>เลือกหมอ</option>
                 <option value="หมอA">หมอA</option>
                 <option value="หมอB">หมอB</option>
                 <option value="หมอC">หมอC</option>
-				<option value="หมอD">หมอD</option>
+                <option value="หมอD">หมอD</option>
                 <option value="หมอE">หมอE</option>
                 <option value="หมอF">หมอF</option>
             </select>
-			<br>
-			<br>
-			<input type="date" name="date">
-			<div class="time-input-container">
-    
-			<label for="timeInput">เลือกเวลา:</label>
-    <input type="time" id="timeInput" name="timeInput" >
-		</div>
             <br>
-		
-			<button type="submit" class="btn btn-primary">ยืนยัน</button>
-			 <!--  <button type="submit" name="summit" class="btn btn-primary" href ='receipt.php'>ยืนยัน</button> -->
+            <br>
+            <input type="date" name="date">
+            <div class="time-input-container">
+                <label for="timeInput">เลือกเวลา:</label>
+                <input type="time" id="timeInput" name="timeInput">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">ยืนยัน</button>
             <a href="index2.php" class="btn btn-secondary">กลับหน้าหลัก</a>
-            
-        </form>
-    </div>
-</section>
-</body>
-</html>
+        </div>
+    </section>
+</form>
