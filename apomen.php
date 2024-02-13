@@ -188,7 +188,7 @@ if (isset($_SESSION['user_login'])) {
             <h1>การนัดหมอฟัน</h1>
             <p>กรุณากรอกข้อมูลเพื่อนัดหมอฟัน</p>  
             <div class="form-group">
-                <label for="name">ชื่อผู้ป่วย</label>
+                <label for="name">ชื่อ</label>
                 <input type="text" class="form-control" name="patient" value="<?php echo $row['firstname'] . ' ' . $row['lastname']?>" required> 
             </div>
             <div class="form-group">
