@@ -109,7 +109,7 @@
   <div class="container mt-5">
     <h2 class="mb-7">Appointment</h2>
     <div class="table-responsive">
-      <table class="table table-striped table-bordered">
+      <table class="table table-striped table-bordered"> 
         <thead>
           <tr>
             <th>ชื่อ</th>
@@ -150,7 +150,7 @@
                        <td>".$row["appointment_date"]."</td>  
                        <td>".$row["appointment_time"]."</td>  
                         <td>
-                            <a href='edit.php?id=".$row["id"]."' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Edit</a>
+                            <a href='editappointment.php?id=".$row["id"]."' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Edit</a>
                             <a href='delete.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>
                         </td>
                       </tr>";
