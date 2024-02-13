@@ -19,11 +19,21 @@ if (isset($_SESSION['user_login'])) {
 if (isset($_POST['summit'])) {
     $doctor = $_POST['doctor'];
     $info = $_POST['infomation'];
-    $patient = $_POST["patient"];
+   
     $date = $_POST['date'];
     $time = $_POST['timeInput'];
 
-    $sql = "INSERT INTO appointmen (user_id,doctor_id, information,appointment_date,appointment_time,patient) VALUES ('$user_id' ,'$doctor', '$info','$date',' $time','$patient')";
+    $email = $_POST['email'];
+    $patient = $_POST['patient'];
+    $state = $_POST['state'];
+   
+
+    state
+
+    
+
+    $sql = "INSERT INTO appointmen (user_id,doctor_id, information,appointment_date,appointment_time, email,patient,state) VALUES ('$user_id' ,'$doctor', '$info',
+    '$date',' $time','$email','$patient','$state')";
 
 
     if ($conn->query($sql) === TRUE) {

@@ -198,24 +198,7 @@ if (isset($_SESSION['user_login'])) {
     <input type="text" class="form-control" name="email" value="<?php echo $row['email']?>" required> 
 </div>
 
-<div class="form-group">
-    <label for="name"> เบอร์โทร:</label>
-    <input type="text" class="form-control" name="phone_number" value="<?php echo $row['phone_number']?>" required> 
-</div>
 
-<div class="form-group">
-    <label for="name"> อายุ:</label>
-    <input type="text" class="form-control" name="  age   " value="<?php echo $row['age']?>" required> 
-</div>
-
-<div class="form-group">
-    <label for="name">เพศ: </label>
-    <input type="text" class="form-control" name=" gender " value="<?php echo $row['gender']?>" required> 
-</div>
-<div class="form-group">
-    <label for="name"> สัญชาติ:</label>
-    <input type="text" class="form-control" name=" nationality  " value="<?php echo $row['nationality']?>" required> 
-</div>
 	<br>
 			<select name="state">
                 <option value="" disabled selected>เลือกคลิกนิก</option>
@@ -252,8 +235,8 @@ if (isset($_SESSION['user_login'])) {
 		</div>
             <br>
 		
-
-			<button type="submit" name="summit" class="btn btn-primary" href ='receipt.php'>ยืนยัน</button>
+			<button type="submit" class="btn btn-primary">ยืนยัน</button>
+			 <!--  <button type="submit" name="summit" class="btn btn-primary" href ='receipt.php'>ยืนยัน</button> -->
             <a href="index2.php" class="btn btn-secondary">กลับหน้าหลัก</a>
             
         </form>
