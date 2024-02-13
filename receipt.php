@@ -1,129 +1,59 @@
-<?php 
-
-    session_start();
-    require_once 'config2/db2.php';
-	?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ใบเสร็จการนัดจอง</title>
-    <!-- Link to Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f8f9faพ;
-            padding: 20px;
-        }
-        .receipt {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin-top: 20px;
-            border: 2px solid #17a2b8;
-        }
-        .receipt-header {
-            background-color: #8BD2EC;
-            color: #FDFFE4;
-            padding: 15px;
-            text-align: center;
-            border-radius: 6px 6px 0 0;
-        }
-        h2 {
-            margin-bottom: 20px;
-        }
-        .table th, .table td {
-            border-color: #dee2e6;
-            text-align: left;
-        }
-        .table th {
-            background-color: #F8F5FD;
-            color: #695A5B;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Receipt</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    .table {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    .table th, .table td {
+      vertical-align: middle !important;
+    }
+  </style>
 </head>
 <body>
-<?php 
-
-if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-}
-?>
-
-<div class="container">
-        <div class="receipt">
-            <div class="receipt-header">
-                <h2>ใบเสร็จการนัดจอง</h2>
-            
-            </div>
-            <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <th scope="row">ชื่อ-นามสกุล</th>
-                        <td><?php echo $row['firstname'] . ' ' . $row['lastname']?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">อีเมล</th>
-                        <td>  <?php echo $row['email'] ?>    </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">เบอร์โทร</th>
-                        <td>  <?php echo $row['phone_number'] ?>    </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">อายุ</th>
-                        <td> <?php echo $row['age'] ?>   ปี</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">เพศ</th>
-                        <td> <?php echo $row['gender'] ?>   </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">สัญชาติ</th>
-                        <td>  <?php echo $row['nationality'] ?>   </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">คลินิกที่ทำ</th>
-                        <td>พิษณุโลก</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">ประเภทการนัด</th>
-                        <td>จัดฟัน</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">วันที่</th>
-                        <td>27 มกราคม 2024</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">เวลา</th>
-                        <td>10:00 น.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="text-center">
-                <h6>  รายละเอียดเพิ่มเติมเกี่ยวกับการนัดหมายสามารถติดต่อเราได้ที่ เบอร์ 084-991-1111     </h6></div>
-            <div class="text-center">
-                <a href="index2.php" class="btn btn-primary">กลับหน้าแรก</a>
-                <a href="user2.php" class="btn btn-secondary">ไปยังโปรไฟล์</a>
-            </div>
-            </div>
-            
-        </div>
-        
+  <div class="container">
+    <h2 class="mb-4">Receipt</h2>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered"> 
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Patient</th>
+            <th>Email</th>
+            <th>Service</th>
+            <th>Doctor</th>
+            <th>Status</th>
+            <th>Appointment Date</th>
+            <th>Appointment Time</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+            // Your PHP code to fetch and display data from the receipt table will be here
+          ?>
+        </tbody>
+      </table>
     </div>
+    <a href="dashb.php" class="btn btn-secondary">Back to Dashboard</a>
+  </div>
 
-    <!-- Link to Bootstrap JS and Popper.js -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
