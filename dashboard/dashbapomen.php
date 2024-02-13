@@ -151,7 +151,9 @@
                        <td>".$row["appointment_time"]."</td>  
                         <td>
                             <a href='editappointment.php?id=".$row["id"]."' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Edit</a>
+                            
                             <a href='delete.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>
+                            <a href='receipt.phpid=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> ดูใบเสร็จ</a>
                         </td>
                       </tr>";
 
