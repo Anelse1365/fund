@@ -35,6 +35,9 @@ if ($result->num_rows > 0) {
     }
 }
 
+// Sort product data by count in descending order
+arsort($productData);
+
 $conn->close();
 ?>
 
@@ -47,14 +50,38 @@ $conn->close();
     <title>Product Dashboard</title>
     <!-- Include ECharts -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #chart-container {
+            width: 800px;
+            height: 500px;
+            margin: auto;
+        }
+
+        #productChart {
+            width: 70%;
+            height: 100%;
+            float: left;
+        }
+
+        #legend {
+            width: 30%;
+            height: 100%;
+            float: left;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Product Purchase Dashboard</h1>
+    <h1 style="text-align: center;">Product Purchase Dashboard</h1>
+    <h2 style="text-align: center;">จำนวนการซื้อสินค้าแต่ละชนิด</h2>
     <!-- Set the width and height directly -->
-    <div id="chart-container" style="width: 500px; height: 300px;">
-        <div id="productChart" style="width: 70%; height: 100%; float: left;"></div>
-        <div id="legend" style="width: 30%; height: 100%; float: left;"></div>
+    <div id="chart-container">
+        <div id="productChart"></div>
+        <div id="legend"></div>
     </div>
 
     <script>
@@ -74,6 +101,7 @@ $conn->close();
                 trigger: 'item',
                 formatter: '{b}: {c} ({d}%)'
             },
+            color: ['#5470C6', '#91CC75', '#EE6666', '#EEA236', '#4B0082'], // Set custom colors
             legend: {
                 orient: 'vertical',
                 right: 10, // Adjusted to show the legend on the right
@@ -95,7 +123,8 @@ $conn->close();
                     },
                     label: {
                         show: true,
-                        formatter: '{b}: {d}%'
+                        formatter: '{b}: {d}%',
+                        color: 'rgba(255, 255, 255, 0.7)' // Set label text color
                     }
                 }
             ]
