@@ -51,7 +51,7 @@ $conn->close();
     <!-- Include ECharts -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
     <style>
-        body {
+         {
             font-family: Arial, sans-serif;
         }
 
@@ -81,6 +81,7 @@ $conn->close();
     <!-- Set the width and height directly -->
     <div id="chart-container">
         <div id="productChart"></div>
+        
         <div id="legend"></div>
     </div>
 
