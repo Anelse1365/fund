@@ -47,7 +47,7 @@ $update_stmt->bindParam(':id', $id);
             // Execute the update statement
             if ($update_stmt->execute()) {
                 // Insert data into the receipt table
-                $receipt_stmt = $conn->prepare("INSERT INTO receipt (patient, email, information, doctor_id, state, appointment_date, appointment_time) VALUES (:patient, :email, :information, :state)");
+                $receipt_stmt = $conn->prepare("INSERT INTO receipt (patient, email, information, doctor_id, state, appointment_date, appointment_time) VALUES (:patient, :email, :information, :state, :appointment_date, :appointment_time)");
                 $receipt_stmt->bindParam(':patient', $patient);
                 $receipt_stmt->bindParam(':email', $email);
                 $receipt_stmt->bindParam(':information', $information);
