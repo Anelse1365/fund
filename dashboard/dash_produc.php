@@ -45,48 +45,76 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Dashboard</title>
-    <!-- Include Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
 </head>
 
 <body>
     <h1>Product Purchase Dashboard</h1>
     <!-- Set the width and height directly -->
-    <canvas id="productChart"></canvas>
+    <div id="chart-container" style="width: 500px; height: 300px;">
+        <div id="productChart" style="width: 70%; height: 100%; float: left;"></div>
+        <div id="legend" style="width: 30%; height: 100%; float: left;"></div>
+    </div>
 
     <script>
-        // Prepare data for Chart.js
+        // Prepare data for ECharts
         var productData = <?php echo json_encode($productData); ?>;
         var productLabels = Object.keys(productData);
         var productCounts = Object.values(productData);
 
-        // Create a pie chart
-        var ctx = document.getElementById('productChart').getContext('2d');
-        // Set the width and height directly
-        document.getElementById('productChart').width = 300;
-        document.getElementById('productChart').height = 300;
+        // Create a pie chart with ECharts
+        var productChart = echarts.init(document.getElementById('productChart'));
+        // Create a separate legend container
+        var legendContainer = document.getElementById('legend');
 
-        var productChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: productLabels,
-                datasets: [{
-                    data: productCounts,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 206, 86, 0.7)',
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(153, 102, 255, 0.7)',
-                        'rgba(255, 159, 64, 0.7)'
-                        // Add more colors if needed
-                    ],
-                    borderWidth: 1
-                }]
+        // Specify chart configuration
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b}: {c} ({d}%)'
             },
-            options: {
-                responsive: true,
-            }
+            legend: {
+                orient: 'vertical',
+                right: 10, // Adjusted to show the legend on the right
+                data: productLabels,
+            },
+            series: [
+                {
+                    type: 'pie',
+                    radius: '50%',
+                    data: productLabels.map(function (label, index) {
+                        return { value: productCounts[index], name: label };
+                    }),
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                    label: {
+                        show: true,
+                        formatter: '{b}: {d}%'
+                    }
+                }
+            ]
+        };
+
+        // Set the chart option
+        productChart.setOption(option);
+
+        // Specify legend configuration
+        var legendOption = {
+            orient: 'vertical',
+            right: 10,
+            data: productLabels,
+        };
+
+        // Set the legend option
+        productChart.on('finished', function () {
+            var legendChart = echarts.init(legendContainer);
+            legendChart.setOption(legendOption);
         });
     </script>
 </body>
