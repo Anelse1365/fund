@@ -142,7 +142,7 @@
             <!-- You can use links, buttons, or any other content -->
             <?php echo "<p style='font-size: 2em; text-align: right;'>$appointmentCount</p>";?>
             
-            <a href="#" class="btn btn-primary" style="margin-bottom: 10px;">Go to Appointments</a>
+            <a href="dashbapomen.php" class="btn btn-primary" style="margin-bottom: 10px;">Go to Appointments</a>
             
             <!-- Display the appointment count in the same line -->
             
