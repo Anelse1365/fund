@@ -106,62 +106,73 @@
   
 
   <!-- Content -->
-  <div class="container mt-5">
-    <h2 class="mb-7">Appointment</h2>
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered"> 
-        <thead>
-          <tr>
-            <th>ชื่อ</th>
-            <th>Email</th>
-            <th>บริการ</th>
-            <th>คลินิก</th>
-            <th>เเก้ไข</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php
-          // Connection to database
-          $servername = "localhost";
-          $username = "root";
-          $password = "";
-          $dbname = "fund";
-          try {
-              $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-              $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  <h2 class="mb-7">Appointment</h2>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered"> 
+    <thead>
+      <tr>
+        <th>ชื่อ</th>
+        <th>Email</th>
+        <th>เบอร์โทร</th>
+        <th>อายุ</th>
+        <th>เพศ</th>
+        <th>สัญชาติ</th>
+        <th>คลินิก</th>
+        <th>บริการ</th>
+        <th>หมอ</th>
+        <th>เวลาที่ส่ง</th>
+        <th>แก้ไข</th>
+      </tr>
+    </thead>
+    <tbody>
+    <?php
+      // Connection to database
+      $servername = "localhost";
+      $username = "root";
+      $password = "";
+      $dbname = "fund";
+      try {
+          $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+          $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-              // SQL query to fetch data from database
-              $sql = "SELECT * FROM appointmen";
-              $stmt = $conn->prepare($sql);
-              $stmt->execute();
+          // SQL query to fetch data from database
+          $sql = "SELECT * FROM appointmen";
+          $stmt = $conn->prepare($sql);
+          $stmt->execute();
 
-              // Output data of each row
-              while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo "<tr>
-                       
-                       <td>".$row["patient"]."</td>
-                       <td>".$row["email"]."</td>
-                       <td>".$row["information"]."</td>    
-                       <td>".$row["state"]."</td>
-                        <td>
-                            <a href='editappointment.php?id=".$row["id"]."' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Edit</a>
-                            
-                            <a href='delete.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>
-                            <a href='receiptapomen.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> ดูใบเสร็จ</a>
-                        </td>
-                      </tr>";
-
-            }
-        } catch(PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-        ?>
-      </tbody>
-    </table>
-  </div>
+          // Output data of each row
+          while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<tr>
+                   <td>".$row["patient"]."</td>
+                   <td>".$row["email"]."</td>
+                   <td>".$row["phone_number"]."</td>
+                   <td>".$row["age"]."</td>
+                   <td>".$row["gender"]."</td>
+                   <td>".$row["nationality"]."</td>
+                   <td>".$row["state"]."</td>
+                   <td>".$row["information"]."</td>
+                   <td>".$row["doctor"]."</td>
+                   <td>".$row["created_at"]."</td>
+                   <td><a href='editapomen.php?id=".$row['id']."' class='btn btn-primary'>แก้ไข</a>
+                   <a href='delete.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>
+                   <a href='receiptapomen.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> ดูใบเสร็จ</a></td>
+                  </tr>";
+          }
+      } catch(PDOException $e) {
+          echo "Error: " . $e->getMessage();
+      }
+      ?>
+    </tbody>
+  </table>
 </div>
+
 
 <!-- Bootstrap JS -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+
+<a href='editappointment.php?id=".$row["id"]."' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Edit</a>
+                            
+                         

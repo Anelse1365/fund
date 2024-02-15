@@ -26,20 +26,20 @@
 </head>
 <body>
   <div class="container">
-    <h2 class="mb-4">ใบเสร็จการนัดจอง</h2>
+    <h2 class="mb-4">Receipts</h2>
     <div class="table-responsive">
       <table class="table table-striped table-bordered">
         <thead class="thead-dark">
           <tr>
             <th>ID</th>
-            <th>ชื่อนามสกุล</th>
+            <th>Patient</th>
             <th>Email</th>
-            <th>บริการ</th>
-            <th>หมอ</th>
-            <th>คลินิก</th>
-            <th>วันที่</th>
-            <th>เวลา</th>
-            <th>เเก้ไขเมื่อ</th>
+            <th>Service</th>
+            <th>Doctor</th>
+            <th>Status</th>
+            <th>Appointment Date</th>
+            <th>Appointment Time</th>
+            <th>Created At</th>
           </tr>
         </thead>
         <tbody>
@@ -62,15 +62,14 @@
               while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                   echo "<tr>
                             <td>".$row['id']."</td>
-                            <td>".$row["patient"]."</td>
-                            <td>".$row["email"]."</td>
-                            <td>".$row["information"]."</td>  
-                            <td>".$row["doctor_id"]."</td>   
-                            <td>".$row["state"]."</td>
-                            <td>".$row["appointment_date"]."</td>  
-                            <td>".$row["appointment_time"]."</td>  
+                            <td>".$row['patient']."</td>
+                            <td>".$row['email']."</td>
+                            <td>".$row['service']."</td>
+                            <td>".$row['doctor']."</td>
+                            <td>".$row['status']."</td>
+                            <td>".$row['appointment_date']."</td>
+                            <td>".$row['appointment_time']."</td>
                             <td>".$row['created_at']."</td>
-
                         </tr>";
               }
           } catch(PDOException $e) {
@@ -80,7 +79,6 @@
         </tbody>
       </table>
     </div>
-    <a href="dashb.php" class="btn btn-secondary mt-3">กลับหน้าหลัก</a>
   </div>
   <!-- Bootstrap JS -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

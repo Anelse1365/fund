@@ -1,43 +1,55 @@
 <?php
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "fund";
 
-// Create connection
+// สร้างการเชื่อมต่อ
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-  
-    $info = $_POST['infomation'];
-  
-    $email = $_POST['email'];
-    $patient = $_POST['patient'];
-    $state = $_POST['state'];
+if (isset($_SESSION['user_login'])) {
+    $user_id = $_SESSION['user_login'];
+    $stmt = $conn->prepare("SELECT * FROM patien WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    // Check if all required fields are filled
-    if (!empty($info) && !empty($email) && !empty($patient) && !empty($state)) {
-        // Prepare SQL query
-        $sql = "INSERT INTO appointmen ( information, email, patient, state) VALUES ('$info', '$email', '$patient', '$state')";
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $patient = $row['firstname'] . ' ' . $row['lastname'];
+        $email = $row['email'];
+        $phone_number = $row['phone_number'];
+        $age = $row['age'];
+        $gender = $row['gender'];
+        $nationality = $row['nationality'];
 
-        // Execute SQL query
-        if ($conn->query($sql) === TRUE) {
-            echo "บันทึกการนัดหมายเรียบร้อยแล้ว!";
+        // รับข้อมูลการนัดหมอจากฟอร์ม
+        $state = $_POST['state'];
+        $information = $_POST['information'];
+        $doctor = $_POST['doctor'];
+
+        // เตรียมคำสั่ง SQL สำหรับบันทึกข้อมูลการนัดหมอลงในฐานข้อมูล
+        $sql = "INSERT INTO appointmen (patient, email, phone_number, age, gender, nationality, state, information, doctor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssssssss", $patient, $email, $phone_number, $age, $gender, $nationality, $state, $information, $doctor);
+        
+        // ทำการ execute คำสั่ง SQL
+        if ($stmt->execute()) {
+            echo "บันทึกข้อมูลการนัดหมอเรียบร้อยแล้ว";
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "เกิดข้อผิดพลาดในการบันทึกข้อมูล: " . $conn->error;
         }
     } else {
-        echo "กรุณากรอกข้อมูลให้ครบถ้วน";
+        echo "ไม่พบข้อมูลผู้ใช้";
     }
+} else {
+    echo "กรุณาเข้าสู่ระบบก่อนทำการนัดหมอ";
 }
 
-// Close connection
 $conn->close();
 ?>
