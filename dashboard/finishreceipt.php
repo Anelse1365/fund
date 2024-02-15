@@ -77,7 +77,9 @@ $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <a href="dashbapomen.php" class="btn btn-secondary">ย้อนกลับ</a>
         <a href="dashb.php" class="btn btn-secondary">กลับหน้าหลัก</a>
+    </div>
     </div>
 </body>
 </html>

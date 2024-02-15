@@ -1,22 +1,29 @@
 <?php
 session_start();
 
-// เชื่อมต่อฐานข้อมูล
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "fund";
+// ตรวจสอบว่ามีการส่ง ID มาหรือไม่
+if(isset($_GET['id'])) {
+    $id = $_GET['id'];
+    
+    // เชื่อมต่อฐานข้อมูล
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "fund";
 
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    // เซ็ตโหมดของ PDO เพื่อให้แสดงข้อผิดพลาดออกมา
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // เซ็ตโหมดของ PDO เพื่อให้แสดงข้อผิดพลาดออกมา
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // ดึงข้อมูลจากตาราง appointmen
-    $stmt = $conn->query("SELECT * FROM appointmen");
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
+        // ดึงข้อมูลจากตาราง appointmen โดยใช้ ID เป็นเงื่อนไข
+        $stmt = $conn->prepare("SELECT * FROM appointmen WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+        echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
+    }
 }
 ?>
 
@@ -25,7 +32,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>การทำใบเสร็จ</title>
+    <title>การแก้ไขใบเสร็จ</title>
     <!-- ลิงก์ CSS ของ Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -45,10 +52,11 @@ try {
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        <h3 class="mb-0">การทำใบเสร็จ</h3>
+                        <h3 class="mb-0">การแก้ไขใบเสร็จ</h3>
                     </div>
                     <div class="card-body">
                         <form action="submitreceipt.php" method="post">
+                            <input type="hidden" name="id" value="<?php echo $id; ?>">
                             <div class="form-group">
                                 <label for="name">ชื่อ-นามสกุล:</label>
                                 <input type="text" class="form-control" name="patient" value="<?php echo isset($row['patient']) ? $row['patient'] : ''; ?>" required> 
@@ -94,8 +102,8 @@ try {
                                 </select>
                             </div>
                             <div class="form-group">
-                                <button type="submit" name="submit" class="btn btn-primary">ยืนยัน</button>
-                                <a href="dashb.php" class="btn btn-secondary">กลับหน้าหลัก</a>
+                                <button type="submit" name="submit" class="btn btn-primary">ยืนยันการนัด</button>
+                                <a href="dashbapomen.php" class="btn btn-secondary">ยกเลิก</a>
                             </div>
                         </form>
                     </div>
