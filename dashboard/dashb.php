@@ -109,7 +109,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="dash_produc.php">
             <i class="fas fa-box"></i> Products
           </a>
         </li>
