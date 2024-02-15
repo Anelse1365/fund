@@ -1,86 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
+
+            <!DOCTYPE html>
+<html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Receipts</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .container {
-      padding-top: 20px;
-    }
-    .table-responsive {
-      margin-top: 20px;
-    }
-    th, td {
-      vertical-align: middle !important;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การทำใบเสร็จ</title>
 </head>
 <body>
-  <div class="container">
-    <h2 class="mb-4">Receipts</h2>
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-          <tr>
-            <th>ID</th>
-            <th>Patient</th>
-            <th>Email</th>
-            <th>Service</th>
-            <th>Doctor</th>
-            <th>Status</th>
-            <th>Appointment Date</th>
-            <th>Appointment Time</th>
-            <th>Created At</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          // Connection to database
-          $servername = "localhost";
-          $username = "root";
-          $password = "";
-          $dbname = "fund";
-          try {
-              $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-              $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+<?php
+      // Connection to database
+      $servername = "localhost";
+      $username = "root";
+      $password = "";
+      $dbname = "fund";
+      try {
+          $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+          $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-              // SQL query to fetch data from database
-              $sql = "SELECT * FROM receipt";
-              $stmt = $conn->prepare($sql);
-              $stmt->execute();
+          // SQL query to fetch data from database
+          $sql = "SELECT * FROM appointmen";
+          $stmt = $conn->prepare($sql);
+          $stmt->execute();
 
-              // Output data of each row
-              while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                  echo "<tr>
-                            <td>".$row['id']."</td>
-                            <td>".$row['patient']."</td>
-                            <td>".$row['email']."</td>
-                            <td>".$row['service']."</td>
-                            <td>".$row['doctor']."</td>
-                            <td>".$row['status']."</td>
-                            <td>".$row['appointment_date']."</td>
-                            <td>".$row['appointment_time']."</td>
-                            <td>".$row['created_at']."</td>
-                        </tr>";
-              }
-          } catch(PDOException $e) {
-              echo "Connection failed: " . $e->getMessage();
+          // Output data of each row
+          while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<tr>
+                   <td>".$row["patient"]."</td>
+                   <td>".$row["email"]."</td>
+                   <td>".$row["phone_number"]."</td>
+                   <td>".$row["age"]."</td>
+                   <td>".$row["gender"]."</td>
+                   <td>".$row["nationality"]."</td>
+                   <td>".$row["state"]."</td>
+                   <td>".$row["information"]."</td>
+                   <td>".$row["doctor"]."</td>
+                   <td>".$row["created_at"]."</td>
+                  </tr>";
           }
-          ?>
-        </tbody>
-      </table>
+      } catch(PDOException $e) {
+          echo "Error: " . $e->getMessage();
+      }
+      ?>
+<section>
+	<div class="container"> 
+        <h1>การทำใบเสร็จ</h1>
+        <p>กรุณากรอกข้อมูลเพื่อนัดหมอฟัน</p>  
+        <form action="submitapomen.php" method="post">
+		<div class="form-group">
+    <label for="name">ชื่อ-นามสกุล:</label>
+    <input type="text" class="form-control" name="patient" value="<?php echo $row['patient']?>" required> 
+</div>
+
+            <div class="form-group">
+                <label for="email">อีเมล:</label>
+                <input type="email" class="form-control" name="email" value=" <?php echo $row['email']?>"required> 
+            </div>
+            <div class="form-group">
+                <label for="phone_number">เบอร์โทร:</label>
+                <input type="tel" class="form-control" name="phone_number"  value=" <?php echo $row['phone_number']?>  " required> 
+            </div>
+			<div class="form-group">
+    <label for="age">อายุ:</label>
+    <input type="number" class="form-control" name="age" value="<?php echo $row['age']?>" required>  
+</div>
+
+            <div class="form-group">
+                <label for="gender">เพศ:</label>
+                <input type="text" class="form-control" name="gender" value="  <?php echo $row['gender']?>  " required> 
+            </div>
+            <div class="form-group">
+                <label for="nationality">สัญชาติ:</label>
+                <input type="text" class="form-control" name="nationality" value="  <?php echo $row['nationality']?>  "  required> 
+            </div>
+            <
+            <button type="submit" name="submit" class="btn btn-primary">ยืนยัน</button>
+            <a href="index2.php" class="btn btn-secondary">กลับหน้าหลัก</a>
+        </form>
     </div>
-  </div>
-  <!-- Bootstrap JS -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+    </section>
+</form>
