@@ -1,3 +1,30 @@
+@ -1,265 +1,265 @@
+<?php 
+
+    session_start();
+    require_once '../config2/db2.php';
+    if (!isset($_SESSION['admin_login'])) {
+        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+        header('location:../signin2.php');
+    }
+
+    // Count of Patients
+    $sqlPatient = "SELECT COUNT(*) as patientCount FROM patien";
+    $stmtPatient = $conn->prepare($sqlPatient);
+    $stmtPatient->execute();
+    $resultPatient = $stmtPatient->fetch(PDO::FETCH_ASSOC);
+    $patientCount = $resultPatient['patientCount'];
+
+    // Count of Appointments
+    $sqlAppointment = "SELECT COUNT(*) as appointmentCount FROM appointmen";
+    $stmtAppointment = $conn->prepare($sqlAppointment);
+    $stmtAppointment->execute();
+    $resultAppointment = $stmtAppointment->fetch(PDO::FETCH_ASSOC);
+    $appointmentCount = $resultAppointment['appointmentCount'];
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,6 +127,75 @@
       </ul>
     </div>
   </nav>
+  <!-- Content -->
+<div class="container mt-5">
+    <h2 class="mb-7">Dashboard</h2>
+
+    <!-- Create a grid for the three sections -->
+    <div class="row">
+        <!-- First Column: "การนัดหมายใหม่" -->
+        <div class="col-md-4 mb-4">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">การนัดหมายใหม่</h5>
+            <!-- Add your content for "การนัดหมายใหม่" here -->
+            
+            <!-- You can use links, buttons, or any other content -->
+            <?php echo "<p style='font-size: 2em; text-align: right;'>$appointmentCount</p>";?>
+            
+           
+            <a href="dashbapomen.php" class="btn btn-primary" style="margin-bottom: 10px;">Go to Appointments</a>
+            
+            <!-- Display the appointment count in the same line -->
+            
+        </div>
+    </div>
+</div>
+
+
+        <!-- Second Column: "ผู้ป่วยในระบบ" -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">ผู้ป่วยในระบบ</h5>
+                    <!-- Add your content for "ผู้ป่วยในระบบ" here -->
+                    <?php echo "<p style='font-size: 2em; text-align: right;'>$patientCount</p>";?>
+                    
+                    
+                    <!-- You can use links, buttons, or any other content -->
+                    <a href="#" class="btn btn-success">View Patients</a>
+                   
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Third Column: "ยอดขาย" -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">ยอดขาย</h5>
+                    <!-- Add your content for "ยอดขาย" here -->
+                    <!-- You can use links, buttons, or any other content -->
+                    <a href="#" class="btn btn-info">View Sales</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient List Table -->
+    <div class="table-responsive mt-5">
+        <table class="table table-striped table-bordered">
+            
+            <tbody>
+                <?php
+                    // Your existing PHP code to fetch and display patient data
+                    // ...
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
   <!-- Content -->
   <div class="container mt-5">
     <h2 class="mb-7">Patient List</h2>
