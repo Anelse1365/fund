@@ -1,6 +1,4 @@
-@ -1,265 +1,265 @@
 <?php 
-
     session_start();
     require_once '../config2/db2.php';
     if (!isset($_SESSION['admin_login'])) {
@@ -30,6 +28,12 @@
       $stmt->execute();
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
   }
+  // Fetch total sales from order2 table
+$sqlTotalSales = "SELECT SUM(total_price) as totalSales FROM order2";
+$stmtTotalSales = $conn->prepare($sqlTotalSales);
+$stmtTotalSales->execute();
+$totalSales = $stmtTotalSales->fetchColumn();
+
 
 ?>
 
@@ -119,7 +123,7 @@
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="dashb.php">
+          <a class="nav-link active" href="#">
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -134,18 +138,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="dashb.php">
-            <i class="fas fa-users"></i> Patient
-          </a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="doctorsdash.php">
-            <i class="fas fa-users"></i> doctor
           </a>
         </li>
         <li class="nav-item">
@@ -200,17 +194,35 @@
         </div>
 
         <!-- Third Column: "ยอดขาย" -->
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">ยอดขาย</h5>
-                    <!-- Add your content for "ยอดขาย" here -->
-                    <!-- You can use links, buttons, or any other content -->
-                    <a href="#" class="btn btn-info">View Sales</a>
-                </div>
-            </div>
+        <!-- Display total sales in the card -->
+
+<!-- Third Column: "รายได้" -->
+
+
+<!-- Third Column: "รายได้" -->
+<!-- Third Column: "รายได้" -->
+<div class="col-md-4 mb-4">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">รายได้</h5>
+            <?php
+                // Fetch the total price of the latest order from order2 table
+                $sqlLatestOrder = "SELECT total_price FROM order2 ORDER BY id DESC LIMIT 1";
+                $stmtLatestOrder = $conn->prepare($sqlLatestOrder);
+                $stmtLatestOrder->execute();
+                $resultLatestOrder = $stmtLatestOrder->fetch(PDO::FETCH_ASSOC);
+                $latestTotalPrice = $resultLatestOrder['total_price'];
+            ?>
+            <!-- Display the total sales value -->
+            <p style="font-size: 2em; text-align: right; color: green;">+<?php echo number_format($latestTotalPrice, 2); ?> บาท</p>
+            <!-- You can add a link or button to view more details if needed -->
+            <a href="#" class="btn btn-info">View Sales</a>
         </div>
     </div>
+</div>
+
+
+
 
     <!-- Patient List Table -->
     <div class="table-responsive mt-5">
@@ -283,6 +295,7 @@
         } catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
+        
         ?>
       </tbody>
     </table>
