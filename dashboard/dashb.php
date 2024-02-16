@@ -6,6 +6,7 @@
     if (!isset($_SESSION['admin_login'])) {
         $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
         header('location:../signin2.php');
+    
     }
 
     // Count of Patients
@@ -22,6 +23,13 @@
     $resultAppointment = $stmtAppointment->fetch(PDO::FETCH_ASSOC);
     $appointmentCount = $resultAppointment['appointmentCount'];
     $loggedInUser = $_SESSION['admin_login'];
+
+    if (isset($_SESSION['admin_login'])) {
+      $user_id = $_SESSION['admin_login'];
+      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  }
 
 ?>
 
@@ -90,17 +98,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
+          
           <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
+            <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
           </li>
                   <!-- Display the logged-in username -->
         
