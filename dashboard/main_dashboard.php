@@ -77,7 +77,12 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
-
+#maindashboard{
+    margin: auto;
+    width: 300px;
+    height: 300px;
+    left: -12cm;
+}
   </style>
 </head>
 <body>
@@ -212,21 +217,64 @@
         </div>
     </div>
 
-    <!-- Patient List Table -->
-    <div class="table-responsive mt-5">
-        <table class="table table-striped table-bordered">
-            
-            <tbody>
-                <?php
-                    // Your existing PHP code to fetch and display patient data
-                    // ...
-                ?>
-            </tbody>
-        </table>
-    </div>
-</div>
 
-<!-- Bootstrap JS -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <div id="maindashboard"  ></div>
+  <script>
+   var chartDom = document.getElementById('maindashboard');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
+  tooltip: {
+    trigger: 'item'
+  },
+  legend: {
+    type:'scroll',
+    top: '2%',
+    left: 'center'
+  },
+  series: [
+    {
+      name: 'Access From',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      top:"4%",
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: false,
+          fontSize: 40,
+          fontWeight: 'bold'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: [
+        { value: 1048, name: 'Search Engine' },
+        { value: 735, name: 'Direct' },
+        { value: 580, name: 'Email' },
+        { value: 484, name: 'Union Ads' },
+        { value: 300, name: 'Video Ads' }
+      ]
+    }
+  ]
+};
+
+option && myChart.setOption(option);
+  </script>
+
+ 
+
 </body>
 </html>
