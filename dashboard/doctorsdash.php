@@ -146,6 +146,7 @@ try {
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">ข้อมูลหมอ</h2>
+    <a href="adddoctor.php" class="btn btn-secondary mt-3">เพิ่มหมอ</a>
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="thead-dark">

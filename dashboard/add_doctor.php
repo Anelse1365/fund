@@ -38,7 +38,7 @@ try {
     $stmt->execute();
 
     // ส่งกลับไปยังหน้า dashboard.php หลังจากเพิ่มข้อมูลเสร็จสิ้น
-    header("Location: dashb.php");
+    header("Location: doctorsdash.php");
     exit();
 } catch(PDOException $e) {
     // หากเกิดข้อผิดพลาดในการเพิ่มข้อมูล ให้แสดงข้อความผิดพลาด
