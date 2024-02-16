@@ -71,7 +71,7 @@
                             </div>
                             <div class="form-group">
                                 <button type="submit" name="submit" class="btn btn-primary">บันทึก</button>
-                                <a href="dashboard.php" class="btn btn-secondary">ยกเลิก</a>
+                                <a href="doctorsdash.php" class="btn btn-secondary">ยกเลิก</a>
                             </div>
                         </form>
                     </div>
