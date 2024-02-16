@@ -94,11 +94,11 @@ if (isset($_SESSION['user_login'])) {
                 </tr>
                 <tr>
                     <th scope="row">คลินิกที่ทำ</th>
-                    <td><?php echo $row['clinic']; ?></td>
+                    <td><?php echo $row['state']; ?></td>
                 </tr>
                 <tr>
                     <th scope="row">ประเภทการนัด</th>
-                    <td><?php echo $row['appointment_type']; ?></td>
+                    <td><?php echo $row['information']; ?></td>
                 </tr>
                 <tr>
                     <th scope="row">หมอ</th>
@@ -119,6 +119,87 @@ if (isset($_SESSION['user_login'])) {
             <a href="user2.php" class="btn btn-secondary">ไปยังโปรไฟล์</a>
         </div>
     </div>
+</div>
+
+<!-- Link to Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+<?php
+// เชื่อมต่อฐานข้อมูล
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fund";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง receipt
+$sql = "SELECT * FROM receipe";
+$result = $conn->query($sql);
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ใบเสร็จการนัดจอง</title>
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS styles here */
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <?php
+    // ตรวจสอบว่ามีข้อมูลในฐานข้อมูลหรือไม่
+    if ($result->num_rows > 0) {
+        // วนลูปผ่านแต่ละแถวของข้อมูล
+        while($row = $result->fetch_assoc()) {
+            // แสดงข้อมูลในตาราง
+            echo "<div class='receipt'>";
+            echo "<div class='receipt-header'>";
+            echo "<h2>ใบเสร็จการนัดจอง</h2>";
+            echo "</div>";
+            echo "<table class='table table-bordered'>";
+            echo "<tbody>";
+            echo "<tr><th scope='row'>ชื่อ-นามสกุล</th><td>" . $row['patient'] . "</td></tr>";
+            echo "<tr><th scope='row'>อีเมล</th><td>" . $row['email'] . "</td></tr>";
+            echo "<tr><th scope='row'>เบอร์โทร</th><td>" . $row['phone_number'] . "</td></tr>";
+            echo "<tr><th scope='row'>อายุ</th><td>" . $row['age'] . "</td></tr>";
+            echo "<tr><th scope='row'>เพศ</th><td>" . $row['gender'] . "</td></tr>";
+            echo "<tr><th scope='row'>สัญชาติ</th><td>" . $row['nationality'] . "</td></tr>";
+            echo "<tr><th scope='row'>คลินิกที่ทำ</th><td>" . $row['state'] . "</td></tr>";
+            echo "<tr><th scope='row'>ประเภทการนัด</th><td>" . $row['information'] . "</td></tr>";
+            echo "<tr><th scope='row'>หมอ</th><td>" . $row['doctor'] . "</td></tr>";
+            echo "<tr><th scope='row'>เวลาที่ส่ง</th><td>" . $row['created_at'] . "</td></tr>";
+            echo "</tbody></table>";
+            echo "<div class='text-center'>";
+            echo "<h6>รายละเอียดเพิ่มเติมเกี่ยวกับการนัดหมายสามารถติดต่อเราได้ที่ เบอร์ 084-991-1111</h6>";
+            echo "</div>";
+            echo "<div class='text-center'>";
+            echo "<a href='index2.php' class='btn btn-primary'>กลับหน้าแรก</a>";
+            echo "<a href='user2.php' class='btn btn-secondary'>ไปยังโปรไฟล์</a>";
+            echo "</div>";
+            echo "</div>";
+        }
+    } else {
+        echo "0 results";
+    }
+    $conn->close();
+    ?>
 </div>
 
 <!-- Link to Bootstrap JS and Popper.js -->
