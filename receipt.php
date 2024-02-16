@@ -21,14 +21,14 @@ if (isset($_SESSION['user_login'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ใบเสร็จการนัดจอง</title>
     <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f8f9fa; /* แก้ไขส่วนนี้เท่านั้น */
+            background-color: #f8f9fa;
             padding: 20px;
         }
         .receipt {
@@ -68,56 +68,56 @@ if (isset($_SESSION['user_login'])) {
         </div>
         <table class="table table-bordered">
             <tbody>
-            <tr>
-            <th scope="row">ชื่อ-นามสกุล</th>
-            <td><?php echo $row['patient']?></td>
-        </tr>
+                <tr>
+                    <th scope="row">ชื่อ-นามสกุล</th>
+                    <td><?php echo $row['patient']; ?></td>
+                </tr>
                 <tr>
                     <th scope="row">อีเมล</th>
-                    <td><?php echo $row['email']?></td>  
+                    <td><?php echo $row['email']; ?></td>  
                 </tr>
-                    <tr>
-                        <th scope="row">เบอร์โทร</th>
-                        <td><?php echo $row['phone_number']?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">อายุ</th>
-                        <td><?php echo $row['age']?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">เพศ</th>
-                        <td><?php echo $row['gender']?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">สัญชาติ</th>
-                        <td><?php echo $row['nationality']?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">คลินิกที่ทำ</th>
-                        <td><?php echo $row['state']?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">ประเภทการนัด</th>
-                        <td><?php echo $row['information']?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">หมอ</th>
-                        <td><?php echo $row['doctor']?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">เวลาที่ส่ง</th>
-                        <td><?php echo $row['created_at']?></td>
-                    </tr>
-
-                </tbody>
-            </table>
-            
-            <div class="text-center">
+                <tr>
+                    <th scope="row">เบอร์โทร</th>
+                    <td><?php echo $row['phone_number']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">อายุ</th>
+                    <td><?php echo $row['age']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">เพศ</th>
+                    <td><?php echo $row['gender']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">สัญชาติ</th>
+                    <td><?php echo $row['nationality']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">คลินิกที่ทำ</th>
+                    <td><?php echo $row['clinic']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">ประเภทการนัด</th>
+                    <td><?php echo $row['appointment_type']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">หมอ</th>
+                    <td><?php echo $row['doctor']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">เวลาที่ส่ง</th>
+                    <td><?php echo $row['created_at']; ?></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="text-center">
             <h6>รายละเอียดเพิ่มเติมเกี่ยวกับการนัดหมายสามารถติดต่อเราได้ที่ เบอร์ 084-991-1111</h6>
-    </div>
-    <div class="text-center">
-        <a href="index2.php" class="btn btn-primary">กลับหน้าแรก</a>
-        <a href="user2.php" class="btn btn-secondary">ไปยังโปรไฟล์</a>
+        </div>
+        <div class="text-center">
+            <a href="index2.php" class="btn btn-primary">กลับหน้าแรก</a>
+            <a href="user2.php" class="btn btn-secondary">ไปยังโปรไฟล์</a>
+        </div>
     </div>
 </div>
 
