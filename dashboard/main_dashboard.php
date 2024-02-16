@@ -23,6 +23,11 @@
     $appointmentCount = $resultAppointment['appointmentCount'];
     $loggedInUser = $_SESSION['admin_login'];
 
+    $sqlTotalSales = "SELECT SUM(total_price) as totalSales FROM order2";
+    $stmtTotalSales = $conn->prepare($sqlTotalSales);
+    $stmtTotalSales->execute();
+    $totalSales = $stmtTotalSales->fetchColumn();
+
 ?>
 
 
@@ -78,10 +83,29 @@
   overflow-y: auto;
 }
 #maindashboard{
+position: absolute;
     margin: auto;
     width: 300px;
     height: 300px;
-    left: -12cm;
+    margin-left: -1cm;
+    margin-top: 6.5cm;
+}
+#maindashboard1{
+    position: absolute;
+    margin: auto;
+    width: 310px;
+    height: 310px;
+    margin-left: 10.5cm;
+    margin-top: 6.2cm;
+}
+#maindashboard2{
+    position: absolute;
+    margin: auto;
+    width: 410px;
+    height: 410px;
+    top:9cm;
+    right:8cm;
+    
 }
   </style>
 </head>
@@ -204,22 +228,30 @@
             </div>
         </div>
 
-        <!-- Third Column: "ยอดขาย" -->
         <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">ยอดขาย</h5>
-                    <!-- Add your content for "ยอดขาย" here -->
-                    <!-- You can use links, buttons, or any other content -->
-                    <a href="#" class="btn btn-info">View Sales</a>
-                </div>
-            </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">รายได้</h5>
+            <?php
+                // Fetch the total price of the latest order from order2 table
+                $sqlLatestOrder = "SELECT total_price FROM order2 ORDER BY id DESC LIMIT 1";
+                $stmtLatestOrder = $conn->prepare($sqlLatestOrder);
+                $stmtLatestOrder->execute();
+                $resultLatestOrder = $stmtLatestOrder->fetch(PDO::FETCH_ASSOC);
+                $latestTotalPrice = $resultLatestOrder['total_price'];
+            ?>
+            <!-- Display the total sales value -->
+            <p style="font-size: 2em; text-align: right; color: green;">+<?php echo number_format($latestTotalPrice, 2); ?> บาท</p>
+            <!-- You can add a link or button to view more details if needed -->
+            <a href="#" class="btn btn-info">View Sales</a>
         </div>
     </div>
+</div> 
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <div id="maindashboard"  ></div>
+  <div class = 'frame' ></div>
   <script>
    var chartDom = document.getElementById('maindashboard');
 var myChart = echarts.init(chartDom);
@@ -272,9 +304,83 @@ option = {
 };
 
 option && myChart.setOption(option);
-  </script>
+</script>
 
+<div id="maindashboard1"  ></div>
+<div class = 'frame1' ></div>
+<script>
+    var chartDom = document.getElementById('maindashboard1');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
+    tooltip: {
+        trigger: 'item'
+    },
+    legend: {
+        top: '5%',
+        left: 'center'
+    },
+    series: [
+        {
+            name: 'Access From',
+            type: 'pie',
+            top:'8%',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+                show: false,
+                position: 'center'
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: 40,
+                    fontWeight: 'bold'
+                }
+            },
+            labelLine: {
+                show: false
+            },
+            data: [
+                { value: 1048, name: 'Search Engine' },
+                { value: 735, name: 'Direct' },
+                { value: 580, name: 'Email' },
+                { value: 484, name: 'Union Ads' },
+                { value: 300, name: 'Video Ads' }
+            ]
+        }
+    ]
+};
+
+option && myChart.setOption(option);
+</script>
  
+<div id="maindashboard2" ></div>
+<div class = 'frame2' ></div>
+<script>
+    var chartDom = document.getElementById('maindashboard2');
+var myChart = echarts.init(chartDom);
+var option;
 
+option = {
+  xAxis: {
+    type: 'category',
+    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      data: [120, 200, 150, 80, 70, 110, 130],
+      type: 'bar'
+    }
+  ]
+};
+
+option && myChart.setOption(option);
+
+</script>
 </body>
 </html>
