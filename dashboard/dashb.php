@@ -21,6 +21,7 @@
     $stmtAppointment->execute();
     $resultAppointment = $stmtAppointment->fetch(PDO::FETCH_ASSOC);
     $appointmentCount = $resultAppointment['appointmentCount'];
+    $loggedInUser = $_SESSION['admin_login'];
 
 ?>
 
@@ -66,6 +67,17 @@
       margin-left: 240px; /* กว้างของ Sidebar */
       padding: 20px;
     }
+    .sidebar {
+  width: 200px; /* เพิ่มความกว้างที่ต้องการ */
+}
+
+.sidebar-sticky {
+  padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
+  height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
   </style>
 </head>
 <body>
@@ -90,6 +102,13 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Contact</a>
           </li>
+                  <!-- Display the logged-in username -->
+        
+        
+        <!-- Add the Log Out button -->
+          <li class="nav-item">
+          <a class="nav-link" href="../logout2.php">ออกจากระบบ</a>
+        </li>
         </ul>
       </div>
     </div>
@@ -110,7 +129,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="dash_produc.php">
             <i class="fas fa-box"></i> Products
           </a>
         </li>

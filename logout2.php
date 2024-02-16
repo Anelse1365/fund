@@ -3,6 +3,6 @@
     session_start();
     unset($_SESSION['user_login']);
     unset($_SESSION['admin_login']);
-    header('location: home2.php');
+    header('location: signin2.php');
 
 ?>
