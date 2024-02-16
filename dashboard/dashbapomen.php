@@ -73,23 +73,33 @@
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="dashb.php">
+          <a class="nav-link active" href="#">
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="dashb.php">
             <i class="fas fa-shopping-cart"></i> Orders
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="dash_produc.php">
             <i class="fas fa-box"></i> Products
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="dashb.php">
+            <i class="fas fa-users"></i> Patient
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> doctor
           </a>
         </li>
         <li class="nav-item">

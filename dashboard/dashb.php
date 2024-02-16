@@ -119,7 +119,7 @@
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="#">
+          <a class="nav-link active" href="dashb.php">
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -134,8 +134,18 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="dashb.php">
+            <i class="fas fa-users"></i> Patient
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> doctor
           </a>
         </li>
         <li class="nav-item">
