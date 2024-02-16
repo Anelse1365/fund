@@ -1,27 +1,34 @@
 <?php 
+session_start();
+require_once 'config2/db2.php';
 
-    session_start();
-    require_once 'config2/db2.php';
-    if (!isset($_SESSION['user_login'])) {
-        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-        header('location: signin2.php');
-    }
+if (!isset($_SESSION['user_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('location: signin2.php');
+    exit(); 
+}
 
+if (isset($_SESSION['user_login'])) {
+    $user_id = $_SESSION['user_login'];
+    // สำหรับความปลอดภัยและป้องกันการโจมตี SQL injection ควรใช้ prepared statement
+    $stmt = $conn->prepare("SELECT * FROM receipe WHERE id = :user_id");
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ใบเสร็จการนัดจอง</title>
     <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f8f9faพ;
+            background-color: #f8f9fa;
             padding: 20px;
         }
         .receipt {
@@ -53,82 +60,151 @@
     </style>
 </head>
 <body>
-<?php 
-
-if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-}
-?>
 
 <div class="container">
-        <div class="receipt">
-            <div class="receipt-header">
-                <h2>ใบเสร็จการนัดจอง</h2>
-            
-            </div>
-            <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <th scope="row">ชื่อ-นามสกุล</th>
-                        <td><?php echo $row['firstname'] . ' ' . $row['lastname']?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">อีเมล</th>
-                        <td>john.doe@example.com</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">เบอร์โทร</th>
-                        <td>123-456-7890</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">อายุ</th>
-                        <td>30 ปี</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">เพศ</th>
-                        <td>ชาย</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">สัญชาติ</th>
-                        <td>ไทย</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">คลินิกที่ทำ</th>
-                        <td>พิษณุโลก</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">ประเภทการนัด</th>
-                        <td>จัดฟัน</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">วันที่</th>
-                        <td>27 มกราคม 2024</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">เวลา</th>
-                        <td>10:00 น.</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="text-center">
-                <h6>  รายละเอียดเพิ่มเติมเกี่ยวกับการนัดหมายสามารถติดต่อเราได้ที่ เบอร์ 084-991-1111     </h6></div>
-            <div class="text-center">
-                <a href="index2.php" class="btn btn-primary">กลับหน้าแรก</a>
-                <a href="user2.php" class="btn btn-secondary">ไปยังโปรไฟล์</a>
-            </div>
-            </div>
-            
+    <div class="receipt">
+        <div class="receipt-header">
+            <h2>ใบเสร็จการนัดจอง </h2>
         </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th scope="row">ชื่อ-นามสกุล</th>
+                    <td><?php echo $row['patient']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">อีเมล</th>
+                    <td><?php echo $row['email']; ?></td>  
+                </tr>
+                <tr>
+                    <th scope="row">เบอร์โทร</th>
+                    <td><?php echo $row['phone_number']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">อายุ</th>
+                    <td><?php echo $row['age']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">เพศ</th>
+                    <td><?php echo $row['gender']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">สัญชาติ</th>
+                    <td><?php echo $row['nationality']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">คลินิกที่ทำ</th>
+                    <td><?php echo $row['state']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">ประเภทการนัด</th>
+                    <td><?php echo $row['information']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">หมอ</th>
+                    <td><?php echo $row['doctor']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">เวลาที่ส่ง</th>
+                    <td><?php echo $row['created_at']; ?></td>
+                </tr>
+            </tbody>
+        </table>
         
+        <div class="text-center">
+            <h6>รายละเอียดเพิ่มเติมเกี่ยวกับการนัดหมายสามารถติดต่อเราได้ที่ เบอร์ 084-991-1111</h6>
+        </div>
+        <div class="text-center">
+            <a href="index2.php" class="btn btn-primary">กลับหน้าแรก</a>
+            <a href="user2.php" class="btn btn-secondary">ไปยังโปรไฟล์</a>
+        </div>
     </div>
+</div>
 
-    <!-- Link to Bootstrap JS and Popper.js -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Link to Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+<?php
+// เชื่อมต่อฐานข้อมูล
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fund";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง receipt
+$sql = "SELECT * FROM receipe";
+$result = $conn->query($sql);
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ใบเสร็จการนัดจอง</title>
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS styles here */
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <?php
+    // ตรวจสอบว่ามีข้อมูลในฐานข้อมูลหรือไม่
+    if ($result->num_rows > 0) {
+        // วนลูปผ่านแต่ละแถวของข้อมูล
+        while($row = $result->fetch_assoc()) {
+            // แสดงข้อมูลในตาราง
+            echo "<div class='receipt'>";
+            echo "<div class='receipt-header'>";
+            echo "<h2>ใบเสร็จการนัดจอง</h2>";
+            echo "</div>";
+            echo "<table class='table table-bordered'>";
+            echo "<tbody>";
+            echo "<tr><th scope='row'>ชื่อ-นามสกุล</th><td>" . $row['patient'] . "</td></tr>";
+            echo "<tr><th scope='row'>อีเมล</th><td>" . $row['email'] . "</td></tr>";
+            echo "<tr><th scope='row'>เบอร์โทร</th><td>" . $row['phone_number'] . "</td></tr>";
+            echo "<tr><th scope='row'>อายุ</th><td>" . $row['age'] . "</td></tr>";
+            echo "<tr><th scope='row'>เพศ</th><td>" . $row['gender'] . "</td></tr>";
+            echo "<tr><th scope='row'>สัญชาติ</th><td>" . $row['nationality'] . "</td></tr>";
+            echo "<tr><th scope='row'>คลินิกที่ทำ</th><td>" . $row['state'] . "</td></tr>";
+            echo "<tr><th scope='row'>ประเภทการนัด</th><td>" . $row['information'] . "</td></tr>";
+            echo "<tr><th scope='row'>หมอ</th><td>" . $row['doctor'] . "</td></tr>";
+            echo "<tr><th scope='row'>เวลาที่ส่ง</th><td>" . $row['created_at'] . "</td></tr>";
+            echo "</tbody></table>";
+            echo "<div class='text-center'>";
+            echo "<h6>รายละเอียดเพิ่มเติมเกี่ยวกับการนัดหมายสามารถติดต่อเราได้ที่ เบอร์ 084-991-1111</h6>";
+            echo "</div>";
+            echo "<div class='text-center'>";
+            echo "<a href='index2.php' class='btn btn-primary'>กลับหน้าแรก</a>";
+            echo "<a href='user2.php' class='btn btn-secondary'>ไปยังโปรไฟล์</a>";
+            echo "</div>";
+            echo "</div>";
+        }
+    } else {
+        echo "0 results";
+    }
+    $conn->close();
+    ?>
+</div>
+
+<!-- Link to Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
