@@ -327,6 +327,7 @@ if ($result->num_rows > 0) {
         echo '<p class="card-text">Comment: ' . $row["comment"] . '</p>';
 		echo '<p class="card-text">: ' . $row["created_at"] . '</p>';
 		echo '<p class="card-text">ผู้รีวิว คุณ: ' . $row["patient"] . '</p>';
+		echo '<p class="card-text">email: ' . $row["email"] . '</p>';
         echo '</div>';
         echo '</div>';
     }
