@@ -167,6 +167,11 @@ $conn->close();
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> Reviews
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="#">
             <i class="fas fa-chart-bar"></i> Reports
           </a>
