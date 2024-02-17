@@ -161,7 +161,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </a>
     <ul style="display: <?php echo ($current_page == 'dash_produc.php') ? 'block' : 'none'; ?>">
         <a class="nav-link" href="dash_produc.php">Statistic</a>
-        <a class="nav-link" href="dash_produc.php">Upload</a>
+        <a class="nav-link" href="..\shopping cart\admin.php">Upload</a>
     </ul>
 </li>
 

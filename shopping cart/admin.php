@@ -6,7 +6,9 @@ if (!isset($_SESSION['admin_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
     header('location: ../signin2.php');
 
+
 }
+
 
 if(isset($_POST['add_product'])){
    $p_name = $_POST['p_name'];
@@ -57,8 +59,10 @@ if(isset($_POST['update_product'])){
    }
 
 }
+$current_page = basename($_SERVER['PHP_SELF']);
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -86,6 +90,7 @@ if(isset($message)){
 };
 
 ?>
+
 
 <?php include 'header.php'; ?>
 
@@ -174,20 +179,6 @@ if(isset($message)){
 </section>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- custom js file link  -->
 <script src="js/script.js"></script>
