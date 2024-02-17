@@ -1,59 +1,210 @@
+<?php 
+session_start();
+require_once 'config2/db2.php';
+
+if (!isset($_SESSION['user_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('location: signin2.php');
+    exit(); 
+}
+
+if (isset($_SESSION['user_login'])) {
+    $user_id = $_SESSION['user_login'];
+    // สำหรับความปลอดภัยและป้องกันการโจมตี SQL injection ควรใช้ prepared statement
+    $stmt = $conn->prepare("SELECT * FROM receipe WHERE id = :user_id");
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Receipt</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .container {
-      margin-top: 50px;
-    }
-    .table {
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-    .table th, .table td {
-      vertical-align: middle !important;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ใบเสร็จการนัดจอง</title>
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .receipt {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 20px;
+            border: 2px solid #17a2b8;
+        }
+        .receipt-header {
+            background-color: #8BD2EC;
+            color: #FDFFE4;
+            padding: 15px;
+            text-align: center;
+            border-radius: 6px 6px 0 0;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            border-color: #dee2e6;
+            text-align: left;
+        }
+        .table th {
+            background-color: #F8F5FD;
+            color: #695A5B;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2 class="mb-4">Receipt</h2>
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered"> 
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Patient</th>
-            <th>Email</th>
-            <th>Service</th>
-            <th>Doctor</th>
-            <th>Status</th>
-            <th>Appointment Date</th>
-            <th>Appointment Time</th>
-            <th>Created At</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-            // Your PHP code to fetch and display data from the receipt table will be here
-          ?>
-        </tbody>
-      </table>
-    </div>
-    <a href="dashb.php" class="btn btn-secondary">Back to Dashboard</a>
-  </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<div class="container">
+    <div class="receipt">
+        <div class="receipt-header">
+            <h2>ใบเสร็จการนัดจอง </h2>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th scope="row">ชื่อ-นามสกุล</th>
+                    <td><?php echo $row['patient']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">อีเมล</th>
+                    <td><?php echo $row['email']; ?></td>  
+                </tr>
+                <tr>
+                    <th scope="row">เบอร์โทร</th>
+                    <td><?php echo $row['phone_number']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">อายุ</th>
+                    <td><?php echo $row['age']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">เพศ</th>
+                    <td><?php echo $row['gender']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">สัญชาติ</th>
+                    <td><?php echo $row['nationality']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">คลินิกที่ทำ</th>
+                    <td><?php echo $row['state']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">ประเภทการนัด</th>
+                    <td><?php echo $row['information']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">หมอ</th>
+                    <td><?php echo $row['doctor']; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">เวลาที่ส่ง</th>
+                    <td><?php echo $row['created_at']; ?></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="text-center">
+            <h6>รายละเอียดเพิ่มเติมเกี่ยวกับการนัดหมายสามารถติดต่อเราได้ที่ เบอร์ 084-991-1111</h6>
+        </div>
+        <div class="text-center">
+            <a href="index2.php" class="btn btn-primary">กลับหน้าแรก</a>
+            <a href="user2.php" class="btn btn-secondary">ไปยังโปรไฟล์</a>
+        </div>
+    </div>
+</div>
+
+<!-- Link to Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+<?php
+// เชื่อมต่อฐานข้อมูล
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fund";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง receipt
+$sql = "SELECT * FROM receipe";
+$result = $conn->query($sql);
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ใบเสร็จการนัดจอง</title>
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* CSS styles here */
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <?php
+    // ตรวจสอบว่ามีข้อมูลในฐานข้อมูลหรือไม่
+    if ($result->num_rows > 0) {
+        // วนลูปผ่านแต่ละแถวของข้อมูล
+        while($row = $result->fetch_assoc()) {
+            // แสดงข้อมูลในตาราง
+            echo "<div class='receipt'>";
+            echo "<div class='receipt-header'>";
+            echo "<h2>ใบเสร็จการนัดจอง</h2>";
+            echo "</div>";
+            echo "<table class='table table-bordered'>";
+            echo "<tbody>";
+            echo "<tr><th scope='row'>ชื่อ-นามสกุล</th><td>" . $row['patient'] . "</td></tr>";
+            echo "<tr><th scope='row'>อีเมล</th><td>" . $row['email'] . "</td></tr>";
+            echo "<tr><th scope='row'>เบอร์โทร</th><td>" . $row['phone_number'] . "</td></tr>";
+            echo "<tr><th scope='row'>อายุ</th><td>" . $row['age'] . "</td></tr>";
+            echo "<tr><th scope='row'>เพศ</th><td>" . $row['gender'] . "</td></tr>";
+            echo "<tr><th scope='row'>สัญชาติ</th><td>" . $row['nationality'] . "</td></tr>";
+            echo "<tr><th scope='row'>คลินิกที่ทำ</th><td>" . $row['state'] . "</td></tr>";
+            echo "<tr><th scope='row'>ประเภทการนัด</th><td>" . $row['information'] . "</td></tr>";
+            echo "<tr><th scope='row'>หมอ</th><td>" . $row['doctor'] . "</td></tr>";
+            echo "<tr><th scope='row'>เวลาที่ส่ง</th><td>" . $row['created_at'] . "</td></tr>";
+            echo "</tbody></table>";
+            echo "<div class='text-center'>";
+            echo "<h6>รายละเอียดเพิ่มเติมเกี่ยวกับการนัดหมายสามารถติดต่อเราได้ที่ เบอร์ 084-991-1111</h6>";
+            echo "</div>";
+            echo "<div class='text-center'>";
+            echo "<a href='index2.php' class='btn btn-primary'>กลับหน้าแรก</a>";
+            echo "<a href='user2.php' class='btn btn-secondary'>ไปยังโปรไฟล์</a>";
+            echo "</div>";
+            echo "</div>";
+        }
+    } else {
+        echo "0 results";
+    }
+    $conn->close();
+    ?>
+</div>
+
+<!-- Link to Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

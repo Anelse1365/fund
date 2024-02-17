@@ -390,6 +390,9 @@ if (isset($_SESSION['user_login'])) {
                 <label for="comment">ความคิดเห็น:</label>
                 <textarea class="form-control" name="comment" rows="4" required></textarea>
             </div>
+			<label for="name">Email:</label>
+    <input type="text" class="form-control" name="email" value="<?php echo $row['email']?>" required> 
+</div>
 			
             <button type="submit" class="btn btn-primary">ส่งรีวิว</button>
         </form>

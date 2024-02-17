@@ -249,3 +249,5 @@ if (isset($_SESSION['user_login'])) {
     </div>
     </section>
 </form>
+</body>
+</html>

@@ -104,7 +104,7 @@ try {
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="dashb.php">
+        <a class="nav-link active" href="main_dashboard.php">
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -146,7 +146,9 @@ try {
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">ข้อมูลหมอ</h2>
-    <a href="adddoctor.php" class="btn btn-secondary mt-3">เพิ่มหมอ</a>
+    <a href="adddoctor.php" class="btn btn-primary mt-3 d-block mx-auto"><i class="fas fa-plus-circle mr-1"></i> เพิ่มหมอ</a>
+
+
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="thead-dark">
