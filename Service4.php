@@ -153,12 +153,12 @@
 
 											<li><a href="#">บริการ<i class="icofont-rounded-down"></i></a>
 												<ul class="dropdown">
-													<li><a href="index.php">การดัดฟัน</a></li> <br>
-													<li><a href="index.php">การขูดหินปูน</a></li> <br>
-													<li><a href="index.php">การรักษารากฟัน</a></li> <br>
-													<li><a href="index.php">การถอนฟันรักษาช่องปาก</a></li> <br>
-													<li><a href="index.php">ทันตกรรมรากเทียม</a></li> <br>
-													<li><a href="index.php">ทันตกรรมสำหรับเด็ก</a></li> <br>
+													<li><a href="Service1.php">การดัดฟัน</a></li> <br>
+													<li><a href="Service2.php">การขูดหินปูน</a></li> <br>
+													<li><a href="Service3.php">การรักษารากฟัน</a></li> <br>
+													<li><a href="Service4.php">การถอนฟันรักษาช่องปาก</a></li> <br>
+													<li><a href="Service5.php">ทันตกรรมรากเทียม</a></li> <br>
+													<li><a href="Service6.php">ทันตกรรมสำหรับเด็ก</a></li> <br>
 												
 												</ul>
 
