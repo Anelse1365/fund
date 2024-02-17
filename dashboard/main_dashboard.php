@@ -103,7 +103,7 @@ position: absolute;
     margin: auto;
     width: 410px;
     height: 410px;
-    top:9cm;
+    top:11cm;
     right:8cm;
     
 }
@@ -248,84 +248,150 @@ position: absolute;
     </div>
 </div> 
 
+<?php
+  // เชื่อมต่อกับฐานข้อมูล
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "fund";
 
+  $conn = new mysqli($servername, $username, $password, $dbname);
+
+  // ตรวจสอบการเชื่อมต่อ
+  if ($conn->connect_error) {
+    die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+  }
+
+  // คำสั่ง SQL เพื่อดึงข้อมูลจำนวนผู้ป่วยในแต่ละกลุ่มช่วงอายุ
+  $sql = "SELECT 
+            CASE 
+              WHEN age BETWEEN 1 AND 10 THEN '1-10'
+              WHEN age BETWEEN 11 AND 20 THEN '11-20'
+              WHEN age BETWEEN 21 AND 30 THEN '21-30'
+              WHEN age BETWEEN 31 AND 40 THEN '31-40'
+              WHEN age BETWEEN 41 AND 50 THEN '41-50'
+              ELSE '>50'
+            END AS age_group,
+            COUNT(*) AS total
+          FROM 
+            patien 
+          GROUP BY 
+            age_group
+          ORDER BY 
+            age_group";
+
+  $result = $conn->query($sql);
+
+  // ตรวจสอบว่ามีข้อมูลหรือไม่
+  if ($result->num_rows > 0) {
+    // สร้างข้อมูลสำหรับใช้ในกราฟ
+    $data = array();
+    while($row = $result->fetch_assoc()) {
+      $data[] = array(
+        'name' => $row['age_group'],
+        'value' => $row['total']
+      );
+    }
+  } else {
+    echo "ไม่พบข้อมูล";
+  }
+  $conn->close();
+  ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <div id="maindashboard"  ></div>
   <div class = 'frame' ></div>
   <script>
-   var chartDom = document.getElementById('maindashboard');
-var myChart = echarts.init(chartDom);
-var option;
+  var data = <?php echo json_encode($data); ?>;
 
-option = {
-  tooltip: {
-    trigger: 'item'
+// สร้าง Pie Chart
+var pieChart = echarts.init(document.getElementById('maindashboard'));
+var option = {
+  title: {
+    text: 'แยกช่วงอายุของผู้ป่วย',
+    left: 'center'
   },
   legend: {
-    type:'scroll',
-    top: '2%',
-    left: 'center'
+        top: '13%',
+        left: 'center'
+   },
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b} : {c} ({d}%)'
   },
   series: [
     {
-      name: 'Access From',
+      name: 'จำนวนผู้ป่วย',
       type: 'pie',
-      radius: ['40%', '70%'],
-      avoidLabelOverlap: false,
-      top:"4%",
-      itemStyle: {
-        borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
-      },
-      label: {
-        show: false,
-        position: 'center'
-      },
+      radius: '55%',
+      center: ['50%', '60%'],
+      data: data,
       emphasis: {
-        label: {
-          show: false,
-          fontSize: 40,
-          fontWeight: 'bold'
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
         }
-      },
-      labelLine: {
-        show: false
-      },
-      data: [
-        { value: 1048, name: 'Search Engine' },
-        { value: 735, name: 'Direct' },
-        { value: 580, name: 'Email' },
-        { value: 484, name: 'Union Ads' },
-        { value: 300, name: 'Video Ads' }
-      ]
+      }
     }
   ]
 };
-
-option && myChart.setOption(option);
+pieChart.setOption(option);
 </script>
 
+<?php
+ $servername = "localhost";
+ $username = "root";
+ $password = "";
+ $dbname = "fund";
+
+ $conn = new mysqli($servername, $username, $password, $dbname);
+
+ // ตรวจสอบการเชื่อมต่อ
+ if ($conn->connect_error) {
+   die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+ }
+
+// คำสั่ง SQL
+$sql = "SELECT information, COUNT(*) AS count_info FROM appointmen GROUP BY information";
+$result = $conn->query($sql);
+
+// สร้างตัวแปร JSON
+$data = array();
+while ($row = $result->fetch_assoc()) {
+    $info[] = array(
+        'name' => $row['information'],
+        'value' => $row['count_info']
+    );
+}
+$conn->close();
+?>
 <div id="maindashboard1"  ></div>
 <div class = 'frame1' ></div>
 <script>
-    var chartDom = document.getElementById('maindashboard1');
+  var info = <?php echo json_encode($info); ?>;
+  var chartDom = document.getElementById('maindashboard1');
 var myChart = echarts.init(chartDom);
+var data = <?php echo json_encode($info); ?>;
 var option;
 
 option = {
+  title:{
+    text: 'จำนวนการนัดจองต่างๆ',
+    left:'center',
+    top:'4.3%'
+  },
     tooltip: {
         trigger: 'item'
     },
     legend: {
-        top: '5%',
-        left: 'center'
+      top: '17%',
+      left: 'center'
     },
     series: [
         {
             name: 'Access From',
             type: 'pie',
-            top:'8%',
+            top:'20%',
             radius: ['40%', '70%'],
             avoidLabelOverlap: false,
             label: {
@@ -342,45 +408,81 @@ option = {
             labelLine: {
                 show: false
             },
-            data: [
-                { value: 1048, name: 'Search Engine' },
-                { value: 735, name: 'Direct' },
-                { value: 580, name: 'Email' },
-                { value: 484, name: 'Union Ads' },
-                { value: 300, name: 'Video Ads' }
-            ]
+            data: info
         }
     ]
 };
 
 option && myChart.setOption(option);
 </script>
+<?php
+
+ // การเชื่อมต่อกับฐานข้อมูล
+ $servername = "localhost";
+ $username = "root";
+ $password = "";
+ $dbname = "fund";
  
+ $conn = new mysqli($servername, $username, $password, $dbname);
+ 
+ // ตรวจสอบการเชื่อมต่อ
+ if ($conn->connect_error) {
+     die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+ }
+ 
+ // คำสั่ง SQL
+ $sql = "SELECT PSex, COUNT(*) AS count_sex FROM patient GROUP BY PSex";
+ $result = $conn->query($sql);
+ 
+ // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
+ $data = array();
+ while ($row = $result->fetch_assoc()) {
+     $sex[] = array(
+         'name' => $row['PSex'],
+         'value' => $row['count_sex']
+     );
+ }
+ $conn->close();
+?> 
+x
 <div id="maindashboard2" ></div>
 <div class = 'frame2' ></div>
 <script>
-    var chartDom = document.getElementById('maindashboard2');
-var myChart = echarts.init(chartDom);
-var option;
+        // ข้อมูลจากการ query
+        var sex = <?php echo json_encode($sex); ?>;
 
-option = {
-  xAxis: {
-    type: 'category',
-    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-  },
-  yAxis: {
-    type: 'value'
-  },
-  series: [
-    {
-      data: [120, 200, 150, 80, 70, 110, 130],
-      type: 'bar'
-    }
-  ]
-};
+        // สร้าง Bar Chart ด้วย ECharts
+        var barChart = echarts.init(document.getElementById('maindashboard2'));
 
-option && myChart.setOption(option);
+        // กำหนดคอนฟิกสำหรับ Bar Chart
+        var option = {
+            title: {
+                text: 'จำนวนผู้ชายและผู้หญิงในฐานข้อมูล',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: ['ชาย', 'หญิง']
+            },
+            yAxis: {
+                type: 'value',
+                name: 'จำนวน'
+            },
+            series: [{
+                data: sex,
+                type: 'bar',
+                top:'10%'
+            }]
+        };
 
-</script>
+        // นำคอนฟิก Option ไปใช้กับ Bar Chart
+        barChart.setOption(option);
+    </script>
 </body>
 </html>
