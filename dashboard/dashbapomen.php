@@ -133,8 +133,7 @@
         <th>เพศ</th>
         <th>สัญชาติ</th>
         <th>คลินิก</th>
-        <th>บริการ</th>
-        <th>หมอ</th>
+       
         <th>เวลาที่ส่ง</th>
         <th>แก้ไข</th>
       </tr>
@@ -165,8 +164,7 @@
                    <td>".$row["gender"]."</td>
                    <td>".$row["nationality"]."</td>
                    <td>".$row["state"]."</td>
-                   <td>".$row["information"]."</td>
-                   <td>".$row["doctor"]."</td>
+                 
                    <td>".$row["created_at"]."</td>
                    <td><a href='receiptapomen.php?id=".$row['id']."' class='btn btn-primary'>ทำการนัด</a>
                    <a href='deleteappointment.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>

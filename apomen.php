@@ -217,32 +217,12 @@ if (isset($_SESSION['user_login'])) {
             <div class="form-group">
                 <label for="state">เลือกจังหวัด:</label>
                 <select name="state">
-                    <option value="" disabled selected>โปรดเลือกจังหวัด</option>
+                    <option value="" disabled selected>โปรดเลือกคลินิก</option>
                     <option value="พิษณุโลก">พิษณุโลก</option>
                     <option value="กำเเพงเพชร">กำเเพงเพชร</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="information">ประเภทการนัด:</label>
-                <select name="information">
-                    <option value="" disabled selected>โปรดเลือกประเภทการนัด</option>
-                    <option value="รักษาทันตกรรมทั่วไป">รักษาทันตกรรมทั่วไป</option>
-                    <option value="ผ่าฟัน">ผ่าฟัน</option>
-                    <option value="อื่นๆ">บริการอื่นๆ</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="doctor">เลือกหมอ:</label>
-                <select name="doctor">
-                    <option value="" disabled selected>โปรดเลือกหมอ</option>
-                    <option value="หมอA">หมอA</option>
-                    <option value="หมอB">หมอB</option>
-                    <option value="หมอC">หมอC</option>
-                    <option value="หมอD">หมอD</option>
-                    <option value="หมอE">หมอE</option>
-                    <option value="หมอF">หมอF</option>
-                </select>
-            </div>
+           
             <button type="submit" name="submit" class="btn btn-primary">ยืนยัน</button>
             <a href="index2.php" class="btn btn-secondary">กลับหน้าหลัก</a>
         </form>
