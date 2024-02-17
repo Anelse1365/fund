@@ -27,6 +27,8 @@
     $stmtTotalSales = $conn->prepare($sqlTotalSales);
     $stmtTotalSales->execute();
     $totalSales = $stmtTotalSales->fetchColumn();
+    $current_page = basename($_SERVER['PHP_SELF']);
+
 
 ?>
 
@@ -157,11 +159,21 @@ position: absolute;
             <i class="fas fa-shopping-cart"></i> Orders
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="dash_produc.php">
-            <i class="fas fa-box"></i> Products
-          </a>
-        </li>
+        <li class="nav-item" id="accountsSubMenu">
+    <a href="#" class="nav-link" onclick="toggleSubMenu('accountsSubMenu')">
+        <i class="fas fa-box"></i> Products
+    </a>
+    <ul style="display: <?php echo ($current_page == 'dash_produc.php') ? 'block' : 'none'; ?>">
+        <a class="nav-link" href="dash_produc.php">Statistic</a>
+        <a class="nav-link" href="dash_produc.php">Upload</a>
+    </ul>
+</li>
+<script>
+        function toggleSubMenu(subMenuId) {
+            var subMenu = document.getElementById(subMenuId).querySelector('ul');
+            subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
+        }
+    </script>
         <li class="nav-item">
           <a class="nav-link" href="dashb.php">
             <i class="fas fa-users"></i> Patient
