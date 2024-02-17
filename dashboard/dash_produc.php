@@ -175,6 +175,9 @@ $conn->close();
     </div>
   </nav>
 
+    <!-- Content -->
+    <div class="container mt-5">
+
     <h1>Product Purchase Dashboard</h1>
     <!-- Set the width and height directly -->
 <<<<<<< HEAD
@@ -276,6 +279,7 @@ legendContainer.style.paddingTop = '50px';
         // Set the legend option
         legendChart.setOption(legendOption);
     </script>
+    </div>
 </body>
 
 </html>
