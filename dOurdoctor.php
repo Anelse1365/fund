@@ -99,6 +99,8 @@ if (isset($_SESSION['user_login'])) {
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 }
+$stmt = $conn->query("SELECT * FROM doctors");
+$doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 		
 	
@@ -367,14 +369,15 @@ if (isset($_SESSION['user_login'])) {
             <div class="form-group">
                 <label for="doctor_name">เลือกหมอ:</label>
                 <select class="form-control" name="doctor_name" required>
-                    <option value="หมอA">หมอ A</option>
-                    <option value="หมอB">หมอ B</option>
-                    <option value="หมอC">หมอ C</option>
-                    <option value="หมอD">หมอ D</option>
-                    <option value="หมอE">หมอ E</option>
-                    <option value="หมอF">หมอ F</option>
+				<option value="">โปรดเลือกหมอ</option>
+                    <!-- วนลูปแสดงรายชื่อหมอ -->
+                    <?php foreach ($doctors as $doctor): ?>
+                        <option value="<?php echo $doctor['first_name']; ?>"><?php echo $doctor['first_name'] . " " . $doctor['last_name']; ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
+
+		
 
 			<div class="form-group">
     <label for="name">ชื่อ:</label>
