@@ -147,6 +147,7 @@ try {
 <div class="container mt-5">
     <h2 class="text-center mb-4">ข้อมูลหมอ</h2>
     <a href="adddoctor.php" class="btn btn-primary mt-3 d-block mx-auto"><i class="fas fa-plus-circle mr-1"></i> เพิ่มหมอ</a>
+    <a href="doctor/doctorschedule.php" class="btn btn-primary mt-3 d-block mx-auto"><i class="fas fa-plus-circle mr-1"></i>ตารางงาน</a>
 
 
     <div class="table-responsive">
