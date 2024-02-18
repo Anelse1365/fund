@@ -1,6 +1,24 @@
 <?php
 session_start();
 
+    require_once '../config2/db2.php';
+    if (!isset($_SESSION['admin_login'])) {
+        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+        header('location:../signin2.php');
+    }
+
+    if (isset($_SESSION['admin_login'])) {
+      $user_id = $_SESSION['admin_login'];
+      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+
+
+              // SQL query to fetch data from database
+  $sql = "SELECT * FROM patien";
+  $stmt = $conn->prepare($sql);
+
 // เชื่อมต่อฐานข้อมูล
 $servername = "localhost";
 $username = "root";
@@ -87,16 +105,14 @@ try {
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
           </li>
+          <!-- Display the logged-in username -->
+        
+        
+          <!-- Add the Log Out button -->
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
+            <a class="nav-link" href="../logout2.php">ออกจากระบบ</a>
           </li>
         </ul>
       </div>
