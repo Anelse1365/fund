@@ -15,7 +15,7 @@ try {
 
 // สร้างคำสั่ง SQL เพื่อดึงข้อมูลจากตาราง reports
 $sql = "SELECT * FROM reports";
-
+                        
 // ประมวลผลคำสั่ง SQL
 $stmt = $conn->prepare($sql);
 $stmt->execute();
@@ -40,7 +40,7 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center mb-4">ใบเสร็จการนัดจอง</h1>
+        <h1 class="text-center mb-4">ทำประวัติคนไข้</h1>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
