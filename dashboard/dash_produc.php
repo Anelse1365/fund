@@ -150,32 +150,43 @@ $current_page = basename($_SERVER['PHP_SELF']);
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="">
             <i class="fas fa-shopping-cart"></i> Orders
           </a>
         </li>
-
         <li class="nav-item" id="accountsSubMenu">
     <a href="#" class="nav-link" onclick="toggleSubMenu('accountsSubMenu')">
         <i class="fas fa-box"></i> Products
     </a>
     <ul style="display: <?php echo ($current_page == 'dash_produc.php') ? 'block' : 'none'; ?>">
         <a class="nav-link" href="dash_produc.php">Statistic</a>
-        <a class="nav-link" href="..\shopping cart\admin.php">Upload</a>
+        <a class="nav-link" href="dash_produc.php">Upload</a>
     </ul>
 </li>
-
-
-
-    <script>
+<script>
         function toggleSubMenu(subMenuId) {
             var subMenu = document.getElementById(subMenuId).querySelector('ul');
             subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
         }
     </script>
         <li class="nav-item">
+          <a class="nav-link" href="dashb.php">
+            <i class="fas fa-users"></i> Patient
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> doctor
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> Reviews
           </a>
         </li>
         <li class="nav-item">
@@ -183,15 +194,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
-        
       </ul>
     </div>
   </nav>
+
   <!-- Content -->
-
-
-
-
 
     <!-- Patient List Table -->
     <div class="table-responsive mt-5">
