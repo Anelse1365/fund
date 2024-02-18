@@ -28,6 +28,10 @@ try {
     <title>ข้อมูลหมอ</title>
     <!-- ลิงก์ CSS ของ Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         .table {
             border: 1px solid #dee2e6;
@@ -134,6 +138,11 @@ try {
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> Reviews
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="#">
             <i class="fas fa-chart-bar"></i> Reports
           </a>
@@ -147,6 +156,7 @@ try {
 <div class="container mt-5">
     <h2 class="text-center mb-4">ข้อมูลหมอ</h2>
     <a href="adddoctor.php" class="btn btn-primary mt-3 d-block mx-auto"><i class="fas fa-plus-circle mr-1"></i> เพิ่มหมอ</a>
+    <a href="doctor/doctorschedule.php" class="btn btn-primary mt-3 d-block mx-auto"><i class="fas fa-plus-circle mr-1"></i>ตารางงาน</a>
 
 
     <div class="table-responsive">

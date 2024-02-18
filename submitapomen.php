@@ -30,13 +30,12 @@ if (isset($_SESSION['user_login'])) {
 
         // รับข้อมูลการนัดหมอจากฟอร์ม
         $state = $_POST['state'];
-        $information = $_POST['information'];
-        $doctor = $_POST['doctor'];
+     
 
         // เตรียมคำสั่ง SQL สำหรับบันทึกข้อมูลการนัดหมอลงในฐานข้อมูล
-        $sql = "INSERT INTO appointmen (patient, email, phone_number, age, gender, nationality, state, information, doctor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO appointmen (patient, email, phone_number, age, gender, nationality, state) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssss", $patient, $email, $phone_number, $age, $gender, $nationality, $state, $information, $doctor);
+        $stmt->bind_param("sssssss", $patient, $email, $phone_number, $age, $gender, $nationality, $state);
         
         // ทำการ execute คำสั่ง SQL
         if ($stmt->execute()) {

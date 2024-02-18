@@ -21,6 +21,9 @@ if(isset($_GET['id'])) {
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $stmt = $conn->query("SELECT * FROM doctors");
+        $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch(PDOException $e) {
         echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
     }
@@ -87,20 +90,36 @@ if(isset($_GET['id'])) {
                                 <input type="text" class="form-control" id="state" name="state" value="<?php echo isset($row['state']) ? $row['state'] : ''; ?>">
                             </div>
                             <div class="form-group">
-                                <label for="information">บริการ</label>
-                                <input type="text" class="form-control" id="information" name="information" value="<?php echo isset($row['information']) ? $row['information'] : ''; ?>">
-                            </div>
+    <label for="information">บริการ</label>
+    <select class="form-control" id="information" name="information">
+       
+        <option value="รักษาทันตกรรมทั่วไป">รักษาทันตกรรมทั่วไป</option>
+        <option value="ผ่าฟัน">ผ่าฟัน</option>
+        <option value="ผ่าฟัน">จัดฟัน</option>
+        <option value="ผ่าฟัน">อุดฟัน</option>
+        <option value="อื่นๆ">บริการอื่นๆ</option>
+    </select>
+</div>
+
+
+
+
                             <div class="form-group">
                                 <label for="doctor">Doctor</label>
-                                <select class="form-control" id="doctor" name="doctor" required>
-                                    <option value="หมอA" <?php echo (isset($row['doctor']) && $row['doctor'] == 'หมอA') ? 'selected' : ''; ?>>หมอA</option>
-                                    <option value="หมอB" <?php echo (isset($row['doctor']) && $row['doctor'] == 'หมอB') ? 'selected' : ''; ?>>หมอB</option>
-                                    <option value="หมอC" <?php echo (isset($row['doctor']) && $row['doctor'] == 'หมอC') ? 'selected' : ''; ?>>หมอC</option>
-                                    <option value="หมอD" <?php echo (isset($row['doctor']) && $row['doctor'] == 'หมอD') ? 'selected' : ''; ?>>หมอD</option>
-                                    <option value="หมอE" <?php echo (isset($row['doctor']) && $row['doctor'] == 'หมอE') ? 'selected' : ''; ?>>หมอE</option>
-                                    <option value="หมอF" <?php echo (isset($row['doctor']) && $row['doctor'] == 'หมอF') ? 'selected' : ''; ?>>หมอF</option>
-                                </select>
+                                <select class="form-control" name="doctor" required>
+                                <?php foreach ($doctors as $doctor): ?>
+                        <option value="<?php echo $doctor['first_name']; ?>"><?php echo $doctor['first_name'] . " " . $doctor['last_name']; ?></option>
+                    <?php endforeach; ?>
+                </select>
                             </div>
+
+                            <?php foreach ($doctors as $doctor): ?>
+                        <option value="<?php echo $doctor['first_name']; ?>"><?php echo $doctor['first_name'] . " " . $doctor['last_name']; ?></option>
+                    <?php endforeach; ?>
+
+
+
+                            
                             <div class="form-group">
                                 <button type="submit" name="submit" class="btn btn-primary">ยืนยันการนัด</button>
                                 <a href="dashbapomen.php" class="btn btn-secondary">ยกเลิก</a>

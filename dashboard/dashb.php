@@ -1,11 +1,10 @@
-@ -1,265 +1,265 @@
 <?php 
-
     session_start();
     require_once '../config2/db2.php';
     if (!isset($_SESSION['admin_login'])) {
         $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
         header('location:../signin2.php');
+    
     }
 
     // Count of Patients
@@ -22,6 +21,19 @@
     $resultAppointment = $stmtAppointment->fetch(PDO::FETCH_ASSOC);
     $appointmentCount = $resultAppointment['appointmentCount'];
     $loggedInUser = $_SESSION['admin_login'];
+
+    if (isset($_SESSION['admin_login'])) {
+      $user_id = $_SESSION['admin_login'];
+      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+  // Fetch total sales from order2 table
+$sqlTotalSales = "SELECT SUM(total_price) as totalSales FROM order2";
+$stmtTotalSales = $conn->prepare($sqlTotalSales);
+$stmtTotalSales->execute();
+$totalSales = $stmtTotalSales->fetchColumn();
+
 
 ?>
 
@@ -90,17 +102,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
+          
           <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
+            <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
           </li>
                   <!-- Display the logged-in username -->
         
@@ -119,7 +123,7 @@
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-        <a class="nav-link active" href="main_dashboard.php">
+          <a class="nav-link active" href="#">
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -134,18 +138,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="dashb.php">
-            <i class="fas fa-users"></i> Patient
-          </a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="doctorsdash.php">
-            <i class="fas fa-users"></i> doctor
           </a>
         </li>
         <li class="nav-item">
@@ -156,8 +150,93 @@
       </ul>
     </div>
   </nav>
- 
+  <!-- Content -->
+<div class="container mt-5">
+    <h2 class="mb-7">Dashboard</h2>
 
+    <!-- Create a grid for the three sections -->
+    <div class="row">
+        <!-- First Column: "การนัดหมายใหม่" -->
+        <div class="col-md-4 mb-4">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">การนัดหมายใหม่</h5>
+            <!-- Add your content for "การนัดหมายใหม่" here -->
+            
+            <!-- You can use links, buttons, or any other content -->
+            <?php echo "<p style='font-size: 2em; text-align: right;'>$appointmentCount</p>";?>
+            
+           
+            <a href="dashbapomen.php" class="btn btn-primary" style="margin-bottom: 10px;">Go to Appointments</a>
+            
+            <!-- Display the appointment count in the same line -->
+            
+        </div>
+    </div>
+</div>
+
+
+        <!-- Second Column: "ผู้ป่วยในระบบ" -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">ผู้ป่วยในระบบ</h5>
+                    <!-- Add your content for "ผู้ป่วยในระบบ" here -->
+                    <?php echo "<p style='font-size: 2em; text-align: right;'>$patientCount</p>";?>
+                    
+                    
+                    <!-- You can use links, buttons, or any other content -->
+                    <a href="#" class="btn btn-success">View Patients</a>
+                   
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Third Column: "ยอดขาย" -->
+        <!-- Display total sales in the card -->
+
+<!-- Third Column: "รายได้" -->
+
+
+<!-- Third Column: "รายได้" -->
+<!-- Third Column: "รายได้" -->
+<div class="col-md-4 mb-4">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">รายได้</h5>
+            <?php
+                // Fetch the total price of the latest order from order2 table
+                $sqlLatestOrder = "SELECT total_price FROM order2 ORDER BY id DESC LIMIT 1";
+                $stmtLatestOrder = $conn->prepare($sqlLatestOrder);
+                $stmtLatestOrder->execute();
+                $resultLatestOrder = $stmtLatestOrder->fetch(PDO::FETCH_ASSOC);
+                $latestTotalPrice = $resultLatestOrder['total_price'];
+            ?>
+            <!-- Display the total sales value -->
+            <p style="font-size: 2em; text-align: right; color: green;">+<?php echo number_format($latestTotalPrice, 2); ?> บาท</p>
+            <!-- You can add a link or button to view more details if needed -->
+            <a href="#" class="btn btn-info">View Sales</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <!-- Patient List Table -->
+    <div class="table-responsive mt-5">
+        <table class="table table-striped table-bordered">
+            
+            <tbody>
+                <?php
+                    // Your existing PHP code to fetch and display patient data
+                    // ...
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
   <!-- Content -->
   <div class="container mt-5">
     <h2 class="mb-7">Patient List</h2>
@@ -216,6 +295,7 @@
         } catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
+        
         ?>
       </tbody>
     </table>
