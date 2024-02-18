@@ -59,7 +59,6 @@ if(isset($_POST['update_product'])){
    }
 
 }
-$current_page = basename($_SERVER['PHP_SELF']);
 
 ?>
 

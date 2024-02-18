@@ -61,6 +61,12 @@ function applyDiscount($code, $totalAmount) {
 
 
 ?>
+<style>
+   html{
+   font-size: 62%;
+   overflow-x: hidden;
+}
+</style>
 
 <!DOCTYPE html>
 <html lang="en">

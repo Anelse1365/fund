@@ -1,3 +1,26 @@
+<?php
+
+    require_once '../config2/db2.php';
+    if (!isset($_SESSION['admin_login'])) {
+        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+        header('location:../signin2.php');
+    
+    }
+
+    // Count of Patients
+//แสดงชื่อ
+  if (isset($_SESSION['user_login'])) {
+    $user_id = $_SESSION['user_login'];
+    $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+$current_page = basename($_SERVER['PHP_SELF']);
+
+
+
+?>
 <style>
     body {
       padding-top: 56px; /* สำหรับ Navbar ด้านบน */
@@ -76,6 +99,7 @@ position: absolute;
 
  <!-- Navbar -->
  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">Dashboard</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,17 +107,9 @@ position: absolute;
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
+          
           <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
+            <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
           </li>
                   <!-- Display the logged-in username -->
         
@@ -107,12 +123,14 @@ position: absolute;
     </div>
   </nav>
 
+  </nav>
+
   <!-- Sidebar -->
   <nav class="sidebar bg-dark sidebar-dark">
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="main_dashboard.php">
+          <a class="nav-link active" href="../dashboard/main_dashboard.php">
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -125,9 +143,9 @@ position: absolute;
     <a href="#" class="nav-link" onclick="toggleSubMenu('accountsSubMenu')">
         <i class="fas fa-box"></i> Products
     </a>
-    <ul style="display: <?php echo ($current_page == 'dash_produc.php') ? 'block' : 'none'; ?>">
-        <a class="nav-link" href="dash_produc.php">Statistic</a>
-        <a class="nav-link" href="dash_produc.php">Upload</a>
+    <ul style="display: <?php echo ($current_page == '..dash_produc.php' or 'admin.php') ? 'block' : 'none'; ?>">
+        <a class="nav-link" href="../dashboard/dash_produc.php">Statistic</a>
+        <a class="nav-link" href="admin.php">Upload</a>
     </ul>
 </li>
 <script>
@@ -137,17 +155,17 @@ position: absolute;
         }
     </script>
         <li class="nav-item">
-          <a class="nav-link" href="dashb.php">
+          <a class="nav-link" href="../dashboard/dashb.php">
             <i class="fas fa-users"></i> Patient
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="dashbapomen.php">
+          <a class="nav-link" href="../dashboard/dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="doctorsdash.php">
+          <a class="nav-link" href="../dashboard/doctorsdash.php">
             <i class="fas fa-users"></i> doctor
           </a>
         </li>
