@@ -138,7 +138,7 @@ $totalSales = $stmtTotalSales->fetchColumn();
     </a>
     <ul style="display: <?php echo ($current_page == 'dash_produc.php') ? 'block' : 'none'; ?>">
         <a class="nav-link" href="dash_produc.php">Statistic</a>
-        <a class="nav-link" href="dash_produc.php">Upload</a>
+        <a class="nav-link" href="..\shopping cart\admin.php">Upload</a>
     </ul>
 </li>
 <script>
@@ -175,7 +175,7 @@ $totalSales = $stmtTotalSales->fetchColumn();
       </ul>
     </div>
   </nav>
-  
+
   <!-- Content -->
 <div class="container mt-5">
     <h2 class="mb-7">Dashboard</h2>

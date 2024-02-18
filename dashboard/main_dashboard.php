@@ -28,7 +28,7 @@
     $stmtTotalSales->execute();
     $totalSales = $stmtTotalSales->fetchColumn();
     $current_page = basename($_SERVER['PHP_SELF']);
-    
+
     if (isset($_SESSION['admin_login'])) {
       $user_id = $_SESSION['admin_login'];
       $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
@@ -40,7 +40,6 @@
               // SQL query to fetch data from database
   $sql = "SELECT * FROM patien";
   $stmt = $conn->prepare($sql);
-
 ?>
 
 
@@ -135,13 +134,13 @@ position: absolute;
           <li class="nav-item">
             <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
           </li>
-                  <!-- Display the logged-in username -->
+          <!-- Display the logged-in username -->
         
         
-        <!-- Add the Log Out button -->
+          <!-- Add the Log Out button -->
           <li class="nav-item">
-          <a class="nav-link" href="../logout2.php">ออกจากระบบ</a>
-        </li>
+            <a class="nav-link" href="../logout2.php">ออกจากระบบ</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -167,7 +166,7 @@ position: absolute;
     </a>
     <ul style="display: <?php echo ($current_page == 'dash_produc.php') ? 'block' : 'none'; ?>">
         <a class="nav-link" href="dash_produc.php">Statistic</a>
-        <a class="nav-link" href="dash_produc.php">Upload</a>
+        <a class="nav-link" href="..\shopping cart\admin.php">Upload</a>
     </ul>
 </li>
 <script>
