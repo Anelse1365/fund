@@ -143,11 +143,7 @@ input[type="time"] {
                 </select>
                             </div>
 
-                            <?php foreach ($doctors as $doctor): ?>
-                        <option value="<?php echo $doctor['first_name']; ?>"><?php echo $doctor['first_name'] . " " . $doctor['last_name']; ?></option>
-                    <?php endforeach; ?>
-
-
+                      
 
                             
                             <div class="form-group">

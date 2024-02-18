@@ -197,12 +197,12 @@ position: absolute;
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="doctorsdash.php">
+          <a class="nav-link" href="reveiw_dashboard.php">
             <i class="fas fa-users"></i> Reviews
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="Report.php">
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
