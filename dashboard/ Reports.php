@@ -17,13 +17,11 @@ if(isset($_GET['id'])) {
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // ดึงข้อมูลจากตาราง appointmen โดยใช้ ID เป็นเงื่อนไข
-        $stmt = $conn->prepare("SELECT * FROM appointmen WHERE id = :id");
+        $stmt = $conn->prepare("SELECT * FROM receipe WHERE id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $stmt = $conn->query("SELECT * FROM doctors");
-        $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch(PDOException $e) {
         echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
     }
@@ -86,10 +84,10 @@ input[type="time"] {
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        <h3 class="mb-0">ทำการนัด</h3>
+                        <h3 class="mb-0">ทำประวัติ</h3>
                     </div>
                     <div class="card-body">
-                        <form action="submitreceipt.php" method="post">
+                        <form action="submitReports.php" method="post">
                             <input type="hidden" name="id" value="<?php echo $id; ?>">
                             <div class="form-group">
                                 <label for="name">ชื่อ-นามสกุล:</label>
@@ -121,29 +119,26 @@ input[type="time"] {
                                 <label for="state">คลินิก</label>
                                 <input type="text" class="form-control" id="state" name="state" value="<?php echo isset($row['state']) ? $row['state'] : ''; ?>">
                             </div>
+                            <div class="form-group">
+                                <label for="state">หมอ</label>
+                                <input type="text" class="form-control" name="doctor" value="<?php echo isset($row['doctor']) ? $row['doctor'] : ''; ?>">
+                            </div>
 
 
-                            <input type="date" name="date" class="styled-input">
-<div class="time-input-container">
+
+
+
+
+
+                            <input type="date" name="date" class="styled-input"value="<?php echo isset($row['date']) ? $row['date'] : ''; ?>" >
+                               <div class="time-input-container">
     
     <label for="timeInput" class="styled-label">เลือกเวลา:</label>
-    <input type="time"name="timeInput" class="styled-input">
+    <input type="time"name="timeInput" class="styled-input" value="<?php echo isset($row['timeInput']) ? $row['timeInput'] : ''; ?>">
 </div>
 
 
 
-
-                           
-                            <div class="form-group">
-                                <label for="doctor">หมอ</label>
-                                <select class="form-control" name="doctor" required>
-                                <?php foreach ($doctors as $doctor): ?>
-                        <option value="<?php echo $doctor['first_name']; ?>"><?php echo $doctor['first_name'] . " " . $doctor['last_name']; ?></option>
-                    <?php endforeach; ?>
-                </select>
-                            </div>
-
-                      
 
                             
                             <div class="form-group">
