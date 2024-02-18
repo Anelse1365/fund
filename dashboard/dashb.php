@@ -71,6 +71,7 @@ $totalSales = $stmtTotalSales->fetchColumn();
     }
     .sidebar .nav-link {
       color: #fff;
+      padding: 10px 20px; /* กำหนดระยะห่างของ nav-link ด้านบนและด้านล่าง 20px ด้านซ้ายและด้านขวา 10px */
     }
     .sidebar .nav-link:hover {
       background-color: rgba(255, 255, 255, 0.1);
@@ -80,15 +81,18 @@ $totalSales = $stmtTotalSales->fetchColumn();
       padding: 20px;
     }
     .sidebar {
-  width: 200px; /* เพิ่มความกว้างที่ต้องการ */
-}
+      width: 200px; /* เพิ่มความกว้างที่ต้องการ */
+    }
+    .sidebar .nav-item {
+      margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างของแต่ละ nav-item ไปยัง nav-item ถัดไป */
+    }
 
-.sidebar-sticky {
-  padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
-  height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
-  overflow-x: hidden;
-  overflow-y: auto;
-}
+    .sidebar-sticky {
+      padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
+      height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
 
   </style>
 </head>
