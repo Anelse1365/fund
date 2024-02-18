@@ -61,60 +61,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <title>Product Dashboard</title>
     <!-- Include ECharts -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
-<<<<<<< HEAD
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   
-=======
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <style>
-    body {
-      padding-top: 56px; /* สำหรับ Navbar ด้านบน */
-    }
-    .sidebar {
-      position: fixed;
-      top: 56px; /* ความสูงของ Navbar ด้านบน */
-      bottom: 0;
-      left: 0;
-      z-index: 100; /* จัดการความสูงให้สูงกว่าเนื้อหาหลัก */
-      padding: 48px 0; /* การเรียงสลับแถบการนำทางและเนื้อหา */
-      box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-    }
-    .sidebar-sticky {
-      position: relative;
-      top: 0;
-      height: calc(100vh - 48px); /* สูงของแถบการนำทางลบความสูงของ Navbar ที่ด้านบน */
-      padding-top: .5rem;
-      overflow-x: hidden;
-      overflow-y: auto; /* สำหรับเลื่อนแถบการนำทาง */
-    }
-    .sidebar .nav-link {
-      color: #fff;
-    }
-    .sidebar .nav-link:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-    .main-content {
-      margin-left: 240px; /* กว้างของ Sidebar */
-      padding: 20px;
-    }
-    .sidebar {
-  width: 200px; /* เพิ่มความกว้างที่ต้องการ */
-}
-
-.sidebar-sticky {
-  padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
-  height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-  </style>
->>>>>>> 988e0c1ba961c12a57210dbd9279342755d60a61
 </head>
 <style>
         body {
@@ -164,12 +114,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 
 <body>
-<<<<<<< HEAD
     
      <!-- Navbar -->
-=======
-    <!-- Navbar -->
->>>>>>> 988e0c1ba961c12a57210dbd9279342755d60a61
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">Dashboard</a>
@@ -178,23 +124,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
-<<<<<<< HEAD
           
           <li class="nav-item">
             <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
-=======
-          <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
->>>>>>> 988e0c1ba961c12a57210dbd9279342755d60a61
           </li>
                   <!-- Display the logged-in username -->
         
@@ -213,11 +145,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-<<<<<<< HEAD
           <a class="nav-link active" href="main_dashboard.php">
-=======
-        <a class="nav-link active" href="main_dashboard.php">
->>>>>>> 988e0c1ba961c12a57210dbd9279342755d60a61
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -226,7 +154,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fas fa-shopping-cart"></i> Orders
           </a>
         </li>
-<<<<<<< HEAD
 
         <li class="nav-item" id="accountsSubMenu">
     <a href="#" class="nav-link" onclick="toggleSubMenu('accountsSubMenu')">
@@ -246,26 +173,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
             subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
         }
     </script>
-=======
-        <li class="nav-item">
-          <a class="nav-link" href="dash_produc.php">
-            <i class="fas fa-box"></i> Products
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="dashb.php">
-            <i class="fas fa-users"></i> Patient
-          </a>
-        </li>
->>>>>>> 988e0c1ba961c12a57210dbd9279342755d60a61
         <li class="nav-item">
           <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
           </a>
         </li>
         <li class="nav-item">
-<<<<<<< HEAD
-=======
           <a class="nav-link" href="doctorsdash.php">
             <i class="fas fa-users"></i> doctor
           </a>
@@ -276,12 +189,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
           </a>
         </li>
         <li class="nav-item">
->>>>>>> 988e0c1ba961c12a57210dbd9279342755d60a61
           <a class="nav-link" href="#">
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
-<<<<<<< HEAD
         
       </ul>
     </div>
@@ -305,18 +216,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </table>
     </div>
 </div>
-=======
-      </ul>
-    </div>
-  </nav>
-
-    <!-- Content -->
-    <div class="container mt-5">
-
-    <h1>Product Purchase Dashboard</h1>
->>>>>>> 988e0c1ba961c12a57210dbd9279342755d60a61
     <!-- Set the width and height directly -->
-<<<<<<< HEAD
+
     <div id="chart-container" style="width: 1200px; height: 300px;">
     <div id="productChart" style="width: 100%; height: 100%;  margin-left: 300px;"></div>
     <div id="legend" style="width: 30%; height: 100%; float: left; padding-top: 50px;"></div>
