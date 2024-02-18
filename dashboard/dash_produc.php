@@ -54,7 +54,7 @@ $conn->close();
 <body>
     <h1>Product Purchase Dashboard</h1>
     <!-- Set the width and height directly -->
-    <div id="chart-container" style="width: 1200px; height: 300px;">
+    <div id="chart-container" style="width: 1000px; height: 300px;">
     <div id="productChart" style="width: 100%; height: 100%;  margin-left: 300px;"></div>
 
         <div id="legend" style="width: 30%; height: 100%; float: left; padding-top: 50px;"></div>
