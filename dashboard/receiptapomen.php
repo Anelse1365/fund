@@ -1,88 +1,137 @@
+<?php
+session_start();
+
+// ตรวจสอบว่ามีการส่ง ID มาหรือไม่
+if(isset($_GET['id'])) {
+    $id = $_GET['id'];
+    
+    // เชื่อมต่อฐานข้อมูล
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "fund";
+
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // เซ็ตโหมดของ PDO เพื่อให้แสดงข้อผิดพลาดออกมา
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // ดึงข้อมูลจากตาราง appointmen โดยใช้ ID เป็นเงื่อนไข
+        $stmt = $conn->prepare("SELECT * FROM appointmen WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $stmt = $conn->query("SELECT * FROM doctors");
+        $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+        echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
+    }
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Receipts</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .container {
-      padding-top: 20px;
-    }
-    .table-responsive {
-      margin-top: 20px;
-    }
-    th, td {
-      vertical-align: middle !important;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>การแก้ไขใบเสร็จ</title>
+    <!-- ลิงก์ CSS ของ Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* เพิ่มสไตล์เพื่อปรับแต่งฟอร์มให้ดูสวยงาม */
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2 class="mb-4">ใบเสร็จการนัดจอง</h2>
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-          <tr>
-            <th>ID</th>
-            <th>ชื่อนามสกุล</th>
-            <th>Email</th>
-            <th>บริการ</th>
-            <th>หมอ</th>
-            <th>คลินิก</th>
-            <th>วันที่</th>
-            <th>เวลา</th>
-            <th>เเก้ไขเมื่อ</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          // Connection to database
-          $servername = "localhost";
-          $username = "root";
-          $password = "";
-          $dbname = "fund";
-          try {
-              $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-              $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+<section>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">การแก้ไขใบเสร็จ</h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="submitreceipt.php" method="post">
+                            <input type="hidden" name="id" value="<?php echo $id; ?>">
+                            <div class="form-group">
+                                <label for="name">ชื่อ-นามสกุล:</label>
+                                <input type="text" class="form-control" name="patient" value="<?php echo isset($row['patient']) ? $row['patient'] : ''; ?>" required> 
+                            </div>
+                            <!-- เพิ่มสไตล์ให้กับฟอร์มเพื่อให้มีการจัดหน้าและใช้งานง่ายขึ้น -->
+                            <div class="form-group">
+                                <label for="email">อีเมล:</label>
+                                <input type="email" class="form-control" name="email" value="<?php echo isset($row['email']) ? $row['email'] : ''; ?>" required> 
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number">เบอร์โทร:</label>
+                                <input type="tel" class="form-control" name="phone_number" value="<?php echo isset($row['phone_number']) ? $row['phone_number'] : ''; ?>" required> 
+                            </div>
+                            <div class="form-group">
+                                <label for="age">อายุ:</label>
+                                <input type="number" class="form-control" name="age" value="<?php echo isset($row['age']) ? $row['age'] : ''; ?>" required>  
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">เพศ:</label>
+                                <input type="text" class="form-control" name="gender" value="<?php echo isset($row['gender']) ? $row['gender'] : ''; ?>" required> 
+                            </div>
+                            <div class="form-group">
+                                <label for="nationality">สัญชาติ:</label>
+                                <input type="text" class="form-control" name="nationality" value="<?php echo isset($row['nationality']) ? $row['nationality'] : ''; ?>" required> 
+                            </div>
+                            <div class="form-group">
+                                <label for="state">คลินิก</label>
+                                <input type="text" class="form-control" id="state" name="state" value="<?php echo isset($row['state']) ? $row['state'] : ''; ?>">
+                            </div>
+                            <div class="form-group">
+    <label for="information">บริการ</label>
+    <select class="form-control" id="information" name="information">
+       
+        <option value="รักษาทันตกรรมทั่วไป">รักษาทันตกรรมทั่วไป</option>
+        <option value="ผ่าฟัน">ผ่าฟัน</option>
+        <option value="ผ่าฟัน">จัดฟัน</option>
+        <option value="ผ่าฟัน">อุดฟัน</option>
+        <option value="อื่นๆ">บริการอื่นๆ</option>
+    </select>
+</div>
 
-              // SQL query to fetch data from database
-              $sql = "SELECT * FROM receipt";
-              $stmt = $conn->prepare($sql);
-              $stmt->execute();
 
-              // Output data of each row
-              while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                  echo "<tr>
-                            <td>".$row['id']."</td>
-                            <td>".$row["patient"]."</td>
-                            <td>".$row["email"]."</td>
-                            <td>".$row["information"]."</td>  
-                            <td>".$row["doctor_id"]."</td>   
-                            <td>".$row["state"]."</td>
-                            <td>".$row["appointment_date"]."</td>  
-                            <td>".$row["appointment_time"]."</td>  
-                            <td>".$row['created_at']."</td>
 
-                        </tr>";
-              }
-          } catch(PDOException $e) {
-              echo "Connection failed: " . $e->getMessage();
-          }
-          ?>
-        </tbody>
-      </table>
+
+                            <div class="form-group">
+                                <label for="doctor">Doctor</label>
+                                <select class="form-control" name="doctor" required>
+                                <?php foreach ($doctors as $doctor): ?>
+                        <option value="<?php echo $doctor['first_name']; ?>"><?php echo $doctor['first_name'] . " " . $doctor['last_name']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+                            </div>
+
+                            <?php foreach ($doctors as $doctor): ?>
+                        <option value="<?php echo $doctor['first_name']; ?>"><?php echo $doctor['first_name'] . " " . $doctor['last_name']; ?></option>
+                    <?php endforeach; ?>
+
+
+
+                            
+                            <div class="form-group">
+                                <button type="submit" name="submit" class="btn btn-primary">ยืนยันการนัด</button>
+                                <a href="dashbapomen.php" class="btn btn-secondary">ยกเลิก</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <a href="dashb.php" class="btn btn-secondary mt-3">กลับหน้าหลัก</a>
-  </div>
-  <!-- Bootstrap JS -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</section>
+<!-- ลิงก์ JavaScript ของ Bootstrap -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

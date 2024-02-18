@@ -73,23 +73,38 @@
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="dashb.php">
+        <a class="nav-link active" href="main_dashboard.php">
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="dashb.php">
             <i class="fas fa-shopping-cart"></i> Orders
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="dash_produc.php">
             <i class="fas fa-box"></i> Products
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="dashb.php">
+            <i class="fas fa-users"></i> Patient
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> doctor
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> Reviews
           </a>
         </li>
         <li class="nav-item">
@@ -106,62 +121,70 @@
   
 
   <!-- Content -->
-  <div class="container mt-5">
-    <h2 class="mb-7">Appointment</h2>
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered"> 
-        <thead>
-          <tr>
-            <th>ชื่อ</th>
-            <th>Email</th>
-            <th>บริการ</th>
-            <th>คลินิก</th>
-            <th>เเก้ไข</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php
-          // Connection to database
-          $servername = "localhost";
-          $username = "root";
-          $password = "";
-          $dbname = "fund";
-          try {
-              $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-              $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  <h2 class="mb-7">Appointment</h2>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered"> 
+    <thead>
+      <tr>
+        <th>ชื่อ</th>
+        <th>Email</th>
+        <th>เบอร์โทร</th>
+        <th>อายุ</th>
+        <th>เพศ</th>
+        <th>สัญชาติ</th>
+        <th>คลินิก</th>
+       
+        <th>เวลาที่ส่ง</th>
+        <th>แก้ไข</th>
+      </tr>
+    </thead>
+    <tbody>
+    <?php
+      // Connection to database
+      $servername = "localhost";
+      $username = "root";
+      $password = "";
+      $dbname = "fund";
+      try {
+          $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+          $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-              // SQL query to fetch data from database
-              $sql = "SELECT * FROM appointmen";
-              $stmt = $conn->prepare($sql);
-              $stmt->execute();
+          // SQL query to fetch data from database
+          $sql = "SELECT * FROM appointmen";
+          $stmt = $conn->prepare($sql);
+          $stmt->execute();
 
-              // Output data of each row
-              while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo "<tr>
-                       
-                       <td>".$row["patient"]."</td>
-                       <td>".$row["email"]."</td>
-                       <td>".$row["information"]."</td>    
-                       <td>".$row["state"]."</td>
-                        <td>
-                            <a href='editappointment.php?id=".$row["id"]."' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Edit</a>
-                            
-                            <a href='delete.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>
-                            <a href='receiptapomen.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> ดูใบเสร็จ</a>
-                        </td>
-                      </tr>";
-
-            }
-        } catch(PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-        ?>
-      </tbody>
-    </table>
-  </div>
+          // Output data of each row
+          while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<tr>
+                   <td>".$row["patient"]."</td>
+                   <td>".$row["email"]."</td>
+                   <td>".$row["phone_number"]."</td>
+                   <td>".$row["age"]."</td>
+                   <td>".$row["gender"]."</td>
+                   <td>".$row["nationality"]."</td>
+                   <td>".$row["state"]."</td>
+                 
+                   <td>".$row["created_at"]."</td>
+                   <td><a href='receiptapomen.php?id=".$row['id']."' class='btn btn-primary'>ทำการนัด</a>
+                   <a href='deleteappointment.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>
+                   <a href='finishreceipt.php?id=".$row["id"]."' class='btn btn-info btn-sm'><i class='fas fa-eye'></i> ดูใบเสร็จ</a></td>
+                  </tr>";
+          }
+      } catch(PDOException $e) {
+          echo "Error: " . $e->getMessage();
+      }
+      ?>
+    </tbody>
+  </table>
 </div>
+
 
 <!-- Bootstrap JS -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+
+                            
+                         

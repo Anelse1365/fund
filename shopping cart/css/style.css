@@ -22,7 +22,7 @@
 }
 
 html{
-   font-size: 62.5%;
+   font-size: 100%;
    overflow-x: hidden;
 }
 
@@ -52,7 +52,7 @@ section{
    text-align: center;
    background-color: var(--blue);
    color:var(--white);
-   font-size: 1.7rem;
+   font-size: 1.0rem;
    padding:1.2rem 3rem;
    border-radius: .5rem;
    cursor: pointer;
@@ -202,14 +202,14 @@ section{
 
 .display-product-table table thead th{
    padding:1.5rem;
-   font-size: 2rem;
+   font-size: 1rem;
    background-color: var(--black);
    color:var(--white);
 }
 
 .display-product-table table td{
    padding:1.5rem;
-   font-size: 2rem;
+   font-size: 1rem;
    color:var(--black);
 }
 

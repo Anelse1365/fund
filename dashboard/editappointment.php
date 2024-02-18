@@ -29,25 +29,28 @@ if(isset($_GET['id'])) {
             $patient = $_POST['patient'];
             $email = $_POST['email'];
             $information = $_POST['information'];     
-          
+            $doctor_id = $_POST['doctor_id'];
             $state = $_POST['state'];
-           
+            $appointment_date = $_POST['appointment_date'];
+            $appointment_time = $_POST['appointment_time'];
         
             // Prepare SQL statement to update appointment data
-            $update_stmt = $conn->prepare("UPDATE appointmen SET patient = :patient, email = :email, information = :information, state = :state WHERE id = :id");
+            $update_stmt = $conn->prepare("UPDATE appointmen SET patient = :patient, email = :email, information = :information, doctor_id = :doctor_id, state = :state, appointment_date = :appointment_date, appointment_time = :appointment_time WHERE id = :id");
 
-// Bind parameters
-$update_stmt->bindParam(':patient', $patient);
-$update_stmt->bindParam(':email', $email);
-$update_stmt->bindParam(':information', $information);
-$update_stmt->bindParam(':state', $state);
-$update_stmt->bindParam(':id', $id);
-
+            // Bind parameters
+            $update_stmt->bindParam(':patient', $patient);
+            $update_stmt->bindParam(':email', $email);
+            $update_stmt->bindParam(':information', $information);
+            $update_stmt->bindParam(':doctor_id', $doctor_id);
+            $update_stmt->bindParam(':state', $state);
+            $update_stmt->bindParam(':appointment_date', $appointment_date);
+            $update_stmt->bindParam(':appointment_time', $appointment_time);
+            $update_stmt->bindParam(':id', $id);
          
             // Execute the update statement
             if ($update_stmt->execute()) {
                 // Insert data into the receipt table
-                $receipt_stmt = $conn->prepare("INSERT INTO receipt (patient, email, information, doctor_id, state, appointment_date, appointment_time) VALUES (:patient, :email, :information, :state)");
+                $receipt_stmt = $conn->prepare("INSERT INTO receipt (patient, email, information, doctor_id, state, appointment_date, appointment_time) VALUES (:patient, :email, :information, :doctor_id, :state, :appointment_date, :appointment_time)");
                 $receipt_stmt->bindParam(':patient', $patient);
                 $receipt_stmt->bindParam(':email', $email);
                 $receipt_stmt->bindParam(':information', $information);
@@ -133,54 +136,49 @@ $update_stmt->bindParam(':id', $id);
   <!-- Content -->
   <div class="container">
     <h2 class="mb-4">Edit Appointment</h2>
-    <form method="post" action="receiptapomen.php">
-
+    <form method="post">
       <div class="form-group">
         <label for="patient">Patient</label>
-        <input type="text" class="form-control" id="patient" name="patient" value="<?php echo $row['patient']; ?>" required>
+        <input type="text" class="form-control" id="patient" name="patient" value="<?php echo $row['patient']; ?>">
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" name="email" value="<?php echo $row['email']; ?>" required>
+        <input type="email" class="form-control" id="email" name="email" value="<?php echo $row['email']; ?>">
       </div>
       <div class="form-group">
-        <label for="information">บริการ</label>
+        <label for="information">Service</label>
         <select class="form-control" id="information" name="information">
-          <option value="รักษาทันตกรรมทั่วไป" <?php echo ($row['information'] == 'รักษาทันตกรรมทั่วไป') ? 'selected' : ''; ?>>รักษาทันตกรรมทั่วไป</option>
-          <option value="ผ่าฟัน" <?php echo ($row['information'] == 'ผ่าฟัน') ? 'selected' : ''; ?>>ผ่าฟัน</option>
-          <option value="ถอนฟัน" <?php echo ($row['information'] == 'ถอนฟัน') ? 'selected' : ''; ?>>ถอนฟัน</option>
-          <option value="อื่นๆ" <?php echo ($row['information'] == 'อื่นๆ') ? 'selected' : ''; ?>>บริการอื่นๆ</option>
+          <option value="ดัดฟัน" <?php echo (isset($row['information']) && $row['information'] == 'ดัดฟัน') ? 'selected' : ''; ?>>ดัดฟัน</option>
+          <option value="ถอนฟัน" <?php echo (isset($row['information']) && $row['information'] == 'ถอนฟัน') ? 'selected' : ''; ?>>ถอนฟัน</option>
+          <option value="จัดฟัน" <?php echo (isset($row['information']) && $row['information'] == 'จัดฟัน') ? 'selected' : ''; ?>>จัดฟัน</option>
         </select>
       </div>
-
       <div class="form-group">
-    <label for="doctor_id">Doctor</label>
-    <select class="form-control" id="doctor_id" name="doctor_id">
-        <option value="" disabled selected>Select Doctor</option>
-        <option value="หมอA">หมอA</option>
-        <option value="หมอB">หมอB</option>
-        <option value="หมอC">หมอC</option>
-        <option value="หมอD">หมอD</option>
-        <option value="หมอE">หมอE</option>
-        <option value="หมอF">หมอF</option>
-    </select>
-</div>
-
-<div class="form-group">
-    <label for="appointment_date">วันที่นัดหมาย</label>
-    <input type="date" class="form-control" id="appointment_date" name="appointment_date">
-</div>
-
-<div class="form-group">
-    <label for="appointment_time">เวลานัดหมาย</label>
-    <input type="time" class="form-control" id="appointment_time" name="appointment_time">
-</div>
-
-
+        <label for="doctor_id">Doctor</label>
+        <select class="form-control" id="doctor_id" name="doctor_id">
+          <option value="หมอA" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอA') ? 'selected' : ''; ?>>Doctor A</option>
+          <option value="หมอB" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอB') ? 'selected' : ''; ?>>Doctor B</option>
+          <option value="หมอC" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอC') ? 'selected' : ''; ?>>Doctor C</option>
+          <option value="หมอD" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอD') ? 'selected' : ''; ?>>Doctor D</option>
+          <option value="หมอE" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอE') ? 'selected' : ''; ?>>Doctor E</option>
+          <option value="หมอF" <?php echo (isset($row['doctor_id']) && $row['doctor_id'] == 'หมอF') ? 'selected' : ''; ?>>Doctor F</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="state">State</label>
+        <input type="text" class="form-control" id="state" name="state" value="<?php echo $row['state']; ?>">
+      </div>
+      <div class="form-group">
+        <label for="appointment_date">Appointment Date</label>
+        <input type="date" class="form-control" id="appointment_date" name="appointment_date" value="<?php echo $row['appointment_date']; ?>">
+      </div>
+      <div class="form-group">
+        <label for="appointment_time">Appointment Time</label>
+        <input type="time" class="form-control" id="appointment_time" name="appointment_time" value="<?php echo $row['appointment_time']; ?>">
+      </div>
       <button type="submit" class="btn btn-primary" name="submit">Submit</button>
     </form>
-  
-    <a href="dashb.php" class="btn btn-secondary mt-3">กลับหน้าหลัก</a>
+    <a href="dashb.php" class="btn btn-secondary mt-3">Back to Dashboard</a>
   </div>
 
   <!-- Bootstrap JS -->

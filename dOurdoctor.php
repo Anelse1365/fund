@@ -99,6 +99,8 @@ if (isset($_SESSION['user_login'])) {
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 }
+$stmt = $conn->query("SELECT * FROM doctors");
+$doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 		
 	
@@ -179,12 +181,12 @@ if (isset($_SESSION['user_login'])) {
 
 											<li><a href="#">บริการ<i class="icofont-rounded-down"></i></a>
 												<ul class="dropdown">
-													<li><a href="index.html">การดัดฟัน</a></li> <br>
-													<li><a href="index.html">การขูดหินปูน</a></li> <br>
-													<li><a href="index.html">การรักษารากฟัน</a></li> <br>
-													<li><a href="index.html">การถอนฟันรักษาช่องปาก</a></li> <br>
-													<li><a href="index.html">ทันตกรรมรากเทียม</a></li> <br>
-													<li><a href="index.html">ทันตกรรมสำหรับเด็ก</a></li> <br>
+													<li><a href="Service1.php">การดัดฟัน</a></li> <br>
+													<li><a href="Service2.php">การขูดหินปูน</a></li> <br>
+													<li><a href="Service3.php">การรักษารากฟัน</a></li> <br>
+													<li><a href="Service4.php">การถอนฟันรักษาช่องปาก</a></li> <br>
+													<li><a href="Service5.php">ทันตกรรมรากเทียม</a></li> <br>
+													<li><a href="Service6.php">ทันตกรรมสำหรับเด็ก</a></li> <br>
 												
 												</ul>
 
@@ -367,14 +369,15 @@ if (isset($_SESSION['user_login'])) {
             <div class="form-group">
                 <label for="doctor_name">เลือกหมอ:</label>
                 <select class="form-control" name="doctor_name" required>
-                    <option value="หมอA">หมอ A</option>
-                    <option value="หมอB">หมอ B</option>
-                    <option value="หมอC">หมอ C</option>
-                    <option value="หมอD">หมอ D</option>
-                    <option value="หมอE">หมอ E</option>
-                    <option value="หมอF">หมอ F</option>
+				<option value="">โปรดเลือกหมอ</option>
+                    <!-- วนลูปแสดงรายชื่อหมอ -->
+                    <?php foreach ($doctors as $doctor): ?>
+                        <option value="<?php echo $doctor['first_name']; ?>"><?php echo $doctor['first_name'] . " " . $doctor['last_name']; ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
+
+		
 
 			<div class="form-group">
     <label for="name">ชื่อ:</label>
@@ -390,6 +393,9 @@ if (isset($_SESSION['user_login'])) {
                 <label for="comment">ความคิดเห็น:</label>
                 <textarea class="form-control" name="comment" rows="4" required></textarea>
             </div>
+			<label for="name">Email:</label>
+    <input type="text" class="form-control" name="email" value="<?php echo $row['email']?>" required> 
+</div>
 			
             <button type="submit" class="btn btn-primary">ส่งรีวิว</button>
         </form>

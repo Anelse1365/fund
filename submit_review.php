@@ -17,9 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $rating = $_POST["rating"];
     $comment = $_POST["comment"];
     $patient = $_POST["patient"];
+    $email = $_POST["email"];
     $roomFilter = isset($_GET['room']) ? $_GET['room'] : '';
 
-    $sql = "INSERT INTO reviews (doctor_name, rating, comment ,patient) VALUES ('$doctor_name', $rating, '$comment', '$patient')";
+    $sql = "INSERT INTO reviews (doctor_name, rating, comment ,patient,email) VALUES ('$doctor_name', $rating, '$comment', '$patient','$email')";
 
     if (!empty($roomFilter)) {
       

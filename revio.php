@@ -196,12 +196,12 @@
 
 											<li><a href="#">บริการ<i class="icofont-rounded-down"></i></a>
 												<ul class="dropdown">
-													<li><a href="index.html">การดัดฟัน</a></li> <br>
-													<li><a href="index.html">การขูดหินปูน</a></li> <br>
-													<li><a href="index.html">การรักษารากฟัน</a></li> <br>
-													<li><a href="index.html">การถอนฟันรักษาช่องปาก</a></li> <br>
-													<li><a href="index.html">ทันตกรรมรากเทียม</a></li> <br>
-													<li><a href="index.html">ทันตกรรมสำหรับเด็ก</a></li> <br>
+													<li><a href="Service1.php">การดัดฟัน</a></li> <br>
+													<li><a href="Service2.php">การขูดหินปูน</a></li> <br>
+													<li><a href="Service3.php">การรักษารากฟัน</a></li> <br>
+													<li><a href="Service4.php">การถอนฟันรักษาช่องปาก</a></li> <br>
+													<li><a href="Service5.php">ทันตกรรมรากเทียม</a></li> <br>
+													<li><a href="Service6.php">ทันตกรรมสำหรับเด็ก</a></li> <br>
 												
 												</ul>
 
@@ -327,6 +327,7 @@ if ($result->num_rows > 0) {
         echo '<p class="card-text">Comment: ' . $row["comment"] . '</p>';
 		echo '<p class="card-text">: ' . $row["created_at"] . '</p>';
 		echo '<p class="card-text">ผู้รีวิว คุณ: ' . $row["patient"] . '</p>';
+		echo '<p class="card-text">email: ' . $row["email"] . '</p>';
         echo '</div>';
         echo '</div>';
     }
