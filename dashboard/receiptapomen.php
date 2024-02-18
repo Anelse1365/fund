@@ -46,6 +46,37 @@ if(isset($_GET['id'])) {
         .container {
             margin-top: 50px;
         }
+        .styled-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.styled-label {
+    margin-right: 10px;
+    font-size: 16px;
+}
+/* เพิ่มขีดเส้นรอบ input เวลา */
+input[type="time"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    width: 100px; /* ปรับขนาดตามต้องการ */
+}
+
+/* จัดให้ข้อความ "เลือกเวลา" อยู่ด้านบนของ input เวลา */
+.time-input-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* จัดให้ input เวลาอยู่ในแนวนอน */
+.time-input-container input[type="time"] {
+    display: inline-block;
+}
+
+
     </style>
 </head>
 <body>
@@ -64,7 +95,8 @@ if(isset($_GET['id'])) {
                                 <label for="name">ชื่อ-นามสกุล:</label>
                                 <input type="text" class="form-control" name="patient" value="<?php echo isset($row['patient']) ? $row['patient'] : ''; ?>" required> 
                             </div>
-                            <!-- เพิ่มสไตล์ให้กับฟอร์มเพื่อให้มีการจัดหน้าและใช้งานง่ายขึ้น -->
+                            
+
                             <div class="form-group">
                                 <label for="email">อีเมล:</label>
                                 <input type="email" class="form-control" name="email" value="<?php echo isset($row['email']) ? $row['email'] : ''; ?>" required> 
@@ -89,6 +121,18 @@ if(isset($_GET['id'])) {
                                 <label for="state">คลินิก</label>
                                 <input type="text" class="form-control" id="state" name="state" value="<?php echo isset($row['state']) ? $row['state'] : ''; ?>">
                             </div>
+
+
+                            <input type="date" name="date" class="styled-input">
+<div class="time-input-container">
+    
+    <label for="timeInput" class="styled-label">เลือกเวลา:</label>
+    <input type="time"name="timeInput" class="styled-input">
+</div>
+
+
+
+
                            
                             <div class="form-group">
                                 <label for="doctor">หมอ</label>

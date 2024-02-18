@@ -25,13 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $gender = $_POST['gender'];
     $nationality = $_POST['nationality'];
     $state = $_POST['state'];
-  
+    $date = $_POST['date'];
+    $timeInput = $_POST['timeInput'];
     $doctor = $_POST['doctor'];
 
     try {
         // เตรียมคำสั่ง SQL สำหรับการเพิ่มข้อมูล
-        $sql = "INSERT INTO receipe (patient, email, phone_number, age, gender, nationality, state, doctor) 
-                VALUES (:patient, :email, :phone_number, :age, :gender, :nationality, :state,  :doctor)";
+        $sql = "INSERT INTO receipe (patient, email, phone_number, age, gender, nationality, state, date, timeInput, doctor) 
+                VALUES (:patient, :email, :phone_number, :age, :gender, :nationality, :state, :date, :timeInput, :doctor)";
         
         // พร้อมคำสั่ง SQL ของเราเพื่อการใช้งาน
         $stmt = $conn->prepare($sql);
@@ -44,7 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':gender', $gender);
         $stmt->bindParam(':nationality', $nationality);
         $stmt->bindParam(':state', $state);
-       
+        $stmt->bindParam(':date', $date);
+        $stmt->bindParam(':timeInput', $timeInput);
         $stmt->bindParam(':doctor', $doctor);
         
         // ประมวลผลคำสั่ง SQL

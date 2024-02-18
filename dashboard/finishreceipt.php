@@ -40,7 +40,7 @@ $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center mb-4">รายการนัดหมอฟัน</h1>
+        <h1 class="text-center mb-4">ใบเสร็จการนัดจอง</h1>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -51,8 +51,9 @@ $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>เพศ</th>
                     <th>สัญชาติ</th>
                     <th>คลินิก</th>
-                    <th>บริการ</th>
                     <th>หมอ</th>
+                    <th>วันที่</th>
+                    <th>เวลา</th>
                     <th>แก้ไข</th>
                 </tr>
             </thead>
@@ -66,8 +67,10 @@ $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo $appointment['gender']; ?></td>
                     <td><?php echo $appointment['nationality']; ?></td>
                     <td><?php echo $appointment['state']; ?></td>
-                    <td><?php echo $appointment['information']; ?></td>
+                   
                     <td><?php echo $appointment['doctor']; ?></td>
+                    <td><?php echo $appointment['date']; ?></td>
+                    <td><?php echo $appointment['timeInput']; ?></td>
                     <td>
     <a href='editreceipt.php?id=<?php echo $appointment["id"]; ?>' class='btn btn-primary'>แก้ไข</a>
     <a href='deletereceipt.php?id=<?php echo $appointment["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>
