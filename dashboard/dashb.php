@@ -71,6 +71,7 @@ $totalSales = $stmtTotalSales->fetchColumn();
     }
     .sidebar .nav-link {
       color: #fff;
+      padding: 10px 20px; /* กำหนดระยะห่างของ nav-link ด้านบนและด้านล่าง 20px ด้านซ้ายและด้านขวา 10px */
     }
     .sidebar .nav-link:hover {
       background-color: rgba(255, 255, 255, 0.1);
@@ -80,15 +81,18 @@ $totalSales = $stmtTotalSales->fetchColumn();
       padding: 20px;
     }
     .sidebar {
-  width: 200px; /* เพิ่มความกว้างที่ต้องการ */
-}
+      width: 200px; /* เพิ่มความกว้างที่ต้องการ */
+    }
+    .sidebar .nav-item {
+      margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างของแต่ละ nav-item ไปยัง nav-item ถัดไป */
+    }
 
-.sidebar-sticky {
-  padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
-  height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
-  overflow-x: hidden;
-  overflow-y: auto;
-}
+    .sidebar-sticky {
+      padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
+      height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
 
   </style>
 </head>
@@ -123,23 +127,48 @@ $totalSales = $stmtTotalSales->fetchColumn();
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="#">
+          <a class="nav-link active" href="main_dashboard.php">
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="">
             <i class="fas fa-shopping-cart"></i> Orders
           </a>
         </li>
+        <li class="nav-item" id="accountsSubMenu">
+    <a href="#" class="nav-link" onclick="toggleSubMenu('accountsSubMenu')">
+        <i class="fas fa-box"></i> Products
+    </a>
+    <ul style="display: <?php echo ($current_page == 'dash_produc.php') ? 'block' : 'none'; ?>">
+        <a class="nav-link" href="dash_produc.php">Statistic</a>
+        <a class="nav-link" href="..\shopping cart\admin.php">Upload</a>
+    </ul>
+</li>
+<script>
+        function toggleSubMenu(subMenuId) {
+            var subMenu = document.getElementById(subMenuId).querySelector('ul');
+            subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
+        }
+    </script>
         <li class="nav-item">
-          <a class="nav-link" href="dash_produc.php">
-            <i class="fas fa-box"></i> Products
+          <a class="nav-link" href="dashb.php">
+            <i class="fas fa-users"></i> Patient
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> doctor
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> Reviews
           </a>
         </li>
         <li class="nav-item">
@@ -150,6 +179,7 @@ $totalSales = $stmtTotalSales->fetchColumn();
       </ul>
     </div>
   </nav>
+
   <!-- Content -->
 <div class="container mt-5">
     <h2 class="mb-7">Dashboard</h2>

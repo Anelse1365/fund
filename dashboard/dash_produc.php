@@ -67,7 +67,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
   
 </head>
 <style>
-        body {
+    body {
       padding-top: 56px; /* สำหรับ Navbar ด้านบน */
     }
     .sidebar {
@@ -89,6 +89,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     }
     .sidebar .nav-link {
       color: #fff;
+      padding: 10px 20px; /* กำหนดระยะห่างของ nav-link ด้านบนและด้านล่าง 20px ด้านซ้ายและด้านขวา 10px */
     }
     .sidebar .nav-link:hover {
       background-color: rgba(255, 255, 255, 0.1);
@@ -98,15 +99,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
       padding: 20px;
     }
     .sidebar {
-  width: 200px; /* เพิ่มความกว้างที่ต้องการ */
-}
+      width: 200px; /* เพิ่มความกว้างที่ต้องการ */
+    }
+    .sidebar .nav-item {
+      margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างของแต่ละ nav-item ไปยัง nav-item ถัดไป */
+    }
 
-.sidebar-sticky {
-  padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
-  height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
-  overflow-x: hidden;
-  overflow-y: auto;
-}
+    .sidebar-sticky {
+      padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
+      height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
 
 
 </style>
@@ -150,11 +154,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="">
             <i class="fas fa-shopping-cart"></i> Orders
           </a>
         </li>
-
         <li class="nav-item" id="accountsSubMenu">
     <a href="#" class="nav-link" onclick="toggleSubMenu('accountsSubMenu')">
         <i class="fas fa-box"></i> Products
@@ -164,18 +167,30 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <a class="nav-link" href="..\shopping cart\admin.php">Upload</a>
     </ul>
 </li>
-
-
-
-    <script>
+<script>
         function toggleSubMenu(subMenuId) {
             var subMenu = document.getElementById(subMenuId).querySelector('ul');
             subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
         }
     </script>
         <li class="nav-item">
+          <a class="nav-link" href="dashb.php">
+            <i class="fas fa-users"></i> Patient
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> doctor
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> Reviews
           </a>
         </li>
         <li class="nav-item">
@@ -183,15 +198,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
-        
       </ul>
     </div>
   </nav>
+
   <!-- Content -->
-
-
-
-
 
     <!-- Patient List Table -->
     <div class="table-responsive mt-5">

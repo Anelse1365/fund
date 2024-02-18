@@ -1,6 +1,24 @@
 <?php
 session_start();
 
+    require_once '../config2/db2.php';
+    if (!isset($_SESSION['admin_login'])) {
+        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+        header('location:../signin2.php');
+    }
+
+    if (isset($_SESSION['admin_login'])) {
+      $user_id = $_SESSION['admin_login'];
+      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+
+
+              // SQL query to fetch data from database
+  $sql = "SELECT * FROM patien";
+  $stmt = $conn->prepare($sql);
+
 // เชื่อมต่อฐานข้อมูล
 $servername = "localhost";
 $username = "root";
@@ -45,7 +63,7 @@ try {
             padding: 5px 12px;
             font-size: 14px;
         }
-        body {
+    body {
       padding-top: 56px; /* สำหรับ Navbar ด้านบน */
     }
     .sidebar {
@@ -67,6 +85,7 @@ try {
     }
     .sidebar .nav-link {
       color: #fff;
+      padding: 10px 20px; /* กำหนดระยะห่างของ nav-link ด้านบนและด้านล่าง 20px ด้านซ้ายและด้านขวา 10px */
     }
     .sidebar .nav-link:hover {
       background-color: rgba(255, 255, 255, 0.1);
@@ -74,6 +93,19 @@ try {
     .main-content {
       margin-left: 240px; /* กว้างของ Sidebar */
       padding: 20px;
+    }
+    .sidebar {
+      width: 200px; /* เพิ่มความกว้างที่ต้องการ */
+    }
+    .sidebar .nav-item {
+      margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างของแต่ละ nav-item ไปยัง nav-item ถัดไป */
+    }
+
+    .sidebar-sticky {
+      padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
+      height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
+      overflow-x: hidden;
+      overflow-y: auto;
     }
     </style>
 </head>
@@ -87,16 +119,14 @@ try {
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
           </li>
+          <!-- Display the logged-in username -->
+        
+        
+          <!-- Add the Log Out button -->
           <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
+            <a class="nav-link" href="../logout2.php">ออกจากระบบ</a>
           </li>
         </ul>
       </div>
@@ -108,20 +138,30 @@ try {
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-        <a class="nav-link active" href="main_dashboard.php">
+          <a class="nav-link active" href="main_dashboard.php">
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="">
             <i class="fas fa-shopping-cart"></i> Orders
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="dash_produc.php">
-            <i class="fas fa-box"></i> Products
-          </a>
-        </li>
+        <li class="nav-item" id="accountsSubMenu">
+    <a href="#" class="nav-link" onclick="toggleSubMenu('accountsSubMenu')">
+        <i class="fas fa-box"></i> Products
+    </a>
+    <ul style="display: <?php echo ($current_page == 'dash_produc.php') ? 'block' : 'none'; ?>">
+        <a class="nav-link" href="dash_produc.php">Statistic</a>
+        <a class="nav-link" href="..\shopping cart\admin.php">Upload</a>
+    </ul>
+</li>
+<script>
+        function toggleSubMenu(subMenuId) {
+            var subMenu = document.getElementById(subMenuId).querySelector('ul');
+            subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
+        }
+    </script>
         <li class="nav-item">
           <a class="nav-link" href="dashb.php">
             <i class="fas fa-users"></i> Patient
