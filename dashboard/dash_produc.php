@@ -54,21 +54,10 @@ $conn->close();
 <body>
     <h1>Product Purchase Dashboard</h1>
     <!-- Set the width and height directly -->
-<<<<<<< HEAD
     <div id="chart-container" style="width: 1200px; height: 300px;">
     <div id="productChart" style="width: 100%; height: 100%;  margin-left: 300px;"></div>
 
         <div id="legend" style="width: 30%; height: 100%; float: left; padding-top: 50px;"></div>
-=======
-    <div id="chart-container">
-        <div id="productChart"></div>
-        <div style="position: relative; width: 560px; height: 500px; padding: 0px; margin: 0px; border-width: 0px; cursor: default; left: 0;">
-    <canvas data-zr-dom-id="zr_0" width="560" height="500" style="position: absolute; left: 0px; top: 0px; width: 560px; height: 500px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas>
-</div>
-
-        
-        <div id="legend"></div>
->>>>>>> 7bc28aec8a75357448e8bfe839d43d6045f6a4c2
     </div>
 
     <script>
