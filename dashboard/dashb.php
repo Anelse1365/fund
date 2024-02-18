@@ -172,14 +172,13 @@ $totalSales = $stmtTotalSales->fetchColumn();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="Reports.php">
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
       </ul>
     </div>
   </nav>
-
   <!-- Content -->
 <div class="container mt-5">
     <h2 class="mb-7">Dashboard</h2>
