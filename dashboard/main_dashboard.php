@@ -448,25 +448,24 @@ option && myChart.setOption(option);
  }
  
  // คำสั่ง SQL
- $sql = "SELECT PSex, COUNT(*) AS count_sex FROM patient GROUP BY PSex";
+ $sql = "SELECT gender, COUNT(*) AS count_sex FROM patien GROUP BY gender";
  $result = $conn->query($sql);
  
  // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
  $data = array();
  while ($row = $result->fetch_assoc()) {
-     $sex[] = array(
-         'name' => $row['PSex'],
+     $gen[] = array(
+         'name' => $row['gender'],
          'value' => $row['count_sex']
      );
  }
  $conn->close();
 ?> 
-x
 <div id="maindashboard2" ></div>
 <div class = 'frame2' ></div>
 <script>
         // ข้อมูลจากการ query
-        var sex = <?php echo json_encode($sex); ?>;
+        var sex = <?php echo json_encode($gen); ?>;
 
         // สร้าง Bar Chart ด้วย ECharts
         var barChart = echarts.init(document.getElementById('maindashboard2'));
