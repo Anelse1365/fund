@@ -26,6 +26,7 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     $appointment = $stmt->fetch(PDO::FETCH_ASSOC);
+    
 
     if(!$appointment) {
         // ถ้าไม่พบข้อมูลกลับไปหน้าก่อนหน้า

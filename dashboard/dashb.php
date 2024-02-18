@@ -143,6 +143,19 @@ $totalSales = $stmtTotalSales->fetchColumn();
           </a>
         </li>
         <li class="nav-item">
+<<<<<<< HEAD
+=======
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> doctor
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> Reviews
+          </a>
+        </li>
+        <li class="nav-item">
+>>>>>>> 988e0c1ba961c12a57210dbd9279342755d60a61
           <a class="nav-link" href="#">
             <i class="fas fa-chart-bar"></i> Reports
           </a>
