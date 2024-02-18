@@ -34,7 +34,7 @@
                         if (password_verify($password, $row['password'])) {
                             if ($row['urole'] == 'admin') {
                                 $_SESSION['admin_login'] = $row['id'];
-                                header("location:dashboard/dashb.php");
+                                header("location:dashboard/main_dashboard.php");
                             } else {
                                 $_SESSION['user_login'] = $row['id'];
                                 header("location: index2.php");
