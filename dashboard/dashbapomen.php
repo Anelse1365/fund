@@ -137,11 +137,12 @@
   </nav>
 
 
+  <div class="container mt-5">
+    <h2 class="mb-3">Appointment</h2>
 
-  
+    
 
-  <!-- Content -->
-  <h2 class="mb-7">Appointment</h2>
+ 
 <div class="table-responsive">
   <table class="table table-striped table-bordered"> 
     <thead>

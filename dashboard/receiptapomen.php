@@ -55,7 +55,7 @@ if(isset($_GET['id'])) {
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        <h3 class="mb-0">การแก้ไขใบเสร็จ</h3>
+                        <h3 class="mb-0">ทำการนัด</h3>
                     </div>
                     <div class="card-body">
                         <form action="submitreceipt.php" method="post">
@@ -89,23 +89,9 @@ if(isset($_GET['id'])) {
                                 <label for="state">คลินิก</label>
                                 <input type="text" class="form-control" id="state" name="state" value="<?php echo isset($row['state']) ? $row['state'] : ''; ?>">
                             </div>
+                           
                             <div class="form-group">
-    <label for="information">บริการ</label>
-    <select class="form-control" id="information" name="information">
-       
-        <option value="รักษาทันตกรรมทั่วไป">รักษาทันตกรรมทั่วไป</option>
-        <option value="ผ่าฟัน">ผ่าฟัน</option>
-        <option value="ผ่าฟัน">จัดฟัน</option>
-        <option value="ผ่าฟัน">อุดฟัน</option>
-        <option value="อื่นๆ">บริการอื่นๆ</option>
-    </select>
-</div>
-
-
-
-
-                            <div class="form-group">
-                                <label for="doctor">Doctor</label>
+                                <label for="doctor">หมอ</label>
                                 <select class="form-control" name="doctor" required>
                                 <?php foreach ($doctors as $doctor): ?>
                         <option value="<?php echo $doctor['first_name']; ?>"><?php echo $doctor['first_name'] . " " . $doctor['last_name']; ?></option>
