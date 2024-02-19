@@ -58,6 +58,18 @@ if(isset($_POST['order_btn'])){
 }
 
 ?>
+<style>
+   html{
+   font-size: 62%;
+   overflow-x: hidden;
+}
+</style>
+<style>
+   html{
+   font-size: 62%;
+   overflow-x: hidden;
+}
+</style>
 
 <!DOCTYPE html>
 <html lang="en">
