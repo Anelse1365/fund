@@ -1,20 +1,5 @@
 <?php
 
-    require_once '../config2/db2.php';
-    if (!isset($_SESSION['admin_login'])) {
-        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-        header('location:../signin2.php');
-    
-    }
-
-    // Count of Patients
-//แสดงชื่อ
-  if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-}
 
 $current_page = basename($_SERVER['PHP_SELF']);
 
@@ -109,7 +94,7 @@ position: absolute;
         <ul class="navbar-nav ml-auto">
           
           <li class="nav-item">
-            <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
+            <!-- <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a> -->
           </li>
                   <!-- Display the logged-in username -->
         
