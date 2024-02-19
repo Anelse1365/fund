@@ -31,7 +31,7 @@
 
   //แสดงชื่อ
   if (isset($_SESSION['admin_login'])) {
-    $user_id = $_SESSION['user_login'];
+    $user_id = $_SESSION['admin_login'];
     $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -138,7 +138,16 @@ position: absolute;
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
+            <a class="nav-link" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
           </li>
           <!-- Display the logged-in username -->
         
@@ -455,24 +464,25 @@ option && myChart.setOption(option);
  }
  
  // คำสั่ง SQL
- $sql = "SELECT gender, COUNT(*) AS count_sex FROM patien GROUP BY gender";
+ $sql = "SELECT PSex, COUNT(*) AS count_sex FROM patient GROUP BY PSex";
  $result = $conn->query($sql);
  
  // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
  $data = array();
  while ($row = $result->fetch_assoc()) {
-     $gen[] = array(
-         'name' => $row['gender'],
+     $sex[] = array(
+         'name' => $row['PSex'],
          'value' => $row['count_sex']
      );
  }
  $conn->close();
 ?> 
+x
 <div id="maindashboard2" ></div>
 <div class = 'frame2' ></div>
 <script>
         // ข้อมูลจากการ query
-        var sex = <?php echo json_encode($gen); ?>;
+        var sex = <?php echo json_encode($sex); ?>;
 
         // สร้าง Bar Chart ด้วย ECharts
         var barChart = echarts.init(document.getElementById('maindashboard2'));
