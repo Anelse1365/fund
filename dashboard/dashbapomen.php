@@ -4,23 +4,16 @@
     if (!isset($_SESSION['admin_login'])) {
         $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
         header('location:../signin2.php');
+  
     }
-
-  //แสดงชื่อ
+      //แสดงชื่อ
   if (isset($_SESSION['admin_login'])) {
-    $user_id = $_SESSION['user_login'];
+    $user_id = $_SESSION['admin_login'];
     $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-
-
-              // SQL query to fetch data from database
-  $sql = "SELECT * FROM patien";
-  $stmt = $conn->prepare($sql);
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

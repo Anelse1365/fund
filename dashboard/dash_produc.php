@@ -10,14 +10,13 @@
 
     // Count of Patients
 
-//แสดงชื่อ
-  if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
+    if (isset($_SESSION['admin_login'])) {
+      $user_id = $_SESSION['admin_login'];
+      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+  
 
               // SQL query to fetch data from database
   $sql = "SELECT * FROM patien";
