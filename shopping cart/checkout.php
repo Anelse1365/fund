@@ -2,62 +2,79 @@
 
 @include 'config.php';
 
-if(isset($_POST['order_btn'])){
+if (isset($_POST['order_btn'])) {
 
-   $name = $_POST['name'];
-   $number = $_POST['number'];
-   $email = $_POST['email'];
-   $method = $_POST['method'];
-   $flat = $_POST['flat'];
-   $street = $_POST['street'];
-   $city = $_POST['city'];
-   $state = $_POST['state'];
-   $country = $_POST['country'];
-   $pin_code = $_POST['pin_code'];
-   $total_products = $_POST['total_products'];
+    $name = $_POST['name'];
+    $number = $_POST['number'];
+    $email = $_POST['email'];
+    $method = $_POST['method'];
+    $flat = $_POST['flat'];
+    $street = $_POST['street'];
+    $city = $_POST['city'];
+    $state = $_POST['state'];
+    $country = $_POST['country'];
+    $pin_code = $_POST['pin_code'];
+    $total_products = $_POST['total_products'];
 
-   $cart_query = mysqli_query($conn, "SELECT * FROM `cart`");
-   $price_total = 0;
-   if(mysqli_num_rows($cart_query) > 0){
-      while($product_item = mysqli_fetch_assoc($cart_query)){
-         $product_name[] = $product_item['name'] .' ('. $product_item['quantity'] .') ';
-         $product_price = number_format($product_item['price'] * $product_item['quantity']);
-         $price_total += $product_price;
-      };
-   };
+    $cart_query = mysqli_query($conn, "SELECT * FROM `cart`");
+    $price_total = 0;
 
-   $total_product = implode(', ',$product_name);
-   $detail_query = mysqli_query($conn, "INSERT INTO `order2`(name, number, email, method, flat, street, city, 
-   state, country, pin_code, total_products, total_price) 
-   VALUES('$name','$number','$email','$method','$flat','$street','$city','$state','$country',
-   '$pin_code','$total_product','$price_total')") or die('query failed');
+    if (mysqli_num_rows($cart_query) > 0) {
+        while ($product_item = mysqli_fetch_assoc($cart_query)) {
+            $product_name[] = $product_item['name'] . ' (' . $product_item['quantity'] . ') ';
+            $product_price = number_format($product_item['price'] * $product_item['quantity']);
+            $price_total += $product_price;
+        }
+    }
+    $total_product = implode(', ', $product_name);
 
-   if($cart_query && $detail_query){
-      echo "
-      <div class='order-message-container'>
-      <div class='message-container'>
-         <h3>thank you for shopping!</h3>
-         <div class='order-detail'>
-            <span>".$total_product."</span>
-            <span class='total'> total : ฿".$price_total."/-  </span>
-         </div>
-         <div class='customer-details'>
-            <p> your name : <span>".$name."</span> </p>
-            <p> your number : <span>".$number."</span> </p>
-            <p> your email : <span>".$email."</span> </p>
-            <p> your address : <span>".$flat.", ".$street.", ".$city.", ".$state.", ".$country." - ".$pin_code."</span> </p>
-            <p> your payment mode : <span>".$method."</span> </p>
-            <p>(*pay when product arrives*)</p>
-         </div>
+    // Define $pay_image variable to avoid undefined variable warning
+    $pay_image = '';
+
+    if ($method === 'paypal' || $method === 'credit card') {
+        // Check if payment method requires an image upload
+        if (isset($_FILES['payment_image']) && $_FILES['payment_image']['error'] === 0) {
+            $pay_image = $_FILES['payment_image']['name'];
+            $pay_image_tmp_name = $_FILES['payment_image']['tmp_name'];
+            $pay_image_folder = 'uploaded_img/' . $pay_image;
+
+            // บันทึกรูปภาพในไดเรกทอรี uploaded_img/
+            move_uploaded_file($pay_image_tmp_name, $pay_image_folder);
+        }
+    }
+
+    $detail_query = mysqli_query($conn, "INSERT INTO `order2` (name, number, email, method, flat, street, city, 
+    state, country, pin_code, total_products, pay, total_price, order_status)
+    VALUES ('$name','$number','$email','$method','$flat','$street','$city','$state','$country',
+    '$pin_code','$total_product','$pay_image','$price_total', '1')") or die(mysqli_error($conn)); // Output the error to help identify the issue
+
+    if ($cart_query && $detail_query) {
+        echo "
+        <div class='order-message-container'>
+        <div class='message-container'>
+            <h3>thank you for shopping!</h3>
+            <div class='order-detail'>
+                <span>" . $total_product . "</span>
+                <span class='total'> total : ฿" . $price_total . "/-  </span>
+            </div>
+            <div class='customer-details'>
+                <p> your name : <span>" . $name . "</span> </p>
+                <p> your number : <span>" . $number . "</span> </p>
+                <p> your email : <span>" . $email . "</span> </p>
+                <p> your address : <span>" . $flat . ", " . $street . ", " . $city . ", " . $state . ", " . $country . " - " . $pin_code . "</span> </p>
+                <p> your payment mode : <span>" . $method . "</span> </p>
+                <p>(*pay when the product arrives*)</p>
+            </div>
             <a href='products.php' class='btn'>continue shopping</a>
-         </div>
-      </div>
-      ";
-   }
-
+        </div>
+        </div>
+        ";
+    }
 }
 
 ?>
+
+
 <style>
    html{
    font-size: 62%;
@@ -69,7 +86,7 @@ if(isset($_POST['order_btn'])){
    font-size: 62%;
    overflow-x: hidden;
 }
-</style>
+</style>             
 
 <!DOCTYPE html>
 <html lang="en">
@@ -96,7 +113,7 @@ if(isset($_POST['order_btn'])){
 
    <h1 class="heading">complete your order</h1>
 
-   <form action="" method="post">
+   <form action="" method="post" enctype="multipart/form-data">
 
    <div class="display-order">
       <?php
@@ -132,13 +149,14 @@ if(isset($_POST['order_btn'])){
             <input type="email" placeholder=" " name="email" required>
          </div>
          <div class="inputBox">
-            <span>payment method</span>
-            <select name="method">
-               <option value="cash on delivery" selected>cash on devlivery</option>
-               <option value="credit cart">credit cart</option>
-               <option value="paypal">paypal</option>
-            </select>
-         </div>
+   <span>Payment Method</span>
+   <select name="method" onchange="toggleUploadTab(this.value)">
+      <option value="cash on delivery" selected>Cash on Delivery</option>
+      <option value="credit card">Credit Card</option>
+      <option value="paypal">PayPal</option>
+   </select>
+</div>
+
          <div class="inputBox">
             <span>บ้านเลขที่</span>
             <input type="text" placeholder=" " name="flat" required>
@@ -163,8 +181,22 @@ if(isset($_POST['order_btn'])){
             <span>รหัสไปรษณีย์</span>
             <input type="text" placeholder=" " name="pin_code" required>
          </div>
+         <!-- Add this block inside your form -->
+<!-- Add this block inside your form -->
+<div class="inputBox" id="uploadTab" style="display: none;">
+   <span>สแกน QR โค้ดเพื่อชำระเงิน</span>
+   <img id="paymentImagePreview" src="images/qr1.png" alt="" style="max-width: 400px; max-height: 400px; display: none;">
+   <br>
+   <h3>อัพโหลดหลักฐานการชำระเงิน</h3>
+
+   <input type="file" name="payment_image" id="paymentImageInput" onchange="previewImage()">
+
+</div>
+
+         
       </div>
       <input type="submit" value="order now" name="order_btn" class="btn">
+
    </form>
 
 </section>
@@ -175,4 +207,47 @@ if(isset($_POST['order_btn'])){
 <script src="js/script.js"></script>
    
 </body>
+<!-- Add this block inside your form -->
+<div class="inputBox" id="uploadTab" style="display: none;">
+   <span>Upload Image</span>
+   <input type="file" name="payment_image" id="paymentImageInput" onchange="previewImage()">
+   <img id="paymentImagePreview" src="images/qr1.png" alt="" style="max-width: 400px; max-height: 400px; display: none;">
+</div>
+
+<script>
+function toggleUploadTab(selectedMethod) {
+   var uploadTab = document.getElementById("uploadTab");
+   var paymentImagePreview = document.getElementById("paymentImagePreview");
+
+   if (selectedMethod === "paypal" || selectedMethod === "credit card") {
+      uploadTab.style.display = "block";
+      paymentImagePreview.style.display = "block"; // Show the image
+   } else {
+      uploadTab.style.display = "none";
+      paymentImagePreview.style.display = "none"; // Hide the image
+   }
+}
+
+function previewImage() {
+   var input = document.getElementById("paymentImageInput");
+   var preview = document.getElementById("paymentImagePreview");
+
+   if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+         preview.src = e.target.result;
+         preview.style.display = "block";
+      }
+
+      reader.readAsDataURL(input.files[0]);
+   } else {
+      preview.style.display = "none";
+   }
+}
+</script>
+
+
+
+
 </html>
