@@ -21,8 +21,8 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         // ประมวลผลคำสั่ง SQL
         $stmt->execute();
 
-        // ส่งกลับไปยังหน้า Reports.php หลังจากทำการลบข้อมูลเสร็จสิ้น
-        header("Location: Reports.php");
+        // ส่งกลับไปยังหน้า Report.php หลังจากทำการลบข้อมูลเสร็จสิ้น
+        header("Location: Report.php");
         exit();
     } catch(PDOException $e) {
         echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
