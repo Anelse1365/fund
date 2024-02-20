@@ -161,20 +161,30 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                         <tr>
                                             <th>ID</th>
                                             <th>ลูกค้า</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                            <th>เบอร์</th>
+                                            <th>อีเมลล์</th>
+                                            <th>วิธีชำระเงิน</th>
+                                            <th>ที่อยู่</th>
+                                            <th>ถนน</th>
+                                            <th>อำเภอ</th>
+                                            <th>จังหวัด</th>
+                                            <th>ประเทศ</th>
+                                            <th>รหัสไปรษณีย์</th>
+                                            <th>รายการสินค้า</th>
+                                            <th>ยอดรวม</th>
+                                            <th>สถานะการสั่งซื้อ</th>
+                                            <th>หลักฐานการโอน  </th>
+
                                         </tr>
                                     </thead>
-                                        <tr>
+                                        <!-- <tr>
                                             <td>Donna Snider</td>
                                             <td>Customer Support</td>
                                             <td>New York</td>
                                             <td>27</td>
                                             <td>2011/01/25</td>
                                             <td>$112,000</td>
-                                        </tr>
+                                        </tr> -->
                                     </tbody>
                                 </table>
                             </div>
