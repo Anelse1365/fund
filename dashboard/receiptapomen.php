@@ -1,21 +1,35 @@
-<?php 
+<?php
+session_start();
 
-    session_start();
-    require_once '../config2/db2.php';
-    if (!isset($_SESSION['admin_login'])) {
-        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-        header('location:../signin2.php');
-  
-    }
-      //แสดงชื่อ
-  if (isset($_SESSION['admin_login'])) {
-    $user_id = $_SESSION['admin_login'];
-    $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-}
+// ตรวจสอบว่ามีการส่ง ID มาหรือไม่
+if(isset($_GET['id'])) {
+    $id = $_GET['id'];
     
+    // เชื่อมต่อฐานข้อมูล
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "fund";
+
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // เซ็ตโหมดของ PDO เพื่อให้แสดงข้อผิดพลาดออกมา
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // ดึงข้อมูลจากตาราง appointmen โดยใช้ ID เป็นเงื่อนไข
+        $stmt = $conn->prepare("SELECT * FROM appointmen WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $stmt = $conn->query("SELECT * FROM doctors");
+        $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+        echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -115,11 +129,7 @@ input[type="time"] {
     <label for="timeInput" class="styled-label">เลือกเวลา:</label>
     <input type="time"name="timeInput" class="styled-input">
 </div>
-
-
-
-
-                           
+        
                             <div class="form-group">
                                 <label for="doctor">หมอ</label>
                                 <select class="form-control" name="doctor" required>

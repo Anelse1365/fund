@@ -64,21 +64,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <title>Dashboard - SB Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
   
 </head>
+
+
+
 <style>
-    body {
-      padding-top: 56px; /* สำหรับ Navbar ด้านบน */
-    }
-    .sidebar {
-      position: fixed;
-      top: 56px; /* ความสูงของ Navbar ด้านบน */
-      bottom: 0;
-      left: 0;
-      z-index: 100; /* จัดการความสูงให้สูงกว่าเนื้อหาหลัก */
-      padding: 48px 0; /* การเรียงสลับแถบการนำทางและเนื้อหา */
-      box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-    }
+
     .sidebar-sticky {
       position: relative;
       top: 0;
@@ -105,12 +101,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
       margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างของแต่ละ nav-item ไปยัง nav-item ถัดไป */
     }
 
-    .sidebar-sticky {
-      padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
-      height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
 
 
 </style>
@@ -118,15 +108,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 
 <body>
-    
-     <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Dashboard</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="index.html">FUND CLINIC</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+  
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+
         <ul class="navbar-nav ml-auto">
           
           <li class="nav-item">
@@ -141,8 +135,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </li>
         </ul>
       </div>
-    </div>
-  </nav>
+                </li>
+            </ul>
+        </nav>
+  
+    
+     <!-- Navbar -->
 
   <!-- Sidebar -->
   <nav class="sidebar bg-dark sidebar-dark">
@@ -184,22 +182,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="finishreceipt.php">
-            <i class="fas fa-users"></i> Receipt
-          </a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="doctorsdash.php">
             <i class="fas fa-users"></i> doctor
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="reveiw_dashboard.php">
+          <a class="nav-link" href="doctorsdash.php">
             <i class="fas fa-users"></i> Reviews
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Report.php">
+          <a class="nav-link" href="Reports.php">
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
@@ -221,101 +214,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </tbody>
         </table>
     </div>
-</div>
-    <!-- Set the width and height directly -->
-    <div id="chart-container" style="width: 1200px; height: 300px;">
-    <div id="productChart" style="width: 100%; height: 100%;  margin-left: 300px;"></div>
 
-        <div id="legend" style="width: 30%; height: 100%; float: left; padding-top: 50px;"></div>
-    </div>
-
-    <script>
-        // Prepare data for ECharts
-        var productData = <?php echo json_encode($productData); ?>;
-        var productLabels = Object.keys(productData);
-        var productCounts = Object.values(productData);
-
-        // Create a pie chart with ECharts
-        var productChart = echarts.init(document.getElementById('productChart'));
-
-        // Specify chart configuration
-        var option = {
-    backgroundColor: '#f5f5f5',  // กำหนดสีพื้นหลัง
-    tooltip: {
-        trigger: 'item',
-        formatter: '{b}: {c} ({d}%)'
-    },
-    series: [
-        {
-            type: 'pie',
-            radius: '50%',
-            center: ['30%', '50%'],  // ปรับตำแหน่ง Pie Chart
-            data: productLabels.map(function (label, index) {
-                return { value: productCounts[index], name: label };
-            }),
-            itemStyle: {
-                emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            },
-            label: {
-                show: true,
-                formatter: '{b}: {d}%',
-                position: 'outside',
-                alignTo: 'labelLine'  // ปรับการแสดงตำแหน่งของ label
-            },
-            tooltip: {
-                trigger: 'item',
-                formatter: function (params) {
-                    var productName = params.name;
-                    var productCount = productData[productName] || 0;
-                    return productName + ': ' + productCount + ' ชิ้น';
-                }
-            },
-            emphasis: {
-                label: {
-                    show: true,
-                    fontSize: '16',
-                    fontWeight: 'bold'
-                }
-            }
-        }
-    ]
-};
-
-// Set the chart option
-productChart.setOption(option);
-
-// ปรับแต่ง legendContainer ให้เรียงลงมา
-legendContainer.style.float = 'left';
-legendContainer.style.paddingTop = '50px';
-
-
-        // Set the chart option
-        productChart.setOption(option);
-
-        // Create a separate legend container
-        var legendContainer = document.getElementById('legend');
-        var legendChart = echarts.init(legendContainer);
-
-        // Specify legend configuration
-        var legendOption = {
-            orient: 'vertical',
-            right: 10,
-            data: productLabels,
-        };
-        
-
-        // Set the legend option
-        legendChart.setOption(legendOption);
-        var productCounts = Object.values(productData).map(function (product) {
-    return product.total_price; // หรือแต่คุณต้องการจะดึงข้อมูลอะไรมาแสดง
-});
-
-        
-    </script>
 </body>
 
 </html>

@@ -161,19 +161,7 @@ position: absolute;
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="">
-            <i class="fas fa-shopping-cart"></i> Orders
-          </a>
-        </li>
-        <li class="nav-item" id="accountsSubMenu">
-    <a href="#" class="nav-link" onclick="toggleSubMenu('accountsSubMenu')">
-        <i class="fas fa-box"></i> Products
-    </a>
-    <ul style="display: <?php echo ($current_page == 'dash_produc.php') ? 'block' : 'none'; ?>">
-        <a class="nav-link" href="dash_produc.php">Statistic</a>
-        <a class="nav-link" href="..\shopping cart\admin.php">Upload</a>
-    </ul>
+       
 </li>
 <script>
         function toggleSubMenu(subMenuId) {
