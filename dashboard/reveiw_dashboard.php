@@ -225,7 +225,7 @@ try {
                     <td><?php echo $reviews['email']; ?></td>
                     <td><?php echo $reviews['created_at']; ?></td>
                     <td>
-                        <a href="edit_review_dashboard.php?id=<?php echo $reviews['id']; ?>" class="btn btn-primary btn-sm">แก้ไข</a>
+                       <!-- <a href="edit_review_dashboard.php?id=<?php echo $reviews['id']; ?>" class="btn btn-primary btn-sm">แก้ไข</a> -->
                         <a href="delete_review_dashboard.php?id=<?php echo $reviews['id']; ?>" class="btn btn-danger btn-sm">ลบ</a>
                     </td>
                 </tr>
