@@ -170,20 +170,7 @@ $stmt = $conn->prepare($sql);
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-<<<<<<< HEAD
             <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname'] ?></a>
-=======
-            <a class="nav-link" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
->>>>>>> 0dc2641bdf37cb60add4a66c8c74bdd8b6a29842
           </li>
           <!-- Display the logged-in username -->
 
@@ -411,7 +398,6 @@ $stmt = $conn->prepare($sql);
       $password = "";
       $dbname = "fund";
 
-<<<<<<< HEAD
       $conn = new mysqli($servername, $username, $password, $dbname);
 
       // ตรวจสอบการเชื่อมต่อ
@@ -419,73 +405,72 @@ $stmt = $conn->prepare($sql);
         die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
       }
 
-      // คำสั่ง SQL
-      // $sql = "SELECT information, COUNT(*) AS count_info FROM appointmen GROUP BY information";
-      // $result = $conn->query($sql);
+      
+       $sql = "SELECT information, COUNT(*) AS count_info FROM appointmen GROUP BY information";
+       $result = $conn->query($sql);
 
-      // // สร้างตัวแปร JSON
-      // $data = array();
-      // while ($row = $result->fetch_assoc()) {
-      //     $info[] = array(
-      //         'name' => $row['information'],
-      //         'value' => $row['count_info']
-      //     );
-      // }
-      // $conn->close();
-      // 
+       $data = array();
+       while ($row = $result->fetch_assoc()) {
+           $info[] = array(
+               'name' => $row['information'],
+               'value' => $row['count_info']
+           );
+       }
+       $conn->close();
+       
       ?>
-      // <div id="maindashboard1"></div>
-      // <div class='frame1'></div>
-      // <script>
-        //   var info = <?php echo json_encode($info); ?>;
-        //   var chartDom = document.getElementById('maindashboard1');
-        // var myChart = echarts.init(chartDom);
-        // var data = <?php echo json_encode($info); ?>;
-        // var option;
+       <div id="maindashboard1"></div>
+       <div class='frame1'></div>
+       <script>
+           var info = <?php echo json_encode($info); ?>;
+           var chartDom = document.getElementById('maindashboard1');
+         var myChart = echarts.init(chartDom);
+         var data = <?php echo json_encode($info); ?>;
+         var option;
 
-        // option = {
-        //   title:{
-        //     text: 'จำนวนการนัดจองต่างๆ',
-        //     left:'center',
-        //     top:'4.3%'
-        //   },
-        //     tooltip: {
-        //         trigger: 'item'
-        //     },
-        //     legend: {
-        //       top: '17%',
-        //       left: 'center'
-        //     },
-        //     series: [
-        //         {
-        //             name: 'Access From',
-        //             type: 'pie',
-        //             top:'20%',
-        //             radius: ['40%', '70%'],
-        //             avoidLabelOverlap: false,
-        //             label: {
-        //                 show: false,
-        //                 position: 'center'
-        //             },
-        //             emphasis: {
-        //                 label: {
-        //                     show: true,
-        //                     fontSize: 40,
-        //                     fontWeight: 'bold'
-        //                 }
-        //             },
-        //             labelLine: {
-        //                 show: false
-        //             },
-        //             data: info
-        //         }
-        //     ]
-        // };
+         option = {
+           title:{
+             text: 'จำนวนการนัดจองต่างๆ',
+             left:'center',
+             top:'4.3%'
+           },
+             tooltip: {
+                 trigger: 'item'
+             },
+             legend: {
+               top: '17%',
+               left: 'center'
+             },
+             series: [
+                 {
+                     name: 'Access From',
+                     type: 'pie',
+                     top:'20%',
+                     radius: ['40%', '70%'],
+                     avoidLabelOverlap: false,
+                     label: {
+                         show: false,
+                         position: 'center'
+                     },
+                     emphasis: {
+                         label: {
+                             show: true,
+                             fontSize: 40,
+                             fontWeight: 'bold'
+                         }
+                     },
+                     labelLine: {
+                         show: false
+                     },
+                     data: info
+                 }
+             ]
+         };
 
-        // option && myChart.setOption(option);
-        // 
+         option && myChart.setOption(option);
+         
       </script>
-      // <?php
+       <?php
 
           // การเชื่อมต่อกับฐานข้อมูล
           $servername = "localhost";
@@ -517,39 +502,6 @@ $stmt = $conn->prepare($sql);
       <div id="maindashboard2"></div>
       <div class='frame2'></div>
       <script>
-=======
- // การเชื่อมต่อกับฐานข้อมูล
- $servername = "localhost";
- $username = "root";
- $password = "";
- $dbname = "fund";
- 
- $conn = new mysqli($servername, $username, $password, $dbname);
- 
- // ตรวจสอบการเชื่อมต่อ
- if ($conn->connect_error) {
-     die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
- }
- 
- // คำสั่ง SQL
- $sql = "SELECT PSex, COUNT(*) AS count_sex FROM patient GROUP BY PSex";
- $result = $conn->query($sql);
- 
- // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
- $data = array();
- while ($row = $result->fetch_assoc()) {
-     $sex[] = array(
-         'name' => $row['PSex'],
-         'value' => $row['count_sex']
-     );
- }
- $conn->close();
-?> 
-x
-<div id="maindashboard2" ></div>
-<div class = 'frame2' ></div>
-<script>
->>>>>>> 0dc2641bdf37cb60add4a66c8c74bdd8b6a29842
         // ข้อมูลจากการ query
         var sex = <?php echo json_encode($sex); ?>;
 
