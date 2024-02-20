@@ -1,4 +1,3 @@
-
 <?php 
 
     session_start();
@@ -471,7 +470,8 @@ option && myChart.setOption(option);
      );
  }
  $conn->close();
-?>  
+?> 
+
 <div id="maindashboard2" ></div>
 <div class = 'frame2' ></div>
 <script>
