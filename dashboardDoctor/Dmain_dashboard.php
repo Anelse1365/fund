@@ -1,3 +1,4 @@
+
 <?php 
 
     session_start();
@@ -28,12 +29,13 @@
     $totalSales = $stmtTotalSales->fetchColumn();
     $current_page = basename($_SERVER['PHP_SELF']);
 
-    if (isset($_SESSION['admin_login'])) {
-      $user_id = $_SESSION['admin_login'];
-      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-      $stmt->execute();
-      $row = $stmt->fetch(PDO::FETCH_ASSOC);
-  }
+  //แสดงชื่อ
+  if (isset($_SESSION['admin_login'])) {
+    $user_id = $_SESSION['admin_login'];
+    $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 
               // SQL query to fetch data from database
@@ -129,23 +131,14 @@ position: absolute;
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Dashboard_Admin</a>
+      <a class="navbar-brand" href="#">Dashboard_Doctor</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
+            <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
           </li>
           <!-- Display the logged-in username -->
         
@@ -169,7 +162,7 @@ position: absolute;
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="order.php">
+          <a class="nav-link" href="">
             <i class="fas fa-shopping-cart"></i> Orders
           </a>
         </li>
@@ -467,25 +460,24 @@ option && myChart.setOption(option);
  }
  
  // คำสั่ง SQL
- $sql = "SELECT PSex, COUNT(*) AS count_sex FROM patient GROUP BY PSex";
+ $sql = "SELECT gender, COUNT(*) AS count_sex FROM patien GROUP BY gender";
  $result = $conn->query($sql);
  
  // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
  $data = array();
  while ($row = $result->fetch_assoc()) {
-     $sex[] = array(
-         'name' => $row['PSex'],
+     $gen[] = array(
+         'name' => $row['gender'],
          'value' => $row['count_sex']
      );
  }
  $conn->close();
 ?> 
-x
 <div id="maindashboard2" ></div>
 <div class = 'frame2' ></div>
 <script>
         // ข้อมูลจากการ query
-        var sex = <?php echo json_encode($sex); ?>;
+        var sex = <?php echo json_encode($gen); ?>;
 
         // สร้าง Bar Chart ด้วย ECharts
         var barChart = echarts.init(document.getElementById('maindashboard2'));
