@@ -131,7 +131,7 @@ if(isset($_GET['id'])) {
 <body>
   <!-- Content -->
   <div class="container mt-5">
-    <h2 class="mb-4">Edit reports</h2>
+    <h2 class="mb-4">Edit Reports</h2>
     <form method="post">
       <div class="form-group">
         <label for="patient">Name:</label>
