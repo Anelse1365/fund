@@ -184,12 +184,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="finishreceipt.php">
+            <i class="fas fa-users"></i> Receipt
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="doctorsdash.php">
             <i class="fas fa-users"></i> doctor
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="doctorsdash.php">
+          <a class="nav-link" href="reveiw_dashboard.php">
             <i class="fas fa-users"></i> Reviews
           </a>
         </li>
