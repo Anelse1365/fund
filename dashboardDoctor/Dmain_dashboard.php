@@ -157,7 +157,7 @@ position: absolute;
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="main_dashboard.php">
+          <a class="nav-link active" href="Dmain_dashboard.php">
             <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
           </a>
         </li>
@@ -169,33 +169,25 @@ position: absolute;
             subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
         }
     </script>
+      
         <li class="nav-item">
-          <a class="nav-link" href="dashb.php">
-            <i class="fas fa-users"></i> Patient
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="dashbapomen.php">
+          <a class="nav-link" href="Ddashbapomen.php">
             <i class="fas fa-users"></i> Appointment
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="finishreceipt.php">
+          <a class="nav-link" href="Dfinishreceipt.php">
             <i class="fas fa-users"></i> Receipt
           </a>
         </li>
+     
         <li class="nav-item">
-          <a class="nav-link" href="doctorsdash.php">
-            <i class="fas fa-users"></i> doctor
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="reveiw_dashboard.php">
+          <a class="nav-link" href="Dreveiw_dashboard.php">
             <i class="fas fa-users"></i> Reviews
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Report.php">
+          <a class="nav-link" href="DReport.php">
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
