@@ -94,6 +94,10 @@ if(isset($_GET['id'])) {
                                 <option value="" disabled selected>กรุณาเลือกประเภทการนัด</option>
                                 <option value="รักษาทันตกรรมทั่วไป">รักษาทันตกรรมทั่วไป</option>
                                 <option value="ผ่าฟัน">ผ่าฟัน</option>
+                                <option value="ผ่าฟัน">จัดฟัน</option>
+                                <option value="ผ่าฟัน">อุดฟัน</option>
+                                <option value="ผ่าฟัน">รักษารากฟัน</option>
+                                <option value="ผ่าฟัน">ขูดหินปูน</option>
                                 <option value="อื่นๆ">บริการอื่นๆ</option>
                             </select>
                         </div>
