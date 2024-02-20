@@ -1,5 +1,4 @@
-
-<?php 
+<?php
 
 session_start();
 require_once '../config2/db2.php';
@@ -194,7 +193,7 @@ $stmt = $conn->prepare($sql);
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="order.php">
+          <a class="nav-link" href="">
             <i class="fas fa-shopping-cart"></i> Orders
           </a>
         </li>
@@ -405,72 +404,73 @@ $stmt = $conn->prepare($sql);
         die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
       }
 
-      
-       $sql = "SELECT information, COUNT(*) AS count_info FROM appointmen GROUP BY information";
-       $result = $conn->query($sql);
+      // คำสั่ง SQL
+      // $sql = "SELECT information, COUNT(*) AS count_info FROM appointmen GROUP BY information";
+      // $result = $conn->query($sql);
 
-       $data = array();
-       while ($row = $result->fetch_assoc()) {
-           $info[] = array(
-               'name' => $row['information'],
-               'value' => $row['count_info']
-           );
-       }
-       $conn->close();
-       
+      // // สร้างตัวแปร JSON
+      // $data = array();
+      // while ($row = $result->fetch_assoc()) {
+      //     $info[] = array(
+      //         'name' => $row['information'],
+      //         'value' => $row['count_info']
+      //     );
+      // }
+      // $conn->close();
+      // 
       ?>
-       <div id="maindashboard1"></div>
-       <div class='frame1'></div>
-       <script>
-           var info = <?php echo json_encode($info); ?>;
-           var chartDom = document.getElementById('maindashboard1');
-         var myChart = echarts.init(chartDom);
-         var data = <?php echo json_encode($info); ?>;
-         var option;
+      // <div id="maindashboard1"></div>
+      // <div class='frame1'></div>
+      // <script>
+        //   var info = <?php echo json_encode($info); ?>;
+        //   var chartDom = document.getElementById('maindashboard1');
+        // var myChart = echarts.init(chartDom);
+        // var data = <?php echo json_encode($info); ?>;
+        // var option;
 
-         option = {
-           title:{
-             text: 'จำนวนการนัดจองต่างๆ',
-             left:'center',
-             top:'4.3%'
-           },
-             tooltip: {
-                 trigger: 'item'
-             },
-             legend: {
-               top: '17%',
-               left: 'center'
-             },
-             series: [
-                 {
-                     name: 'Access From',
-                     type: 'pie',
-                     top:'20%',
-                     radius: ['40%', '70%'],
-                     avoidLabelOverlap: false,
-                     label: {
-                         show: false,
-                         position: 'center'
-                     },
-                     emphasis: {
-                         label: {
-                             show: true,
-                             fontSize: 40,
-                             fontWeight: 'bold'
-                         }
-                     },
-                     labelLine: {
-                         show: false
-                     },
-                     data: info
-                 }
-             ]
-         };
+        // option = {
+        //   title:{
+        //     text: 'จำนวนการนัดจองต่างๆ',
+        //     left:'center',
+        //     top:'4.3%'
+        //   },
+        //     tooltip: {
+        //         trigger: 'item'
+        //     },
+        //     legend: {
+        //       top: '17%',
+        //       left: 'center'
+        //     },
+        //     series: [
+        //         {
+        //             name: 'Access From',
+        //             type: 'pie',
+        //             top:'20%',
+        //             radius: ['40%', '70%'],
+        //             avoidLabelOverlap: false,
+        //             label: {
+        //                 show: false,
+        //                 position: 'center'
+        //             },
+        //             emphasis: {
+        //                 label: {
+        //                     show: true,
+        //                     fontSize: 40,
+        //                     fontWeight: 'bold'
+        //                 }
+        //             },
+        //             labelLine: {
+        //                 show: false
+        //             },
+        //             data: info
+        //         }
+        //     ]
+        // };
 
-         option && myChart.setOption(option);
-         
+        // option && myChart.setOption(option);
+        // 
       </script>
-       <?php
+      // <?php
 
           // การเชื่อมต่อกับฐานข้อมูล
           $servername = "localhost";
@@ -503,7 +503,7 @@ $stmt = $conn->prepare($sql);
       <div class='frame2'></div>
       <script>
         // ข้อมูลจากการ query
-        var sex = <?php echo json_encode($sex); ?>;
+        var sex = <?php echo json_encode($gen); ?>;
 
         // สร้าง Bar Chart ด้วย ECharts
         var barChart = echarts.init(document.getElementById('maindashboard2'));
@@ -550,17 +550,16 @@ $stmt = $conn->prepare($sql);
       // ตรวจสอบการเชื่อมต่อ
       if ($conn->connect_error) {
         die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
-
-        $sql = "SELECT information, COUNT(*) AS count FROM reports GROUP BY information";
+        $sql = "SELECT infomation, COUNT(*) AS count_info FROM reports GROUP BY infomation";
         $result = $conn->query($sql);
-        
-        // สร้างตัวแปรเพื่อเก็บข้อมูลที่นับได้
-        $data = array();
+
+        // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
+        $report = array();
         while ($row = $result->fetch_assoc()) {
-            $data[] = array(
-                "name" => $row["information"],
-                "value" => intval($row["count"])
-            );
+          $report[] = array(
+            'name' => $row['infomtion'],
+            'reportvalue' => $row['count_info']
+          );
         }
         $conn->close();
       }
@@ -590,6 +589,7 @@ $stmt = $conn->prepare($sql);
           animationDurationUpdate: 500,
           series: {
             type: 'bar',
+            id: 'sales',
             data: [{
                 value: 5,
                 groupId: 'animals'
