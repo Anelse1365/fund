@@ -79,6 +79,7 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td>
                         <a href='editreports.php?id=<?php echo $report["id"]; ?>' class='btn btn-primary'>แก้ไข</a>
                         <a href='deletereports.php?id=<?php echo $report["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>
+                       
                     </td>
                 </tr>
                 <?php endforeach; ?>
