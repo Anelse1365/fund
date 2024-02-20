@@ -39,123 +39,100 @@ try {
 }
 ?>
 <!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ข้อมูลหมอ</title>
-    <!-- ลิงก์ CSS ของ Bootstrap -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <style>
-        .table {
-            border: 1px solid #dee2e6;
-            border-collapse: collapse;
-        }
-        .table th, .table td {
-            border: 1px solid #dee2e6;
-            padding: 8px;
-        }
-        .btn {
-            padding: 5px 12px;
-            font-size: 14px;
-        }
-    body {
-      padding-top: 56px; /* สำหรับ Navbar ด้านบน */
-    }
-    .sidebar {
-      position: fixed;
-      top: 56px; /* ความสูงของ Navbar ด้านบน */
-      bottom: 0;
-      left: 0;
-      z-index: 100; /* จัดการความสูงให้สูงกว่าเนื้อหาหลัก */
-      padding: 48px 0; /* การเรียงสลับแถบการนำทางและเนื้อหา */
-      box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-    }
-    .sidebar-sticky {
-      position: relative;
-      top: 0;
-      height: calc(100vh - 48px); /* สูงของแถบการนำทางลบความสูงของ Navbar ที่ด้านบน */
-      padding-top: .5rem;
-      overflow-x: hidden;
-      overflow-y: auto; /* สำหรับเลื่อนแถบการนำทาง */
-    }
-    .sidebar .nav-link {
-      color: #fff;
-      padding: 10px 20px; /* กำหนดระยะห่างของ nav-link ด้านบนและด้านล่าง 20px ด้านซ้ายและด้านขวา 10px */
-    }
-    .sidebar .nav-link:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-    .main-content {
-      margin-left: 240px; /* กว้างของ Sidebar */
-      padding: 20px;
-    }
-    .sidebar {
-      width: 200px; /* เพิ่มความกว้างที่ต้องการ */
-    }
-    .sidebar .nav-item {
-      margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างของแต่ละ nav-item ไปยัง nav-item ถัดไป */
-    }
-
-    .sidebar-sticky {
-      padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
-      height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
-    </style>
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Dashboard</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dashboard - SB Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="main_dashboard.php">FUND CLINIC</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                   
+                    
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                <li class="nav-item">
             <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
           </li>
-          <!-- Display the logged-in username -->
-        
-        
-          <!-- Add the Log Out button -->
-          <li class="nav-item">
-            <a class="nav-link" href="../logout2.php">ออกจากระบบ</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
 
-  <!-- Sidebar -->
-  <nav class="sidebar bg-dark sidebar-dark">
-    <div class="sidebar-sticky">
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link active" href="main_dashboard.php">
-            <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="">
-            <i class="fas fa-shopping-cart"></i> Orders
-          </a>
-        </li>
-        <li class="nav-item" id="accountsSubMenu">
-    <a href="#" class="nav-link" onclick="toggleSubMenu('accountsSubMenu')">
-        <i class="fas fa-box"></i> Products
-    </a>
-    <ul style="display: <?php echo ($current_page == 'dash_produc.php') ? 'block' : 'none'; ?>">
-        <a class="nav-link" href="dash_produc.php">Statistic</a>
-        <a class="nav-link" href="..\shopping cart\admin.php">Upload</a>
-    </ul>
-</li>
+                        <li><a class="dropdown-item" href="../logout2.php">ออกจากระบบ</a></li>
+                        
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Main</div>
+                            <a class="nav-link" href="main_dashboard.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Products
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="order.php">Order</a>
+                                    <a class="nav-link" href="../shopping cart/admin.php">Upload</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Info
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="dashb.php">Patient</a>
+                                    <a class="nav-link" href="doctorsdash.php">Doctor</a>
+                                </nav>
+                            </div>
+                            <div class="sb-sidenav-menu-heading">Addons</div>
+                            <a class="nav-link" href="dashbapomen.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Appointment
+                            </a>
+                            <a class="nav-link" href="Report.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Report
+                            </a>
+                            <a class="nav-link" href="reveiw_dashboard.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Review
+                            </a>
+                        </div>
+                    </div>
+
+                </nav>
+            </div>
 <script>
         function toggleSubMenu(subMenuId) {
             var subMenu = document.getElementById(subMenuId).querySelector('ul');
@@ -243,7 +220,13 @@ try {
 </div>
 
 <!-- ลิงก์ JavaScript ของ Bootstrap -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>  
 </body>
 </html>
 
