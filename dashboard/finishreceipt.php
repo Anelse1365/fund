@@ -74,7 +74,7 @@ $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td>
     <a href='editreceipt.php?id=<?php echo $appointment["id"]; ?>' class='btn btn-primary'>แก้ไข</a>
     <a href='deletereceipt.php?id=<?php echo $appointment["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>
-    <a href='addReport.php?id=<?php echo $appointment["id"]; ?>' class='btn btn-danger btn-sm'>เพิ่ม</a>
+    <a href='addReport.php?id=<?php echo $appointment["id"]; ?>' class='btn btn-danger btn-sm'>ทำประวัติคนไข้</a>
 </td>
 </td>
 
