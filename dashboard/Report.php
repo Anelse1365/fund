@@ -237,7 +237,7 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?php echo $report['comment']; ?></td>
                     <td>
                         <a href='edit_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-primary'>แก้ไข</a>
-                        <a href='delete_reports.php?id=<?php echo $report["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>
+                        <a href='delete_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>
                        
                     </td>
                 </tr>
