@@ -135,7 +135,7 @@ if(isset($_GET['id'])) {
     <form method="post">
       <div class="form-group">
         <label for="patient">Name:</label>
-        <input type="text" class="form-control" id="firstname" name="firstname" value="<?php echo isset($reports['firstname']) ? $reports['firstname'] : ''; ?>">
+        <input type="text" class="form-control" id="patient" name="patient" value="<?php echo isset($reports['patient']) ? $reports['patient'] : ''; ?>">
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
@@ -171,15 +171,15 @@ if(isset($_GET['id'])) {
       </div>
       <div class="form-group">
         <label for="date">Date:</label>
-        <input type="number" class="form-control" id="date" name="date" value="<?php echo isset($reports['date']) ? $reports['date'] : ''; ?>">
+        <input type="date" class="form-control" id="date" name="date" value="<?php echo isset($reports['date']) ? $reports['date'] : ''; ?>">
       </div>
       <div class="form-group">
         <label for="timeInput">TimeInput:</label>
-        <input type="number" class="form-control" id="timeInput" name="timeInput" value="<?php echo isset($reports['timeInput']) ? $reports['timeInput'] : ''; ?>">
+        <input type="timeInput" class="form-control" id="timeInput" name="timeInput" value="<?php echo isset($reports['timeInput']) ? $reports['timeInput'] : ''; ?>">
       </div>
       <div class="form-group">
         <label for="information">Information:</label>
-        <input type="number" class="form-control" id="information" name="information" value="<?php echo isset($reports['information']) ? $reports['information'] : ''; ?>">
+        <input type="text" class="form-control" id="information" name="information" value="<?php echo isset($reports['information']) ? $reports['information'] : ''; ?>">
       </div>
       <div class="form-group">
         <label for="price">Price:</label>
