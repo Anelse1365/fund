@@ -128,14 +128,14 @@ $stmt = $conn->prepare($sql);
       margin-top: 6.5cm;
     }
 
-    #maindashboard1 {
+    /* #maindashboard1 {
       position: absolute;
       margin: auto;
       width: 310px;
       height: 310px;
       margin-left: 10.5cm;
       margin-top: 6.2cm;
-    }
+    } */
 
     #maindashboard2 {
       position: absolute;
@@ -193,7 +193,7 @@ $stmt = $conn->prepare($sql);
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="">
+          <a class="nav-link" href="order.php">
             <i class="fas fa-shopping-cart"></i> Orders
           </a>
         </li>
@@ -355,6 +355,7 @@ $stmt = $conn->prepare($sql);
       <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
       <div id="maindashboard"></div>
       <div class='frame'></div>
+
       <script>
         var data = <?php echo json_encode($data); ?>;
 
@@ -392,6 +393,91 @@ $stmt = $conn->prepare($sql);
       </script>
 
       <?php
+      /*
+      $servername = "localhost";
+      $username = "root";
+      $password = "";
+      $dbname = "fund";
+
+      $conn = new mysqli($servername, $username, $password, $dbname);
+
+      // ตรวจสอบการเชื่อมต่อ
+      if ($conn->connect_error) {
+        die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+      }
+
+       
+       $sql = "SELECT information, COUNT(*) AS count_info FROM appointmen GROUP BY information";
+       $result = $conn->query($sql);
+
+        
+       $data = array();
+       while ($row = $result->fetch_assoc()) {
+           $info[] = array(
+               'name' => $row['information'],
+               'value' => $row['count_info']
+           );
+       }
+       $conn->close();
+       
+      ?>
+       <div id="maindashboard1"></div>
+       <div class='frame1'></div>
+       <script>
+           var info = <?php echo json_encode($info); ?>;
+           var chartDom = document.getElementById('maindashboard1');
+         var myChart = echarts.init(chartDom);
+         var data = <?php echo json_encode($info); ?>;
+         var option;
+
+         option = {
+           title:{
+             text: 'จำนวนการนัดจองต่างๆ',
+             left:'center',
+             top:'4.3%'
+           },
+             tooltip: {
+                 trigger: 'item'
+             },
+             legend: {
+               top: '17%',
+               left: 'center'
+             },
+             series: [
+                 {
+                     name: 'Access From',
+                     type: 'pie',
+                     top:'20%',
+                     radius: ['40%', '70%'],
+                     avoidLabelOverlap: false,
+                     label: {
+                         show: false,
+                         position: 'center'
+                     },
+                     emphasis: {
+                         label: {
+                             show: true,
+                             fontSize: 40,
+                             fontWeight: 'bold'
+                         }
+                     },
+                     labelLine: {
+                         show: false
+                     },
+                     data: info
+                 }
+             ]
+         };
+
+         option && myChart.setOption(option);
+         
+      </script>*/
+      ?>
+
+      
+      
+      <?php
+      // การเชื่อมต่อกับฐานข้อมูล
       $servername = "localhost";
       $username = "root";
       $password = "";
@@ -405,100 +491,19 @@ $stmt = $conn->prepare($sql);
       }
 
       // คำสั่ง SQL
-      // $sql = "SELECT information, COUNT(*) AS count_info FROM appointmen GROUP BY information";
-      // $result = $conn->query($sql);
+      $sql = "SELECT gender, COUNT(*) AS count_sex FROM patien GROUP BY gender";
+      $result = $conn->query($sql);
 
-      // // สร้างตัวแปร JSON
-      // $data = array();
-      // while ($row = $result->fetch_assoc()) {
-      //     $info[] = array(
-      //         'name' => $row['information'],
-      //         'value' => $row['count_info']
-      //     );
-      // }
-      // $conn->close();
-      // 
+      // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
+      $data = array();
+      while ($row = $result->fetch_assoc()) {
+        $gen[] = array(
+          'name' => $row['gender'],
+          'value' => $row['count_sex']
+        );
+      }
+      $conn->close();
       ?>
-      // <div id="maindashboard1"></div>
-      // <div class='frame1'></div>
-      // <script>
-        //   var info = <?php echo json_encode($info); ?>;
-        //   var chartDom = document.getElementById('maindashboard1');
-        // var myChart = echarts.init(chartDom);
-        // var data = <?php echo json_encode($info); ?>;
-        // var option;
-
-        // option = {
-        //   title:{
-        //     text: 'จำนวนการนัดจองต่างๆ',
-        //     left:'center',
-        //     top:'4.3%'
-        //   },
-        //     tooltip: {
-        //         trigger: 'item'
-        //     },
-        //     legend: {
-        //       top: '17%',
-        //       left: 'center'
-        //     },
-        //     series: [
-        //         {
-        //             name: 'Access From',
-        //             type: 'pie',
-        //             top:'20%',
-        //             radius: ['40%', '70%'],
-        //             avoidLabelOverlap: false,
-        //             label: {
-        //                 show: false,
-        //                 position: 'center'
-        //             },
-        //             emphasis: {
-        //                 label: {
-        //                     show: true,
-        //                     fontSize: 40,
-        //                     fontWeight: 'bold'
-        //                 }
-        //             },
-        //             labelLine: {
-        //                 show: false
-        //             },
-        //             data: info
-        //         }
-        //     ]
-        // };
-
-        // option && myChart.setOption(option);
-        // 
-      </script>
-      // <?php
-
-          // การเชื่อมต่อกับฐานข้อมูล
-          $servername = "localhost";
-          $username = "root";
-          $password = "";
-          $dbname = "fund";
-
-          $conn = new mysqli($servername, $username, $password, $dbname);
-
-          // ตรวจสอบการเชื่อมต่อ
-          if ($conn->connect_error) {
-            die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
-          }
-
-          // คำสั่ง SQL
-          $sql = "SELECT gender, COUNT(*) AS count_sex FROM patien GROUP BY gender";
-          $result = $conn->query($sql);
-
-          // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
-          $data = array();
-          while ($row = $result->fetch_assoc()) {
-            $gen[] = array(
-              'name' => $row['gender'],
-              'value' => $row['count_sex']
-            );
-          }
-          $conn->close();
-          ?>
       <div id="maindashboard2"></div>
       <div class='frame2'></div>
       <script>
@@ -539,6 +544,8 @@ $stmt = $conn->prepare($sql);
         // นำคอนฟิก Option ไปใช้กับ Bar Chart
         barChart.setOption(option);
       </script>
+
+
       <?php
       $servername = "localhost";
       $username = "root";
@@ -550,135 +557,59 @@ $stmt = $conn->prepare($sql);
       // ตรวจสอบการเชื่อมต่อ
       if ($conn->connect_error) {
         die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
-        $sql = "SELECT infomation, COUNT(*) AS count_info FROM reports GROUP BY infomation";
+      }
+        $sql = "SELECT information, COUNT(*) AS count_info FROM reports GROUP BY information";
         $result = $conn->query($sql);
-
+  
         // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
-        $report = array();
+        $data = array();
         while ($row = $result->fetch_assoc()) {
           $report[] = array(
-            'name' => $row['infomtion'],
-            'reportvalue' => $row['count_info']
+            'name' => $row['information'],
+            'value' => $row['count_info']
           );
         }
         $conn->close();
-      }
       ?>
-
-
-
 
       <div id="maindashboard3"></div>
       <div class='frame3'></div>
       <script>
         var report = <?php echo json_encode($report); ?>;
-        var chartDom = document.getElementById('maindashboard3');
-        var myChart = echarts.init(chartDom);
-        var option;
 
-        option = {
-          xAxis: {
-            data: ['ผ่าฟัน', 'จัดฟัน', 'อุดฟัน','รักษารากฟัน','ขูดหินปูน','อื่นๆ']
-          },
-          yAxis: {
-            type: 'value',
-            name: 'จำนวน',
-            formatter: 1
-          },
-          dataGroupId: '',
-          animationDurationUpdate: 500,
-          series: {
-            type: 'bar',
-            id: 'sales',
-            data: [{
-                value: 5,
-                groupId: 'animals'
-              },
-              {
-                value: 2,
-                groupId: 'fruits'
-              },
-              {
-                value: 4,
-                groupId: 'cars'
-              }
-            ],
-            universalTransition: {
-              enabled: true,
-              divideShape: 'clone'
-            }
-          }
-        };
-        const drilldownData = [{
-            dataGroupId: 'animals',
-            data: [
-              ['Cats', 4],
-              ['Dogs', 2],
-              ['Cows', 1],
-              ['Sheep', 2],
-              ['Pigs', 1]
-            ]
-          },
-          {
-            dataGroupId: 'fruits',
-            data: [
-              ['Apples', 4],
-              ['Oranges', 2]
-            ]
-          },
-          {
-            dataGroupId: 'cars',
-            data: [
-              ['Toyota', 4],
-              ['Opel', 2],
-              ['Volkswagen', 2]
-            ]
-          }
-        ];
-        myChart.on('click', function(event) {
-          if (event.data) {
-            var subData = drilldownData.find(function(data) {
-              return data.dataGroupId === event.data.groupId;
-            });
-            if (!subData) {
-              return;
-            }
-            myChart.setOption({
-              xAxis: {
-                data: subData.data.map(function(item) {
-                  return item[0];
-                })
-              },
-              series: {
-                type: 'bar',
-                id: 'sales',
-                dataGroupId: subData.dataGroupId,
-                data: subData.data.map(function(item) {
-                  return item[1];
-                }),
-                universalTransition: {
-                  enabled: true,
-                  divideShape: 'clone'
-                }
-              },
-              graphic: [{
-                type: 'text',
-                left: 50,
-                top: 20,
-                style: {
-                  text: 'Back',
-                  fontSize: 18
-                },
-                onclick: function() {
-                  myChart.setOption(option);
-                }
-              }]
-            });
-          }
-        });
+// สร้าง Bar Chart ด้วย ECharts
+var barChart = echarts.init(document.getElementById('maindashboard3'));
 
-        option && myChart.setOption(option);
-      </script>
+// กำหนดคอนฟิกสำหรับ Bar Chart
+var option = {
+  title: {
+    text: 'จำนวนผู้ชายและผู้หญิงในฐานข้อมูล',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  xAxis: {
+    type: 'category',
+    data: ['ผ่าฟัน', 'จัดฟัน','อุดฟัน','รักษารากฟัน','ขูดหินปูน']
+  },
+  yAxis: {
+    type: 'value',
+    name: 'จำนวน',
+  },
+  series: [{
+    data: report,
+    type: 'bar',
+    top: '10%'
+  }]
+};
+
+// นำคอนฟิก Option ไปใช้กับ Bar Chart
+barChart.setOption(option);
+</script>
 </body>
 
 </html>
