@@ -172,20 +172,87 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                             <th>รหัสไปรษณีย์</th>
                                             <th>รายการสินค้า</th>
                                             <th>ยอดรวม</th>
+                                            <th>วันที่สั่งซื้อ</th>
                                             <th>สถานะการสั่งซื้อ</th>
                                             <th>หลักฐานการโอน  </th>
 
                                         </tr>
-                                    </thead>
-                                        <!-- <tr>
-                                            <td>Donna Snider</td>
-                                            <td>Customer Support</td>
-                                            <td>New York</td>
-                                            <td>27</td>
-                                            <td>2011/01/25</td>
-                                            <td>$112,000</td>
-                                        </tr> -->
-                                    </tbody>
+                                        </thead>
+                                        
+<tbody>
+<?php
+// Include database configuration
+require_once '../config2/db2.php';
+
+// SQL query to fetch data from order2 table
+$sql = "SELECT * FROM `order2` ORDER BY `created_at` DESC";
+$result = $conn->query($sql);
+
+if ($result->rowCount() > 0) {
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        // Output data from each row
+        echo "<tr>";
+        echo "<td>" . $row['id'] . "</td>";
+        echo "<td>" . $row['name'] . "</td>";
+        echo "<td>" . $row['number'] . "</td>";
+        echo "<td>" . $row['email'] . "</td>";
+        echo "<td>" . $row['method'] . "</td>";
+        echo "<td>" . $row['flat'] . "</td>";
+        echo "<td>" . $row['street'] . "</td>";
+        echo "<td>" . $row['city'] . "</td>";
+        echo "<td>" . $row['state'] . "</td>";
+        echo "<td>" . $row['country'] . "</td>";
+        echo "<td>" . $row['pin_code'] . "</td>";
+        echo "<td>" . $row['total_products'] . "</td>";
+        echo "<td>" . $row['total_price'] . "</td>";
+        echo "<td>" . $row['created_at'] . "</td>";
+        echo "<td>" . $row['order_status'] . "</td>";
+        
+        // Check if 'pay' field has a value (image filename)
+        if (!empty($row['pay'])) {
+            // Construct the image path
+            $imagePath = "../shopping cart/uploaded_img/" . $row['pay']; // Adjust the path accordingly
+            
+            // Check if the image file exists
+            if (file_exists($imagePath)) {
+                // Display image as a clickable link
+                echo "<td><a href='" . $imagePath . "' target='_blank'><img src='" . $imagePath . "' width='100' height='100'></a></td>";
+            } else {
+                // Display a placeholder if the image file does not exist
+                echo "<td>No Image</td>";
+            }
+        } else {
+            // Display a placeholder if no image
+            echo "<td>No Image</td>";
+        }
+        
+        echo "</tr>";
+    }
+} else {
+    echo "No records found";
+}
+?>
+</tbody>
+                                  <tfoot>
+                                        <tr>  
+                                            <td><?=$row['id'] ?></td>
+                                            <td><?=$row['name'] ?></td>
+                                            <td><?=$row['method'] ?></td>
+                                            <td><?=$row['flat'] ?></td>
+                                            <td><?=$row['street'] ?></td>
+                                            <td><?=$row['city'] ?></td>
+                                            <td><?=$row['state'] ?></td>
+                                            <td><?=$row['country'] ?></td>
+                                            <td><?=$row['pin_code'] ?></td>
+                                            <td><?=$row['total_products'] ?></td>
+                                            <td><?=$row['total_price'] ?></td>
+                                            <td><?=$row['order_status'] ?></td>
+                                            <td><?=$row['created_at'] ?></td>
+                                            <td><img src='<?php echo $row['pay']; ?>' width='100' height='100'></td>
+
+                                        </tr>
+                                       </tfoot>
+                                    
                                 </table>
                             </div>
                         </div>
@@ -201,5 +268,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+        <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        new simpleDatatables.DataTable('#datatablesSimple');
+    });
+</script>
+
+        
     </body>
 </html>
