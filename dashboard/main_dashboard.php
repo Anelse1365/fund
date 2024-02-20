@@ -192,6 +192,11 @@ position: absolute;
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="finishreceipt.php">
+            <i class="fas fa-users"></i> Receipt
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="doctorsdash.php">
             <i class="fas fa-users"></i> doctor
           </a>

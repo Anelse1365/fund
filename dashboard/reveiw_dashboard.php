@@ -162,7 +162,7 @@ try {
             subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
         }
     </script>
-        <li class="nav-item">
+         <li class="nav-item">
           <a class="nav-link" href="dashb.php">
             <i class="fas fa-users"></i> Patient
           </a>
@@ -170,6 +170,11 @@ try {
         <li class="nav-item">
           <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="finishreceipt.php">
+            <i class="fas fa-users"></i> Receipt
           </a>
         </li>
         <li class="nav-item">
@@ -183,7 +188,7 @@ try {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="Report.php">
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>

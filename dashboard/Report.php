@@ -40,7 +40,7 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center mb-4">ทำประวัติคนไข้</h1>
+        <h1 class="text-center mb-4">ประวัติคนไข้</h1>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -79,6 +79,7 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td>
                         <a href='editreports.php?id=<?php echo $report["id"]; ?>' class='btn btn-primary'>แก้ไข</a>
                         <a href='deletereports.php?id=<?php echo $report["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>
+                       
                     </td>
                 </tr>
                 <?php endforeach; ?>

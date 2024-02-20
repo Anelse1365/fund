@@ -6,7 +6,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 
 ?>
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
     body {
       padding-top: 56px; /* สำหรับ Navbar ด้านบน */
     }
@@ -29,6 +39,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     }
     .sidebar .nav-link {
       color: #fff;
+      padding: 10px 20px; /* กำหนดระยะห่างของ nav-link ด้านบนและด้านล่าง 20px ด้านซ้ายและด้านขวา 10px */
     }
     .sidebar .nav-link:hover {
       background-color: rgba(255, 255, 255, 0.1);
@@ -38,15 +49,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
       padding: 20px;
     }
     .sidebar {
-  width: 200px; /* เพิ่มความกว้างที่ต้องการ */
-}
+      width: 200px; /* เพิ่มความกว้างที่ต้องการ */
+    }
+    .sidebar .nav-item {
+      margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างของแต่ละ nav-item ไปยัง nav-item ถัดไป */
+    }
 
-.sidebar-sticky {
-  padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
-  height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
-  overflow-x: hidden;
-  overflow-y: auto;
-}
+    .sidebar-sticky {
+      padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
+      height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
 #maindashboard{
 position: absolute;
     margin: auto;
@@ -72,19 +86,12 @@ position: absolute;
     right:8cm;
     
 }
-  </style>
-<header class="header">
-<meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</style>
+</head>
 
- <!-- Navbar -->
- <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
- <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">Dashboard</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,22 +99,17 @@ position: absolute;
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
-          
+
+          <!-- Display the logged-in username -->
+        
+        
+          <!-- Add the Log Out button -->
           <li class="nav-item">
-            <!-- <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a> -->
+            <a class="nav-link" href="../logout2.php">ออกจากระบบ</a>
           </li>
-                  <!-- Display the logged-in username -->
-        
-        
-        <!-- Add the Log Out button -->
-          <li class="nav-item">
-          <a class="nav-link" href="../logout2.php">ออกจากระบบ</a>
-        </li>
         </ul>
       </div>
     </div>
-  </nav>
-
   </nav>
 
   <!-- Sidebar -->
@@ -128,9 +130,9 @@ position: absolute;
     <a href="#" class="nav-link" onclick="toggleSubMenu('accountsSubMenu')">
         <i class="fas fa-box"></i> Products
     </a>
-    <ul style="display: <?php echo ($current_page == '..dash_produc.php' or 'admin.php') ? 'block' : 'none'; ?>">
+    <ul style="display: <?php echo ($current_page == '../dashboard/dash_produc.php') ? 'block' : 'none'; ?>">
         <a class="nav-link" href="../dashboard/dash_produc.php">Statistic</a>
-        <a class="nav-link" href="admin.php">Upload</a>
+        <a class="nav-link" href="..\shopping cart\admin.php">Upload</a>
     </ul>
 </li>
 <script>
@@ -150,12 +152,22 @@ position: absolute;
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="finishreceipt.php">
+            <i class="fas fa-users"></i> Receipt
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="../dashboard/doctorsdash.php">
             <i class="fas fa-users"></i> doctor
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="../dashboard/reveiw_dashboard.php">
+            <i class="fas fa-users"></i> Reviews
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../dashboard/Reports.php">
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
