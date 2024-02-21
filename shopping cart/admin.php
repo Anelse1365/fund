@@ -78,6 +78,7 @@ if(isset($_POST['update_product'])){
    <link rel="stylesheet" href="css/style.css">
 
 </head>
+
 <body>
    
 <?php
@@ -92,6 +93,7 @@ if(isset($message)){
 
 
 <?php include 'header.php'; ?>
+
 
 <div class="container">
 
@@ -181,6 +183,16 @@ if(isset($message)){
 
 <!-- custom js file link  -->
 <script src="js/script.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="../dashboard/js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
+
 
 </body>
 </html>
