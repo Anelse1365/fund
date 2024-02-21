@@ -158,9 +158,9 @@ if(isset($_GET['id'])) {
       <div class="form-group">
         <label for="gender">Gender:</label>
         <select class="form-control" id="gender" name="gender">
-          <option value="male" <?php echo (isset($reports['gender']) && $reports['gender'] == 'ชาย') ? 'selected' : ''; ?>>ชาย</option>
-          <option value="female" <?php echo (isset($reports['gender']) && $reports['gender'] == 'หญิง') ? 'selected' : ''; ?>>หญิง</option>
-          <option value="other" <?php echo (isset($reports['gender']) && $reports['gender'] == 'อื่นๆ') ? 'selected' : ''; ?>>อื่นๆ</option>
+          <option value="ชาย" <?php echo (isset($reports['gender']) && $reports['gender'] == 'ชาย') ? 'selected' : ''; ?>>ชาย</option>
+          <option value="หญิง" <?php echo (isset($reports['gender']) && $reports['gender'] == 'หญิง') ? 'selected' : ''; ?>>หญิง</option>
+          <option value="อื่นๆ" <?php echo (isset($reports['gender']) && $reports['gender'] == 'อื่นๆ') ? 'selected' : ''; ?>>อื่นๆ</option>
         </select>
       </div>
       <div class="form-group">
