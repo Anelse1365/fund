@@ -558,17 +558,21 @@ $stmt = $conn->prepare($sql);
       if ($conn->connect_error) {
         die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
       }
-        $sql = "SELECT information, COUNT(*) AS count_info FROM reports GROUP BY information";
+        $sql = "SELECT information, COUNT(*) AS count_info 
+        SUM(CASE WHEN gender = 'ชาย' THEN 1 ELSE 0 END) AS male_count,
+        SUM(CASE WHEN gender = 'หญิง' THEN 1 ELSE 0 END) AS female_count,
+        From reports
+        GROUP BY information";
         $result = $conn->query($sql);
   
-        // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
-        $data = array();
+        $report = array();
         while ($row = $result->fetch_assoc()) {
           $report[] = array(
             'name' => $row['information'],
             'value' => $row['count_info']
           );
         }
+        
         $conn->close();
       ?>
 
@@ -578,37 +582,112 @@ $stmt = $conn->prepare($sql);
         var report = <?php echo json_encode($report); ?>;
 
 // สร้าง Bar Chart ด้วย ECharts
-var barChart = echarts.init(document.getElementById('maindashboard3'));
+var chartDom = document.getElementById('maindashboard3');
+var myChart = echarts.init(chartDom);
+var option;
 
-// กำหนดคอนฟิกสำหรับ Bar Chart
-var option = {
-  title: {
-    text: 'จำนวนผู้ชายและผู้หญิงในฐานข้อมูล',
-    left: 'center'
-  },
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow'
-    }
-  },
+option = {
   xAxis: {
-    type: 'category',
-    data: ['ผ่าฟัน', 'จัดฟัน','อุดฟัน','รักษารากฟัน','ขูดหินปูน']
+    data: ['Animals', 'Fruits', 'Cars']
   },
-  yAxis: {
-    type: 'value',
-    name: 'จำนวน',
-  },
-  series: [{
-    data: report,
+  yAxis: {},
+  dataGroupId: '',
+  animationDurationUpdate: 500,
+  series: {
     type: 'bar',
-    top: '10%'
-  }]
+    id: 'sales',
+    data: [
+      {
+        value: report[0],
+        groupId: 'animals'
+      },
+      {
+        value: 2,
+        groupId: 'fruits'
+      },
+      {
+        value: 4,
+        groupId: 'cars'
+      }
+    ],
+    universalTransition: {
+      enabled: true,
+      divideShape: 'clone'
+    }
+  }
 };
+const drilldownData = [
+  {
+    dataGroupId: 'animals',
+    data: [
+      ['Cats', 4],
+      ['Dogs', 2],
+      ['Cows', 1],
+      ['Sheep', 2],
+      ['Pigs', 1]
+    ]
+  },
+  {
+    dataGroupId: 'fruits',
+    data: [
+      ['Apples', 4],
+      ['Oranges', 2]
+    ]
+  },
+  {
+    dataGroupId: 'cars',
+    data: [
+      ['Toyota', 4],
+      ['Opel', 2],
+      ['Volkswagen', 2]
+    ]
+  }
+];
+myChart.on('click', function (event) {
+  if (event.data) {
+    var subData = drilldownData.find(function (data) {
+      return data.dataGroupId === event.data.groupId;
+    });
+    if (!subData) {
+      return;
+    }
+    myChart.setOption({
+      xAxis: {
+        data: subData.data.map(function (item) {
+          return item[0];
+        })
+      },
+      series: {
+        type: 'bar',
+        id: 'sales',
+        dataGroupId: subData.dataGroupId,
+        data: subData.data.map(function (item) {
+          return item[1];
+        }),
+        universalTransition: {
+          enabled: true,
+          divideShape: 'clone'
+        }
+      },
+      graphic: [
+        {
+          type: 'text',
+          left: 50,
+          top: 20,
+          style: {
+            text: 'Back',
+            fontSize: 18
+          },
+          onclick: function () {
+            myChart.setOption(option);
+          }
+        }
+      ]
+    });
+  }
+});
 
-// นำคอนฟิก Option ไปใช้กับ Bar Chart
-barChart.setOption(option);
+option && myChart.setOption(option);
 </script>
 </body>
 
