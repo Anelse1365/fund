@@ -237,6 +237,11 @@ $stmt = $conn->prepare($sql);
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="finishreceipt.php">
+            <i class="fas fa-"></i> Receipt
+          </a>
+        </li>
       </ul>
     </div>
   </nav>
