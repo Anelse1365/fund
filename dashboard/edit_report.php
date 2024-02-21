@@ -28,7 +28,7 @@ if(isset($_GET['id'])) {
         // Check if form is submitted
         if(isset($_POST['submit'])) {
             // Retrieve form data
-            $reports = $_POST['reports'];
+            $patient = $_POST['patient'];
             $email = $_POST['email'];
             $phone_number = $_POST['phone_number'];
             $age = $_POST['age'];
@@ -43,10 +43,11 @@ if(isset($_GET['id'])) {
             $comment = $_POST['comment'];
 
             // Prepare SQL statement to update reports data
-            $update_stmt = $conn->prepare("UPDATE reports SET reports=:reports, email=:email, phone_number=:phone_number, age=:age, gender=:gender, nationality=:nationality, state=:state , doctor=:doctor, date=:date, timeInput=:timeInput, information=:information, price=:price, comment=:comment WHERE id=:id");
-            $update_stmt->bindParam(':reports', $reports);
+            $update_stmt = $conn->prepare("UPDATE reports SET patient=:patient, email=:email, phone_number=:phone_number, age=:age, gender=:gender, nationality=:nationality, state=:state , doctor=:doctor, date=:date, timeInput=:timeInput, information=:information, price=:price, comment=:comment WHERE id=:id");
+            $update_stmt->bindParam(':id', $id);
+            $update_stmt->bindParam(':patient', $patient);
             $update_stmt->bindParam(':email', $email);
-            $phone_number = $_POST('phone_number', $phone_number);
+            $update_stmt->bindParam(':phone_number', $phone_number);
             $update_stmt->bindParam(':age', $age);
             $update_stmt->bindParam(':gender', $gender);
             $update_stmt->bindParam(':nationality', $nationality);
@@ -63,6 +64,11 @@ if(isset($_GET['id'])) {
                 echo "Patien data updated successfully.";
             } else {
                 echo "Error updating patien data.";
+            }
+
+            if(!$update_stmt->execute()) {
+              $errorInfo = $update_stmt->errorInfo();
+              echo "Error updating patient data: " . $errorInfo[2];
             }
         }
     } catch(PDOException $e) {
@@ -191,7 +197,7 @@ if(isset($_GET['id'])) {
       </div>
       <button type="submit" class="btn btn-primary" name="submit">Submit</button>
     </form>
-    <a href="dashb.php" class="btn btn-secondary mt-3">กลับหน้าหลัก</a>
+    <a href="report.php" class="btn btn-secondary mt-3">กลับหน้าหลัก</a>
   </div>
 
   <!-- Bootstrap JS -->
