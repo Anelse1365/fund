@@ -49,11 +49,11 @@ if(isset($_POST['submit'])) {
     $gender = $_POST['gender'];
     $nationality = $_POST['nationality'];
     $state = $_POST['state'];
-    $information = $_POST['information'];
+  
     $doctor = $_POST['doctor'];
 
     // คำสั่ง SQL สำหรับการอัปเดตข้อมูล
-    $sql = "UPDATE receipe SET patient = :patient, email = :email, phone_number = :phone_number, age = :age, gender = :gender, nationality = :nationality, state = :state, information = :information, doctor = :doctor WHERE id = :id";
+    $sql = "UPDATE receipe SET patient = :patient, email = :email, phone_number = :phone_number, age = :age, gender = :gender, nationality = :nationality, state = :state,  doctor = :doctor WHERE id = :id";
 
     // ประมวลผลคำสั่ง SQL
     $stmt = $conn->prepare($sql);
@@ -64,7 +64,7 @@ if(isset($_POST['submit'])) {
     $stmt->bindParam(':gender', $gender);
     $stmt->bindParam(':nationality', $nationality);
     $stmt->bindParam(':state', $state);
-    $stmt->bindParam(':information', $information);
+   
     $stmt->bindParam(':doctor', $doctor);
     $stmt->bindParam(':id', $id);
     $stmt->execute();
@@ -124,10 +124,7 @@ if(isset($_POST['submit'])) {
                 <label for="state">คลินิก:</label>
                 <input type="text" class="form-control" name="state" value="<?php echo $appointment['state']; ?>">
             </div>
-            <div class="form-group">
-                <label for="information">บริการ:</label>
-                <input type="text" class="form-control" name="information" value="<?php echo $appointment['information']; ?>">
-            </div>
+        
             <div class="form-group">
                 <label for="doctor">หมอ:</label>
                 <select class="form-control" name="doctor" required>

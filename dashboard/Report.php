@@ -124,6 +124,10 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Appointment
                             </a>
+                            <a class="nav-link" href="finishreceipt.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Receipt
+                            </a>
                             <a class="nav-link" href="Report.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Report
@@ -160,7 +164,12 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </li>
         <li class="nav-item">
           <a class="nav-link" href="doctorsdash.php">
-            <i class="fas fa-users"></i> doctor
+            <i class="fas fa-users"></i> Doctor
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="finishreceipt.php">
+            <i class="fas fa-users"></i> Receipt
           </a>
         </li>
         <li class="nav-item">
