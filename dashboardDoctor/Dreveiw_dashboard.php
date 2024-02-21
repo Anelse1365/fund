@@ -1,17 +1,41 @@
-<?php 
-    session_start();
+<?php
+session_start();
+
     require_once '../config2/db2.php';
     if (!isset($_SESSION['admin_login'])) {
         $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
         header('location:../signin2.php');
-  
     }
-      //แสดงชื่อ
-  if (isset($_SESSION['admin_login'])) {
-    $user_id = $_SESSION['admin_login'];
-    $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (isset($_SESSION['admin_login'])) {
+      $user_id = $_SESSION['admin_login'];
+      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+
+
+              // SQL query to fetch data from database
+  $sql = "SELECT * FROM patien";
+  $stmt = $conn->prepare($sql);
+
+// เชื่อมต่อฐานข้อมูล
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fund";
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    // เซ็ตโหมดของ PDO เพื่อให้แสดงข้อผิดพลาดออกมา
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // ดึงข้อมูลจากตาราง reviews
+    $stmt = $conn->query("SELECT * FROM reviews");
+    $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    // หากเกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล
+    echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -39,7 +63,7 @@
                    
                     
                 </div>
-            </form>
+                </form>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -102,27 +126,27 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Ddashbapomen.php">
+          <a class="nav-link" href="dashbapomen.php">
             <i class="fas fa-users"></i> Appointment
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Dfinishreceipt.php">
+          <a class="nav-link" href="finishreceipt.php">
             <i class="fas fa-users"></i> Receipt
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Ddoctorsdash.php">
+          <a class="nav-link" href="doctorsdash.php">
             <i class="fas fa-users"></i> doctor
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Dreveiw_dashboard.php">
+          <a class="nav-link" href="reveiw_dashboard.php">
             <i class="fas fa-users"></i> Reviews
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="DReport.php">
+          <a class="nav-link" href="Report.php">
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
@@ -130,71 +154,47 @@
     </div>
   </nav>
 
-  <div class="container mt-5">
-    <h2 class="mb-3">Appointment</h2>
 
-    
 
- 
-<div class="table-responsive">
-  <table class="table table-striped table-bordered"> 
-    <thead>
-      <tr>
-        <th>ชื่อ</th>
-        <th>Email</th>
-        <th>เบอร์โทร</th>
-        <th>อายุ</th>
-        <th>เพศ</th>
-        <th>สัญชาติ</th>
-        <th>คลินิก</th>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">ข้อมูลการรีวิว</h2>
+
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ผู้รีวิว</th>
+                    <th>ชื่อหมอ</th>
+                    <th>comment</th>
+                    <th>คะแนน</th>
+                    <th>อีเมล</th>
+                    <th>วันที่/เวลา</th>
+                    <th>แก้ไข</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($reviews as $reviews): ?>
+                <tr>
+                    <td><?php echo $reviews['patient']; ?></td>
+                    <td><?php echo $reviews['doctor_name']; ?></td>
+                    <td><?php echo $reviews['comment']; ?></td>
+                    <td><?php echo $reviews['rating']; ?></td>
+                    <td><?php echo $reviews['email']; ?></td>
+                    <td><?php echo $reviews['created_at']; ?></td>
+                    <td>
+                       <!-- <a href="edit_review_dashboard.php?id=<?php echo $reviews['id']; ?>" class="btn btn-primary btn-sm">แก้ไข</a> -->
+                        <a href="delete_review_dashboard.php?id=<?php echo $reviews['id']; ?>" class="btn btn-danger btn-sm">ลบ</a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
        
-        <th>เวลาที่ส่ง</th>
-        <th>แก้ไข</th>
-      </tr>
-    </thead>
-    <tbody>
-    <?php
-      // Connection to database
-      $servername = "localhost";
-      $username = "root";
-      $password = "";
-      $dbname = "fund";
-      try {
-          $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-          $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-          // SQL query to fetch data from database
-          $sql = "SELECT * FROM appointmen";
-          $stmt = $conn->prepare($sql);
-          $stmt->execute();
-
-          // Output data of each row
-          while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            echo "<tr>
-                   <td>".$row["patient"]."</td>
-                   <td>".$row["email"]."</td>
-                   <td>".$row["phone_number"]."</td>
-                   <td>".$row["age"]."</td>
-                   <td>".$row["gender"]."</td>
-                   <td>".$row["nationality"]."</td>
-                   <td>".$row["state"]."</td>
-                 
-                   <td>".$row["created_at"]."</td>
-                   <td><a href='Ddashbapomen/Dreceiptapomen.php?id=".$row['id']."' class='btn btn-primary'>ทำการนัด</a>
-                   <a href='deleteappointment.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>
-                   <a href='finishreceipt.php?id=".$row["id"]."' class='btn btn-info btn-sm'><i class='fas fa-eye'></i> ดูใบเสร็จ</a></td>
-                  </tr>";
-          }
-      } catch(PDOException $e) {
-          echo "Error: " . $e->getMessage();
-      }
-      ?>
-    </tbody>
-  </table>
+    </div>
 </div>
 
-
-<!-- Bootstrap JS -->
+<!-- ลิงก์ JavaScript ของ Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
@@ -206,5 +206,9 @@
 </html>
 
 
-                            
-                         
+
+
+
+
+
+
