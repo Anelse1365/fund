@@ -133,10 +133,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Appointment
                             </a>
-                            <a class="nav-link" href="finishreceipt.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Receipt
-                            </a>
                             <a class="nav-link" href="Report.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Report
@@ -164,24 +160,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 <a href="order_yes.php"><button type="button" class="btn btn-outline-success">ชำระแล้ว</button></a>
                                 <a href="order.php"><button type="button" class="btn btn-outline-success">ยังไม่ชำระเงิน</button></a>
                                 <a href="order_no.php"><button type="button" class="btn btn-outline-success">ยกเลิกการสั่งซื้อ</button></a>
-                                </div>
-                                <br>
-                                <div>
-                                    <form name="for1" method="POST" action="order.php">
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <input type="date" name="dt1" class="form-control">
-                                        </div>
-                                        <div class="col-sm-2">
-                                        <input type="date" name="dt2" class="form-control">
-                                        </div>
-                                        <div class="col-sm-4">
-                                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
-                                        </div>
-                                        </div>
-
-
-                                    </form>
 
                                 </div>
 
@@ -206,8 +184,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                             <th>ยอดรวม</th>
                                             <th>วันที่สั่งซื้อ</th>
                                             <th>สถานะการสั่งซื้อ</th>
-                                            <th>ยืนยันคำสั่งซื้อ</th>
-                                            <th>ยกเลิกคำสั่งซื้อ</th>
                                             <th>หลักฐานการโอน</th>
                                             
                                             
@@ -220,21 +196,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
 // Include database configuration
 require_once '../config2/db2.php';
 
-$ddt1=@$_POST['dt1'];
-$ddt2=@$_POST['dt2'];
-$add_date=date('Y-m-d', strtotime($ddt2 . "+1 days"));
-
-if(($ddt1 != "") & ($ddt2 != "")){
-    echo "ค้นหาจากวันที่ $ddt1 ถึง $ddt2";
-    $sql = "SELECT * FROM order2 WHERE order_status='1' AND created_at BETWEEN '$ddt1' AND '$add_date' ORDER BY created_at DESC";
-} else {
-    $sql = "SELECT * FROM `order2` WHERE order_status ='1' ORDER BY created_at DESC";
-}
-
-
 // SQL query to fetch data from order2 table
-// $sql = "SELECT * FROM `order2` ORDER BY `created_at` DESC"; ขึ้นหมด
-
+// $sql = "SELECT * FROM `order2` ORDER BY `created_at` DESC";
+$sql = "SELECT * FROM `order2` where order_status ='0' ORDER BY `created_at` DESC";
 $result = $conn->query($sql);
 
 if ($result->rowCount() > 0) {
@@ -264,17 +228,13 @@ if (isset($row['order_status'])) {
     if ($status == 1) {
         echo "ยังไม่ได้ชำระเงิน";
     } else if ($status == 2) {
-        echo "<b style= 'color:green'>ชำระเงินแล้ว</b>";
+        echo "ชำระเงินแล้ว";
     } else if ($status == 0) {
         echo "<b style= 'color:red'> ยกเลิกการสั่งซื้อ</b>";
     }
 }
 echo "</td>"; // Close the <td> tag for order status
-
-        echo "<td> <a href='product_dash/pay_order.php?id=" . $row['id'] . "' class='btn btn-success' onclick=\"del1(this.href); return false;\">ยืนยัน</a></td>";
-        echo "<td> <a href='product_dash/cancel_order.php?id=" . $row['id'] . "' class='btn btn-danger' onclick=\"del(this.href); return false;\">ยกเลิก</a></td>";
-
-
+     
 
 
 
@@ -301,7 +261,7 @@ echo "</td>"; // Close the <td> tag for order status
         echo "</tr>";
     }
 } else {
-    echo "ไม่พบ";
+    echo "No records found";
 }
 
  
@@ -363,12 +323,6 @@ echo "</td>"; // Close the <td> tag for order status
     var agree = confirm('คุณต้องการยกเลิกคำสั่งซื้อหรือไม่');
     if(agree){
       window.location=mypage;
-    }
-  }
-  function del1(mypage1){
-    var agree = confirm('คุณต้องการยืนยันคำสั่งซื้อหรือไม่');
-    if(agree){
-      window.location=mypage1;
     }
   }
 
