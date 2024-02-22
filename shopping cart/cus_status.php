@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config2/db2.php';
+require_once 'config.php';
 
 // ตรวจสอบการเข้าสู่ระบบของผู้ดูแลระบบ
 if (!isset($_SESSION['user_login'])) {
@@ -10,10 +10,25 @@ if (!isset($_SESSION['user_login'])) {
 }
 
 // เรียกข้อมูลลูกค้าที่ชำระเงินแล้วจากฐานข้อมูล โดยใช้ email เป็นเงื่อนไข
-$sql = "SELECT * FROM order2 WHERE order_status IN ('0', '1', '2') AND email IN (SELECT email FROM patien) ORDER BY created_at DESC";
-$result = $conn->query($sql);
+$user_id = $_SESSION['user_login'];  // ID ของผู้ใช้ที่ล็อกอินอยู่
+$sql = "SELECT email FROM patien WHERE id = ? LIMIT 1";
+$user_query = $conn->prepare($sql);
+$user_query->bind_param("i", $user_id); // ใช้ "i" สำหรับ integer
+$user_query->execute();
+$user_result = $user_query->get_result();
+
+// Check if user details are found
+if ($user_result->num_rows > 0) {
+    $user_email = $user_result->fetch_assoc()['email'];
+} else {
+    // Handle the case where user details are not found (optional)
+    $_SESSION['error'] = 'ไม่พบข้อมูลผู้ใช้!';
+    header('location:../signin2.php');
+    exit;
+}
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -67,6 +82,11 @@ $result = $conn->query($sql);
 
 <body>
     <div class="container">
+        <div class="text-right">
+             
+            
+            <p>ยินดีต้อนรับ, <?php echo $user_email; ?> | <a href="products.php">กลับ</a> | <a href="../logout2.php">ออกจากระบบ</a></p>
+        </div>
         <h1>Orders with Payment</h1>
         <div class="table-responsive">
             <table class="table">
@@ -87,36 +107,28 @@ $result = $conn->query($sql);
                 <tbody>
                     <!-- PHP code to fetch and display order data here -->
                     <!-- Sample data for demonstration purposes -->
-                    <?php if ($result && $result->rowCount() > 0): ?>
-                        <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
+                    <?php
+                    $sql_orders = "SELECT o.*
+                                   FROM order2 o
+                                   WHERE o.email = ? AND o.order_status IN ('0', '1', '2')
+                                   ORDER BY o.created_at DESC";
+                    $orders_query = $conn->prepare($sql_orders);
+                    $orders_query->bind_param("s", $user_email);
+                    $orders_query->execute();
+                    $orders_result = $orders_query->get_result();
+
+                    if ($orders_result->num_rows > 0): ?>
+                        <?php while ($row = $orders_result->fetch_assoc()): ?>
                             <tr>
-                                <td>
-                                    <?php echo $row['id']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['name']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['number']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['email']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['method']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['flat'] . ', ' . $row['street'] . ', ' . $row['city'] . ', ' . $row['state'] . ', ' . $row['country'] . ', ' . $row['pin_code']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['total_products']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['total_price']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['created_at']; ?>
-                                </td>
+                                <td><?php echo $row['id']; ?></td>
+                                <td><?php echo $row['name']; ?></td>
+                                <td><?php echo $row['number']; ?></td>
+                                <td><?php echo $row['email']; ?></td>
+                                <td><?php echo $row['method']; ?></td>
+                                <td><?php echo $row['flat'] . ', ' . $row['street'] . ', ' . $row['city'] . ', ' . $row['state'] . ', ' . $row['country'] . ', ' . $row['pin_code']; ?></td>
+                                <td><?php echo $row['total_products']; ?></td>
+                                <td><?php echo $row['total_price']; ?></td>
+                                <td><?php echo $row['created_at']; ?></td>
                                 <td>
                                     <?php
                                     if ($row['order_status'] == 0) {
