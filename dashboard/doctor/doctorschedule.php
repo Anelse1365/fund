@@ -53,7 +53,7 @@ $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container mt-4">
         <h2 class="mb-4">ลงบันทึกตารางงานของหมอ</h2>
         <form action="submit_schedule.php" method="POST">
-            <div class="form-group">
+        <div class="form-group">
                 <label for="doctor">เลือกหมอ:</label>
                 <select class="form-control" id="doctor" name="doctor" required>
                     <option value="">โปรดเลือกหมอ</option>
