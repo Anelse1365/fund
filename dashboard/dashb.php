@@ -187,6 +187,37 @@ $totalSales = $stmtTotalSales->fetchColumn();
   <!-- Content -->  
   <div class="container mt-5 col-8">
     <h2 class="mb-7">Patient List</h2>
+    <!-- เพิ่มฟอร์มสำหรับกรองข้อมูล -->
+<form method="get" action="">
+    <div class="row mb-3">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามชื่อ" name="firstname">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามอีเมล" name="search_email">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามเบอร์โทร" name="phone_numbere">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="อายุ" name="age">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="สัญชาติ" name="nationality">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="เพศ" name="gender">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ที่อยู่" name="address">
+        </div>
+        <!-- เพิ่มฟิลเตอร์อื่น ๆ ตามต้องการ -->
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">ค้นหา</button>
+        </div>
+    </div>
+</form>
+
     <div class="table-responsive">
       <table class="table table-striped table-bordered">
         <thead>
@@ -216,7 +247,39 @@ $totalSales = $stmtTotalSales->fetchColumn();
               $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
               // SQL query to fetch data from database
-              $sql = "SELECT * FROM patien";
+              $sql = "SELECT * FROM patien WHERE 1";
+
+              if(isset($_GET['firstname']) && !empty($_GET['firstname'])) {
+                $firstname = $_GET['firstname'];
+                $sql .= " AND firstname LIKE '%$firstname%'";
+            }
+        
+            if(isset($_GET['search_email']) && !empty($_GET['search_email'])) {
+                $search_email = $_GET['search_email'];
+                $sql .= " AND email LIKE '%$search_email%'";
+            }
+        
+            if(isset($_GET['phone_number']) && !empty($_GET['phone_number'])) {
+                $phone_number = $_GET['phone_number'];
+                $sql .= " AND phone_number LIKE '%$phone_number%'";
+            }
+            if(isset($_GET['age']) && !empty($_GET['age'])) {
+                $age = $_GET['age'];
+                $sql .= " AND age LIKE '%$age%'";
+            }
+            if(isset($_GET['gender']) && !empty($_GET['gender'])) {
+                $gender = $_GET['gender'];
+                $sql .= " AND gender          LIKE '%$gender%'";
+            }
+            if(isset($_GET['nationality']) && !empty($_GET['nationality'])) {
+                $nationality  = $_GET['nationality'];
+                $sql .= " AND  nationality    LIKE '%$nationality%'";
+            }
+            if(isset($_GET['address']) && !empty($_GET['address'])) {
+                $address  = $_GET['address'];
+                $sql .= " AND  address    LIKE '%$address%'";
+            }
+
               $stmt = $conn->prepare($sql);
               $stmt->execute();
 

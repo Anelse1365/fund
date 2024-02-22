@@ -14,8 +14,41 @@ try {
 }
 
 // สร้างคำสั่ง SQL เพื่อดึงข้อมูลจากตาราง receipe
-$sql = "SELECT * FROM receipe";
+ $sql = "SELECT * FROM receipe WHERE 1";
+ if(isset($_GET['patient']) && !empty($_GET['patient'])) {
+    $patient = $_GET['patient'];
+    $sql .= " AND patient LIKE '%$patient%'";
+}
 
+if(isset($_GET['search_email']) && !empty($_GET['search_email'])) {
+    $search_email = $_GET['search_email'];
+    $sql .= " AND email LIKE '%$search_email%'";
+}
+
+if(isset($_GET['phone_number']) && !empty($_GET['phone_number'])) {
+    $phone_number = $_GET['phone_number'];
+    $sql .= " AND phone_number LIKE '%$phone_number%'";
+}
+if(isset($_GET['age']) && !empty($_GET['age'])) {
+    $age = $_GET['age'];
+    $sql .= " AND age LIKE '%$age%'";
+}
+if(isset($_GET['gender']) && !empty($_GET['gender'])) {
+    $gender = $_GET['gender'];
+    $sql .= " AND gender          LIKE '%$gender%'";
+}
+if(isset($_GET['nationality']) && !empty($_GET['nationality'])) {
+    $nationality  = $_GET['nationality'];
+    $sql .= " AND  nationality    LIKE '%$nationality%'";
+}
+if(isset($_GET['state']) && !empty($_GET['state'])) {
+    $state  = $_GET['state'];
+    $sql .= " AND  state    LIKE '%$state%'";
+}
+if(isset($_GET['doctor']) && !empty($_GET['doctor'])) {
+    $doctor  = $_GET['doctor'];
+    $sql .= " AND  doctor    LIKE '%$doctor%'";
+}
 // ประมวลผลคำสั่ง SQL
 $stmt = $conn->prepare($sql);
 $stmt->execute();
@@ -180,6 +213,43 @@ if (isset($_SESSION['admin_login'])) {
 <body>
     <div class="container mt-5">
         <h1 class="text-center mb-4">ใบเสร็จการนัดจอง</h1>
+
+         <!-- เพิ่มฟอร์มสำหรับกรองข้อมูล -->
+<form method="get" action="">
+    <div class="row mb-3">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามชื่อ" name="patient">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามอีเมล" name="search_email">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามเบอร์โทร" name="phone_numbere">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="อายุ" name="age">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="สัญชาติ" name="nationality">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="เพศ" name="gender">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="คลินิก" name="state">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="หมอ" name="doctor">
+        </div>
+        <!-- เพิ่มฟิลเตอร์อื่น ๆ ตามต้องการ -->
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">ค้นหา</button>
+        </div>
+    </div>
+</form>
+
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -197,6 +267,7 @@ if (isset($_SESSION['admin_login'])) {
                 </tr>
             </thead>
             <tbody>
+                
                 <?php foreach ($appointments as $appointment): ?>
                 <tr>
                     <td><?php echo $appointment['patient']; ?></td>
