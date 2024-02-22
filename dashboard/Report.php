@@ -14,7 +14,50 @@ try {
 }
 
 // สร้างคำสั่ง SQL เพื่อดึงข้อมูลจากตาราง reports
-$sql = "SELECT * FROM reports";
+$sql = "SELECT * FROM reports WHERE 1";
+
+if(isset($_GET['patient']) && !empty($_GET['patient'])) {
+    $patient = $_GET['patient'];
+    $sql .= " AND patient LIKE '%$patient%'";
+}
+
+if(isset($_GET['search_email']) && !empty($_GET['search_email'])) {
+    $search_email = $_GET['search_email'];
+    $sql .= " AND email LIKE '%$search_email%'";
+}
+
+if(isset($_GET['phone_number']) && !empty($_GET['phone_number'])) {
+    $phone_number = $_GET['phone_number'];
+    $sql .= " AND phone_number LIKE '%$phone_number%'";
+}
+if(isset($_GET['age']) && !empty($_GET['age'])) {
+    $age = $_GET['age'];
+    $sql .= " AND age LIKE '%$age%'";
+}
+if(isset($_GET['gender']) && !empty($_GET['gender'])) {
+    $gender = $_GET['gender'];
+    $sql .= " AND gender          LIKE '%$gender%'";
+}
+if(isset($_GET['nationality']) && !empty($_GET['nationality'])) {
+    $nationality  = $_GET['nationality'];
+    $sql .= " AND  nationality    LIKE '%$nationality%'";
+}
+if(isset($_GET['state']) && !empty($_GET['state'])) {
+    $state  = $_GET['state'];
+    $sql .= " AND  state    LIKE '%$state%'";
+}
+if(isset($_GET['doctor']) && !empty($_GET['doctor'])) {
+    $doctor  = $_GET['doctor'];
+    $sql .= " AND  doctor    LIKE '%$doctor%'";
+}
+if(isset($_GET['information']) && !empty($_GET['information'])) {
+    $information  = $_GET['information'];
+    $sql .= " AND  information    LIKE '%$information%'";
+}
+if(isset($_GET['comment']) && !empty($_GET['comment'])) {
+    $comment  = $_GET['comment'];
+    $sql .= " AND  comment    LIKE '%$comment%'";
+}
                         
 // ประมวลผลคำสั่ง SQL
 $stmt = $conn->prepare($sql);
@@ -117,6 +160,7 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="dashb.php">Patient</a>
                                     <a class="nav-link" href="doctorsdash.php">Doctor</a>
+                                    <a class="nav-link" href="cilnic_d.php">Cilnic</a>
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Addons</div>
@@ -188,6 +232,47 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="container mt-5">
         <h1 class="text-center mb-4">ประวัติคนไข้</h1>
+          <!-- เพิ่มฟอร์มสำหรับกรองข้อมูล -->
+<form method="get" action="">
+    <div class="row mb-3">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามชื่อ" name="patient">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามอีเมล" name="search_email">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามเบอร์โทร" name="phone_numbere">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="อายุ" name="age">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="สัญชาติ" name="nationality">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="เพศ" name="gender">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="คลินิก" name="state">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="หมอ" name="doctor">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="บริการ" name="information">
+        </div>
+        <div class="col" >
+            <input type="text" class="form-control" placeholder="ความคิดเห็น" name="comment">
+        </div>
+        <!-- เพิ่มฟิลเตอร์อื่น ๆ ตามต้องการ -->
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">ค้นหา</button>
+        </div>
+    </div>
+</form>
         <table class="table">
             <thead class="thead-dark">
                 <tr>

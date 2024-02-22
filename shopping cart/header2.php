@@ -7,8 +7,8 @@
 
       <nav class="navbar">
       <a href="../index2.php">กลับหน้าหลัก</a> 
-         
-         <a href="products.php">ดูสินค้า</a> &nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="cus_status.php">สถานะการสั่งซื้อ</a> 
+      <a href="products.php">ดูสินค้า</a> &nbsp;&nbsp;&nbsp;&nbsp;
       </nav>
 
       <?php

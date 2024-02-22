@@ -13,55 +13,21 @@ try {
     echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
 }
 
-// สร้างคำสั่ง SQL เพื่อดึงข้อมูลจากตาราง receipe
- $sql = "SELECT * FROM receipe WHERE 1";
- if(isset($_GET['patient']) && !empty($_GET['patient'])) {
-    $patient = $_GET['patient'];
-    $sql .= " AND patient LIKE '%$patient%'";
-}
+// สร้างคำสั่ง SQL เพื่อดึงข้อมูลจากตาราง reports
+$sql = "SELECT * FROM reports";
 
-if(isset($_GET['search_email']) && !empty($_GET['search_email'])) {
-    $search_email = $_GET['search_email'];
-    $sql .= " AND email LIKE '%$search_email%'";
-}
-
-if(isset($_GET['phone_number']) && !empty($_GET['phone_number'])) {
-    $phone_number = $_GET['phone_number'];
-    $sql .= " AND phone_number LIKE '%$phone_number%'";
-}
-if(isset($_GET['age']) && !empty($_GET['age'])) {
-    $age = $_GET['age'];
-    $sql .= " AND age LIKE '%$age%'";
-}
-if(isset($_GET['gender']) && !empty($_GET['gender'])) {
-    $gender = $_GET['gender'];
-    $sql .= " AND gender          LIKE '%$gender%'";
-}
-if(isset($_GET['nationality']) && !empty($_GET['nationality'])) {
-    $nationality  = $_GET['nationality'];
-    $sql .= " AND  nationality    LIKE '%$nationality%'";
-}
-if(isset($_GET['state']) && !empty($_GET['state'])) {
-    $state  = $_GET['state'];
-    $sql .= " AND  state    LIKE '%$state%'";
-}
-if(isset($_GET['doctor']) && !empty($_GET['doctor'])) {
-    $doctor  = $_GET['doctor'];
-    $sql .= " AND  doctor    LIKE '%$doctor%'";
-}
 // ประมวลผลคำสั่ง SQL
 $stmt = $conn->prepare($sql);
 $stmt->execute();
-$appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 session_start();
-    require_once '../config2/db2.php';
-    if (!isset($_SESSION['admin_login'])) {
-        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-        header('location:../signin2.php');
-    }
+require_once '../config2/db2.php';
+if (!isset($_SESSION['admin_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('location:../signin2.php');
+}
 
-//แสดงชื่อ
 if (isset($_SESSION['admin_login'])) {
     $user_id = $_SESSION['admin_login'];
     $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
@@ -69,22 +35,46 @@ if (isset($_SESSION['admin_login'])) {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+// ปรับโค้ด SQL เพื่อให้รองรับคำค้นหา
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+if (!empty($search)) {
+    $sql = "SELECT * FROM reports WHERE state LIKE :search";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':search', '%' . $search . '%');
+} else {
+    $sql = "SELECT * FROM reports";
+    $stmt = $conn->prepare($sql);
+}
+
+
+
+
+$stmt->execute();
+$reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// เพิ่มโค้ดนี้เพื่อคำนวณผลรวมเงินทั้งหมดในตารางที่ถูกกรองด้วยคำค้นหา
+$totalPrice = 0;
+$totalPatients = 0;
+foreach ($reports as $report) {
+    $totalPrice += $report['price'];
+    $totalPatients++;
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Dashboard - SB Admin</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-        <link href="css/styles.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    </head>
-    <body class="sb-nav-fixed">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Dashboard - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="main_dashboard.php">FUND CLINIC</a>
@@ -194,7 +184,12 @@ if (isset($_SESSION['admin_login'])) {
         </li>
         <li class="nav-item">
           <a class="nav-link" href="doctorsdash.php">
-            <i class="fas fa-users"></i> doctor
+            <i class="fas fa-users"></i> Doctor
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="finishreceipt.php">
+            <i class="fas fa-users"></i> Receipt
           </a>
         </li>
         <li class="nav-item">
@@ -211,98 +206,89 @@ if (isset($_SESSION['admin_login'])) {
     </div>
   </nav>
 
-<body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">ใบเสร็จการนัดจอง</h1>
-
-         <!-- เพิ่มฟอร์มสำหรับกรองข้อมูล -->
-<form method="get" action="">
-    <div class="row mb-3">
-        <div class="col">
-            <input type="text" class="form-control" placeholder="ค้นหาตามชื่อ" name="patient">
+    
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <!-- เพิ่มฟอร์มค้นหา -->
+            <form action="" method="GET" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="ค้นหาจากสถานะ">
+                    <button type="submit" class="btn btn-primary">ค้นหา</button>
+                </div>
+            </form>
+            <!-- ส่วนของเมนูด้านข้าง -->
         </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="ค้นหาตามอีเมล" name="search_email">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="ค้นหาตามเบอร์โทร" name="phone_numbere">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="อายุ" name="age">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="สัญชาติ" name="nationality">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="เพศ" name="gender">
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col">
-            <input type="text" class="form-control" placeholder="คลินิก" name="state">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="หมอ" name="doctor">
-        </div>
-        <!-- เพิ่มฟิลเตอร์อื่น ๆ ตามต้องการ -->
-        <div class="col-auto">
+        <div class="container mt-5">
+    <h1 class="text-center mb-4">CILNIC FUND</h1>
+    
+    <!-- เพิ่มฟอร์มค้นหา -->
+    <form action="" method="GET" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="ค้นหาจากสถานะ">
             <button type="submit" class="btn btn-primary">ค้นหา</button>
         </div>
-    </div>
-</form>
-
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th>ชื่อ-นามสกุล</th>
-                    <th>อีเมล</th>
-                    <th>เบอร์โทร</th>
-                    <th>อายุ</th>
-                    <th>เพศ</th>
-                    <th>สัญชาติ</th>
-                    <th>คลินิก</th>
-                    <th>หมอ</th>
-                    <th>วันที่</th>
-                    <th>เวลา</th>
-                    <th>แก้ไข</th>
-                </tr>
-            </thead>
-            <tbody>
+    </form>
+    
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>ชื่อ</th>              
+                <th>คลินิก</th>          
+                <th>บริการ</th>
+                <th>ราคา</th>        
+                <th>แก้ไข</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($reports as $report): ?>
+            <tr>
+                <td><?php echo $report['patient']; ?></td>
+           
+                <td><?php echo $report['state']; ?></td>
+                <td><?php echo $report['information']; ?></td>
+                <td><?php echo $report['price']; ?></td> 
                 
-                <?php foreach ($appointments as $appointment): ?>
-                <tr>
-                    <td><?php echo $appointment['patient']; ?></td>
-                    <td><?php echo $appointment['email']; ?></td>
-                    <td><?php echo $appointment['phone_number']; ?></td>
-                    <td><?php echo $appointment['age']; ?></td>
-                    <td><?php echo $appointment['gender']; ?></td>
-                    <td><?php echo $appointment['nationality']; ?></td>
-                    <td><?php echo $appointment['state']; ?></td>
-                   
-                    <td><?php echo $appointment['doctor']; ?></td>
-                    <td><?php echo $appointment['date']; ?></td>
-                    <td><?php echo $appointment['timeInput']; ?></td>
-                    <td>
-    <a href='editreceipt.php?id=<?php echo $appointment["id"]; ?>' class='btn btn-primary'>แก้ไข</a>
-    <a href='deletereceipt.php?id=<?php echo $appointment["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>
-    <a href='addReport.php?id=<?php echo $appointment["id"]; ?>' class='btn btn-danger btn-sm'>ทำประวัติคนไข้</a>
-</td>
-</td>
+                <td>
+                    <a href='edit_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-primary'>แก้ไข</a>
+                    <a href='delete_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>          
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <!-- แสดงผลรวมเงินทั้งหมด -->
+    <div class="total-price">
+        <h4>ผลรวมเงินทั้งหมด: <?php echo $totalPrice; ?> บาท</h4>
+        <h4>จำนวนผู้ป่วยทั้งหมด: <?php echo $totalPatients; ?> คน</h4>
+    </div>
+    <a href="dashbapomen.php" class="btn btn-secondary">ย้อนกลับ</a>
+    <a href="dashb.php" class="btn btn-secondary">กลับหน้าหลัก</a>
+</div>
 
- </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <a href="dashbapomen.php" class="btn btn-secondary">ย้อนกลับ</a>
-        <a href="dashb.php" class="btn btn-secondary">กลับหน้าหลัก</a>
-    </div>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>  
+    <script src="js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="assets/demo/chart-area-demo.js"></script>
+    <script src="assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="js/datatables-simple-demo.js"></script> 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector('form').addEventListener('submit', function(event) {
+                event.preventDefault(); // ป้องกันการส่งแบบฟอร์ม
+                var searchValue = document.querySelector('input[name="search"]').value.toLowerCase();
+                var rows = document.querySelectorAll('tbody tr');
+                rows.forEach(function(row) {
+                    var state = row.querySelector('td:first-child').textContent.toLowerCase();
+                    if (state.includes(searchValue)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+    </script>  
 </body>
 </html>

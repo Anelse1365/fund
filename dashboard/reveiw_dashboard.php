@@ -9,14 +9,37 @@ session_start();
 
     if (isset($_SESSION['admin_login'])) {
       $user_id = $_SESSION['admin_login'];
-      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+      $stmt = $conn->query("SELECT * FROM reviews WHERE id = $user_id");
       $stmt->execute();
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
 
               // SQL query to fetch data from database
-  $sql = "SELECT * FROM patien";
+  $sql = "SELECT * FROM reviews  WHERE 1";
+
+  if(isset($_GET['patient']) && !empty($_GET['patient'])) {
+    $patient = $_GET['patient'];
+    $sql .= " AND patient LIKE '%$patient%'";
+}
+
+if(isset($_GET['search_email']) && !empty($_GET['search_email'])) {
+    $search_email = $_GET['search_email'];
+    $sql .= " AND email LIKE '%$search_email%'";
+}
+if(isset($_GET['doctor_name']) && !empty($_GET['doctor_name'])) {
+    $doctor_name  = $_GET['doctor_name'];
+    $sql .= " AND  doctor_name    LIKE '%$doctor_name%'";
+}
+if(isset($_GET['rating']) && !empty($_GET['rating'])) {
+    $rating  = $_GET['rating'];
+    $sql .= " AND  rating    LIKE '%$rating%'";
+}
+if(isset($_GET['comment']) && !empty($_GET['comment'])) {
+    $comment  = $_GET['comment'];
+    $sql .= " AND  comment    LIKE '%$comment%'";
+}
+
   $stmt = $conn->prepare($sql);
 
 // เชื่อมต่อฐานข้อมูล
@@ -125,6 +148,7 @@ try {
                             <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="dashb.php">Patient</a>
                                     <a class="nav-link" href="doctorsdash.php">Doctor</a>
+                                    <a class="nav-link" href="cilnic_d.php">Cilnic</a>
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Addons</div>
