@@ -307,6 +307,14 @@ option = {
       color:'black'
     }
   },
+  tooltip: {
+        trigger: 'item',
+        formatter: 'จำนวน <br/>{b} : {c} คน ({d}%)',
+        textStyle: {
+                    fontSize: 24,
+                    color:'black'
+                }
+    },
   series: [
     { 
       top: '23%',
@@ -321,7 +329,10 @@ option = {
       },
       label: {
         show: false,
-        position: 'center'
+        position: 'center',
+        formatter: function(review) {
+            return review.name + ': ' + review.value;
+        }
       },
       emphasis: {
         itemStyle: {
@@ -442,6 +453,14 @@ $sql = "SELECT
       color:'black'
     }
   },
+  tooltip: {
+        trigger: 'item',
+        formatter: 'จำนวน <br/>{b} : {c} คน ({d}%)',
+        textStyle: {
+                    fontSize: 24,
+                    color:'black'
+                }
+    },
   series: [
     {
       top: '23%',
@@ -467,7 +486,7 @@ $sql = "SELECT
           shadowColor: 'rgba(1, 1, 1, 1)',
         },
         label: {
-          show: true,
+          show: false,
           fontSize: 40,
           fontWeight: 'bold'
         }
@@ -578,6 +597,14 @@ $sql = "SELECT
       color:'black'
     }
   },
+  tooltip: {
+        trigger: 'item',
+        formatter: 'จำนวน <br/>{b} : {c} คน ({d}%)',
+        textStyle: {
+                    fontSize: 24,
+                    color:'black'
+                }
+    },
   series: [
     {
       top: '23%',
@@ -603,7 +630,7 @@ $sql = "SELECT
           shadowColor: 'rgba(1, 1, 1, 1)',
         },
         label: {
-          show: true,
+          show: false,
           fontSize: 40,
           fontWeight: 'bold'
         }
@@ -712,8 +739,18 @@ $sql = "SELECT
     textStyle: {
       fontSize: 22,
       color:'black'
-    }
-  },
+    },
+  
+  },  
+  
+  tooltip: {
+        trigger: 'item',
+        formatter: 'จำนวน <br/>{b} : {c} คน ({d}%)',
+        textStyle: {
+                    fontSize: 24,
+                    color:'black'
+                }
+    },
   series: [
     {
       top: '23%',
@@ -739,7 +776,7 @@ $sql = "SELECT
           shadowColor: 'rgba(1, 1, 1, 1)',
         },
         label: {
-          show: true,
+          show: false,
           fontSize: 40,
           fontWeight: 'bold'
         }
