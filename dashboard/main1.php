@@ -84,7 +84,7 @@ try {
         #maindashboard3 {
             position: absolute;
             margin: auto;
-            width: 1500px;
+            width: 1300px;
             height: 410px;
             top: 25cm;
             right: 3cm;
@@ -294,25 +294,33 @@ try {
                 left: 'center',
                 top:'5%',
                 textStyle: {
-                    fontSize: 24
+                    fontSize: 24,
+                    color:'black'
+
                 }
             },
             legend: {
                 top: '16%',
                 left: 'center',
                 textStyle: {
-                    fontSize: 18
+                    fontSize: 18,
+                    color:'black'
                 }
 
             },
             tooltip: {
                 trigger: 'item',
-                formatter: '{a} <br/>{b} : {c} ({d}%)',
+                formatter: '{a} <br/>{b} : {c} คน ({d}%)',
                 textStyle: {
-                    fontSize: 18
+                    fontSize: 18,
+                    color:'black'
                 }
             },
             series: [{
+                itemStyle:{
+                borderColor: 'black', // สีขอบ
+                borderWidth: 1 // ความหนาขอบ
+                },
                 name: 'จำนวนผู้ป่วย',
                 type: 'pie',
                 borderColor: 'black',
@@ -327,7 +335,7 @@ try {
                         borderWidth: 1, // ความหนาขอบ
                         shadowBlur: 10,
                         shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        shadowColor: 'rgba(0, 0, 0, 0.5)',
                     }
                 }
             }]
@@ -377,23 +385,31 @@ try {
                 left: 'center',
                 top: '4.3%',
                 textStyle: {
-                    fontSize: 24
+                    fontSize: 24,
+                    color:'black'
                 }
             },
             tooltip: {
+                formatter: '{a} <br/>{b} : {c} คน ({d}%)',
                 trigger: 'item',
                 textStyle: {
-                    fontSize: 24
+                    fontSize: 24,
+                    color:'black'
                 }
             },
             legend: {
                 top: '17%',
                 left: 'center',
                 textStyle: {
-                    fontSize: 24
+                    fontSize: 24,
+                    color:'black'
                 }
             },
             series: [{
+                itemStyle:{
+                borderColor: 'black', // สีขอบ
+                borderWidth: 1 // ความหนาขอบ
+                },
                 name: 'Access From',
                 type: 'pie',
                 top: '20%',
@@ -407,7 +423,8 @@ try {
                     label: {
                         show: true,
                         fontSize: 40,
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        color:'black'
                     },
                 itemStyle: { // เพิ่มการกำหนดขอบให้วงกลม
                 borderColor: 'black', // สีขอบ
@@ -464,32 +481,50 @@ try {
             title: {
                 text: 'จำนวนผู้ชายและผู้หญิงในฐานข้อมูล',
                 left: 'center',
+                top:'1%',
                 textStyle: {
-                    fontSize: 24
+                    fontSize: 22,
+                    color:'black'
                 }
             },
             tooltip: {
+                formatter: 'จำนวน <br/>{b} : {c} คน',
                 trigger: 'axis',
                 axisPointer: {
                     type: 'shadow'
+                },
+                textStyle: {
+                    fontSize: 24,
+                    color:'black'
                 }
             },
             xAxis: {
+                top:'6%',
                 type: 'category',
                 data: ['ชาย', 'หญิง'],
-                textStyle: {
-                    fontSize: 24
-                }
+                axisLabel: {
+        textStyle: {
+            fontSize: 20 ,// ขนาดตัวอักษร
+            color:'black'
+        }
+    }
             },
             yAxis: {
+                top:'6%',
                 type: 'value',
                 name: 'จำนวน',
-                formatter: 1
+                formatter: 1,
+                
+                
             },
             series: [{
                 data: sex,
                 type: 'bar',
-                top: '17%'
+                bottom:'20px',
+                itemStyle:{
+                    borderColor: 'black', // สีขอบ
+                    borderWidth: 1 ,// ความหนาขอบ
+                }
             }]
         };
 
@@ -555,29 +590,71 @@ try {
             ]);
         }
         option = {
-            legend: {
-
+            title: {
+                text: 'จำนวนการนัดจองในแต่ละประเภท',
+                left: 'center',
+                top:'1%',
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
             },
-            tooltip: {},
+            legend: {
+                top:'13%',
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
+            },
+            grid: {
+        top: '27%', // ปรับตำแหน่งด้านซ้า
+        containLabel: true // ปรับให้กราฟอยู่ในพื้นที่ที่กำหนดไว้
+        
+    },
+            tooltip: {
+            
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
+            },
             dataset: {
-                source: sourceData
+                source: sourceData,
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
             },
             xAxis: {
-                type: 'category'
+                type: 'category',
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
             },
             yAxis: {
-                formatter: 1
+                formatter: 1,
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
             },
-            series: [{
+            series: [
+                {
                     type: 'bar',
                     itemStyle: {
-                        color: 'skyblue'
+                        color: 'skyblue',
+                         barBorderRadius: [5, 5, 0, 0] ,// เพิ่มเส้นขอบด้านบนเป็นโค้ง
+                        borderColor:'black'
                     }
                 },
                 {
                     type: 'bar',
                     itemStyle: {
-                        color: 'pink'
+                        color: 'pink',
+                        fontWeight: 'bold',
+                        barBorderRadius: [5, 5, 0, 0], // เพิ่มเส้นขอบด้านบนเป็นโค้ง
+                        borderColor:'black'
                     }
                 }
             ]
