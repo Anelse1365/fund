@@ -45,13 +45,19 @@ if (!empty($search)) {
     $sql = "SELECT * FROM reports";
     $stmt = $conn->prepare($sql);
 }
+
+
+
+
 $stmt->execute();
 $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // เพิ่มโค้ดนี้เพื่อคำนวณผลรวมเงินทั้งหมดในตารางที่ถูกกรองด้วยคำค้นหา
 $totalPrice = 0;
+$totalPatients = 0;
 foreach ($reports as $report) {
     $totalPrice += $report['price'];
+    $totalPatients++;
 }
 ?>
 
@@ -69,21 +75,137 @@ foreach ($reports as $report) {
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand ps-3" href="main_dashboard.php">FUND CLINIC</a>
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="../logout2.php">ออกจากระบบ</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="main_dashboard.php">FUND CLINIC</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                   
+                    
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                <li class="nav-item">
+            <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
+          </li>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+
+                        <li><a class="dropdown-item" href="../logout2.php">ออกจากระบบ</a></li>
+                        
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Main</div>
+                            <a class="nav-link" href="main_dashboard.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Products
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="order.php">Order</a>
+                                    <a class="nav-link" href="../shopping cart/admin.php">Upload</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Info
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="dashb.php">Patient</a>
+                                    <a class="nav-link" href="doctorsdash.php">Doctor</a>
+                                </nav>
+                            </div>
+                            <div class="sb-sidenav-menu-heading">Addons</div>
+                            <a class="nav-link" href="dashbapomen.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Appointment
+                            </a>
+                            <a class="nav-link" href="finishreceipt.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Receipt
+                            </a>
+                            <a class="nav-link" href="Report.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Report
+                            </a>
+                            <a class="nav-link" href="reveiw_dashboard.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Review
+                            </a>
+                        </div>
+                    </div>
+
+                </nav>
+            </div>
+<script>
+        function toggleSubMenu(subMenuId) {
+            var subMenu = document.getElementById(subMenuId).querySelector('ul');
+            subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
+        }
+    </script>
+        <li class="nav-item">
+          <a class="nav-link" href="dashb.php">
+            <i class="fas fa-users"></i> Patient
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="dashbapomen.php">
+            <i class="fas fa-users"></i> Appointment
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="finishreceipt.php">
+            <i class="fas fa-users"></i> Receipt
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="doctorsdash.php">
+            <i class="fas fa-users"></i> Doctor
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="finishreceipt.php">
+            <i class="fas fa-users"></i> Receipt
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="reveiw_dashboard.php">
+            <i class="fas fa-users"></i> Reviews
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="Report.php">
+            <i class="fas fa-chart-bar"></i> Reports
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+    
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <!-- เพิ่มฟอร์มค้นหา -->
@@ -108,7 +230,8 @@ foreach ($reports as $report) {
     
     <table class="table">
         <thead class="thead-dark">
-            <tr>             
+            <tr>
+                <th>ชื่อ</th>              
                 <th>คลินิก</th>          
                 <th>บริการ</th>
                 <th>ราคา</th>        
@@ -118,9 +241,12 @@ foreach ($reports as $report) {
         <tbody>
             <?php foreach ($reports as $report): ?>
             <tr>
+                <td><?php echo $report['patient']; ?></td>
+           
                 <td><?php echo $report['state']; ?></td>
                 <td><?php echo $report['information']; ?></td>
                 <td><?php echo $report['price']; ?></td> 
+                
                 <td>
                     <a href='edit_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-primary'>แก้ไข</a>
                     <a href='delete_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>          
@@ -132,6 +258,7 @@ foreach ($reports as $report) {
     <!-- แสดงผลรวมเงินทั้งหมด -->
     <div class="total-price">
         <h4>ผลรวมเงินทั้งหมด: <?php echo $totalPrice; ?> บาท</h4>
+        <h4>จำนวนผู้ป่วยทั้งหมด: <?php echo $totalPatients; ?> คน</h4>
     </div>
     <a href="dashbapomen.php" class="btn btn-secondary">ย้อนกลับ</a>
     <a href="dashb.php" class="btn btn-secondary">กลับหน้าหลัก</a>
@@ -160,6 +287,7 @@ foreach ($reports as $report) {
                 });
             });
         });
+        
     </script>  
 </body>
 </html>
