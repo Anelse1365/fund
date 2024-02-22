@@ -1,23 +1,20 @@
 <?php
 session_start();
 
-    require_once '../config2/db2.php';
-    if (!isset($_SESSION['admin_login'])) {
-        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-        header('location:../signin2.php');
-    }
+require_once '../config2/db2.php';
 
-    if (isset($_SESSION['admin_login'])) {
-      $user_id = $_SESSION['admin_login'];
-      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-      $stmt->execute();
-      $row = $stmt->fetch(PDO::FETCH_ASSOC);
-  }
+if (!isset($_SESSION['admin_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('location:../signin2.php');
+    exit; // จบการทำงานทันทีหลังจาก redirect
+}
 
-
-              // SQL query to fetch data from database
-  $sql = "SELECT * FROM patien";
-  $stmt = $conn->prepare($sql);
+if (isset($_SESSION['admin_login'])) {
+    $user_id = $_SESSION['admin_login'];
+    $stmt = $conn->prepare("SELECT * FROM patien WHERE id = ?");
+    $stmt->execute([$user_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 // เชื่อมต่อฐานข้อมูล
 $servername = "localhost";
@@ -30,14 +27,33 @@ try {
     // เซ็ตโหมดของ PDO เพื่อให้แสดงข้อผิดพลาดออกมา
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // ดึงข้อมูลจากตาราง doctors
-    $stmt = $conn->query("SELECT * FROM doctors");
+    // SQL query เริ่มต้น
+    $sql = "SELECT * FROM doctors WHERE 1";
+
+    // Check if search parameters are provided
+    if (isset($_GET['first_name']) && !empty($_GET['first_name'])) {
+        $first_name = $_GET['first_name'];
+        $sql .= " AND first_name LIKE '%$first_name%'";
+    }
+
+    if (isset($_GET['email']) && !empty($_GET['email'])) {
+        $email = $_GET['email'];
+        $sql .= " AND email LIKE '%$email%'";
+    }
+
+    // เพิ่มเงื่อนไขการกรองฟิลเตอร์อื่น ๆ ตามต้องการ
+
+    // ดึงข้อมูลจากฐานข้อมูล
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
     $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
+
+} catch (PDOException $e) {
     // หากเกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล
     echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -179,6 +195,38 @@ try {
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">ข้อมูลหมอ</h2>
+    <form method="get" action="">
+    <div class="row mb-3">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามชื่อ" name="first_name">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามอีเมล" name="email">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="ค้นหาตามเบอร์โทร" name="search_phone">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="อายุ" name="age">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="สัญชาติ" name="nationality">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="เพศ" name="gender">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="การศึกษา" name="education">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="จบการศึกษา" name="graduation">
+        </div>
+        <!-- เพิ่มฟิลเตอร์อื่น ๆ ตามต้องการ -->
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">ค้นหา</button>
+        </div>
+    </div>
+</form>
     <a href="adddoctor.php" class="btn btn-primary mt-3 d-block mx-auto"><i class="fas fa-plus-circle mr-1"></i> เพิ่มหมอ</a>
     <a href="doctor/doctorschedule.php" class="btn btn-primary mt-3 d-block mx-auto"><i class="fas fa-plus-circle mr-1"></i>ตารางงาน</a>
 
