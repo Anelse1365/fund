@@ -50,6 +50,30 @@ $chartData = $stmtChartData->fetchAll(PDO::FETCH_ASSOC);
 $chartDataJSON = json_encode($chartData);
 // หลังจากประกาศ $chartData
 echo '<script>console.log(' . json_encode($chartData) . ');</script>';
+//ทั้งหมด
+$sqlTotalRevenue = "SELECT SUM(total_price) as totalRevenue FROM order2 WHERE order_status = 2";
+$stmtTotalRevenue = $conn->prepare($sqlTotalRevenue);
+$stmtTotalRevenue->execute();
+$resultTotalRevenue = $stmtTotalRevenue->fetch(PDO::FETCH_ASSOC);
+$totalRevenue = $resultTotalRevenue['totalRevenue'];
+
+//
+$sqlLatestTotalPrice = "SELECT total_price FROM order2 WHERE order_status = 1 ORDER BY created_at DESC LIMIT 1";
+$stmtLatestTotalPrice = $conn->prepare($sqlLatestTotalPrice);
+$stmtLatestTotalPrice->execute();
+$latestTotalPriceResult = $stmtLatestTotalPrice->fetch(PDO::FETCH_ASSOC);
+$latestTotalPrice = ($latestTotalPriceResult !== false) ? $latestTotalPriceResult['total_price'] : null;
+
+// SQL query to fetch the latest total_price with order_status = 2
+$sqlLatestTotalPrice = "SELECT total_price FROM order2 WHERE order_status = 2 ORDER BY created_at DESC LIMIT 1";
+$stmtLatestTotalPrice = $conn->prepare($sqlLatestTotalPrice);
+$stmtLatestTotalPrice->execute();
+$latestTotalPriceResult = $stmtLatestTotalPrice->fetch(PDO::FETCH_ASSOC);
+$latestTotalPriceValue = ($latestTotalPriceResult !== false) ? $latestTotalPriceResult['total_price'] : null;
+?>
+
+
+?>
 
 
 
@@ -209,10 +233,79 @@ $stmt = $conn->prepare($sql);
                             <li class="breadcrumb-item active">Charts</li>
                             
                         </ol>
+                        <div class="row">
+                        <div class="col-xl-3 col-md-6">
+    <div class="card bg-primary text-white mb-4">
+        <div class="card-body">สินค้าที่มีการสั่งซื้อมากที่สุด
+
+        </div>
+        <div class="card-footer d-flex align-items-center justify-content-between">
+            <a class="small text-white stretched-link" href="#">View Details</a>
+            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+        </div>
+    </div>
+</div>
+
+                            <div class="col-xl-3 col-md-6">
+    <div class="card bg-white text-black mb-4">
+        <div class="card-body">รายได้ทั้งหมด
+            <?php
+            // ตรวจสอบว่ามีรายได้ทั้งหมดหรือไม่
+            if ($totalRevenue !== null) {
+                echo '<div class="h4">' . number_format($totalRevenue, 2) . ' บาท</div>';
+            } else {
+                echo '<div class="h4">ไม่มีรายการสั่งซื้อ</div>';
+            }
+            ?>
+        </div>
+        <div class="card-footer d-flex align-items-center justify-content-between">
+            <a class="small text-white stretched-link" href="#"></a>
+            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+        </div>
+    </div>
+</div>
+<div class="col-xl-3 col-md-6">
+    <div class="card bg-success text-white mb-4">
+        <div class="card-body">รายได้ล่าสุด
+            <?php
+            // ตรวจสอบว่ามีข้อมูล total_price ล่าสุดหรือไม่
+            if ($latestTotalPriceValue !== null) {
+                echo '<div class="h4">' . number_format($latestTotalPriceValue, 2) . ' บาท</div>';
+            } else {
+                echo '<div class="h4">ไม่มีรายการสั่งซื้อ</div>';
+            }
+            ?>
+        </div>
+        <div class="card-footer d-flex align-items-center justify-content-between">
+            <a class="small text-white stretched-link" href="#">ดูการยืนยันสินค้า</a>
+            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+        </div>
+    </div>
+</div>
+                            <div class="col-xl-3 col-md-6">
+    <div class="card bg-danger text-white mb-4">
+        <div class="card-body">คำสั่งซื้อที่ยังไม่ได้ยืนยัน
+            <?php
+            // ตรวจสอบว่ามีข้อมูล total_price ล่าสุดหรือไม่
+            if ($latestTotalPrice !== null) {
+                echo '<div class="h4">' . number_format($latestTotalPrice, 2) . ' บาท</div>';
+            } else {
+                echo '<div class="h4">ไม่มีรายการสั่งซื้อ</div>';
+            }
+            ?>
+        </div>
+        <div class="card-footer d-flex align-items-center justify-content-between">
+            <a class="small text-white stretched-link" href="#">ยืนยัน Order</a>
+            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+        </div>
+    </div>
+</div>
+                        </div>
                         <div class="card mb-4">
                             
 
                         </div>
+                        
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-chart-area me-1"></i>
@@ -221,6 +314,8 @@ $stmt = $conn->prepare($sql);
                             <div class="card-body"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>
                             <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
                         </div>
+                        
+
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="card mb-4">
