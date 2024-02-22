@@ -160,6 +160,7 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="dashb.php">Patient</a>
                                     <a class="nav-link" href="doctorsdash.php">Doctor</a>
+                                    <a class="nav-link" href="cilnic_d.php">Cilnic</a>
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Addons</div>
