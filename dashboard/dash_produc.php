@@ -1,321 +1,269 @@
 <?php
 
-    session_start();
-    require_once '../config2/db2.php';
-    if (!isset($_SESSION['admin_login'])) {
-        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-        header('location:../signin2.php');
-    
-    }
-
-    // Count of Patients
-
-    if (isset($_SESSION['admin_login'])) {
-      $user_id = $_SESSION['admin_login'];
-      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-      $stmt->execute();
-      $row = $stmt->fetch(PDO::FETCH_ASSOC);
-  }
-  
-
-              // SQL query to fetch data from database
-  $sql = "SELECT * FROM patien";
-  $stmt = $conn->prepare($sql);
-
-$sql = "SELECT total_products FROM order2";
-$result = $conn->query($sql);
-
-$productData = array();
-
-if ($result !== false && $result->rowCount() > 0) {
-    while ($productRow = $result->fetch(PDO::FETCH_ASSOC)) {
-        // Parse the product data and count occurrences
-        $products = explode(',', $productRow['total_products']);
-        foreach ($products as $product) {
-            $product = trim($product);
-            if (!empty($product)) {
-                // Remove the count from the product name
-                $productName = trim(preg_replace('/\(\d+\)/', '', $product));
-                if (isset($productData[$productName])) {
-                    $productData[$productName]++;
-                } else {
-                    $productData[$productName] = 1;
-                }
-            }
-        }
-    }
+session_start();
+require_once '../config2/db2.php';
+if (!isset($_SESSION['admin_login'])) {
+  $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+  header('location:../signin2.php');
 }
-$sql = "SELECT total_products, total_price FROM order2";
-$current_page = basename($_SERVER['PHP_SELF']);
+
+// Count of Patients
+$sqlPatient = "SELECT COUNT(*) as patientCount FROM patien";
+$stmtPatient = $conn->prepare($sqlPatient);
+$stmtPatient->execute();
+$resultPatient = $stmtPatient->fetch(PDO::FETCH_ASSOC);
+$patientCount = $resultPatient['patientCount'];
+
+// Count of Appointments
+$sqlAppointment = "SELECT COUNT(*) as appointmentCount FROM appointmen";
+$stmtAppointment = $conn->prepare($sqlAppointment);
+$stmtAppointment->execute();
+$resultAppointment = $stmtAppointment->fetch(PDO::FETCH_ASSOC);
+$appointmentCount = $resultAppointment['appointmentCount'];
+$loggedInUser = $_SESSION['admin_login'];
+
+// Count of Total Sales with order_status = 2
+$sqlTotalSales = "SELECT SUM(total_price) as totalSales FROM order2 WHERE order_status = 2";
+$stmtTotalSales = $conn->prepare($sqlTotalSales);
+$stmtTotalSales->execute();
+$totalSales = $stmtTotalSales->fetchColumn();
+
+//แสดงชื่อ
+if (isset($_SESSION['admin_login'])) {
+  $user_id = $_SESSION['admin_login'];
+  $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+  $stmt->execute();
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+// Fetch data from the database
+$sqlChartData = "SELECT DATE_FORMAT(created_at, '%b %e') AS date, SUM(total_price) AS total_price FROM order2 WHERE order_status = 2 GROUP BY DATE_FORMAT(created_at, '%b %e') ORDER BY created_at ASC";
+
+// $sqlChartData = "SELECT DATE_FORMAT(created_at, '%b %e') AS date, SUM(total_price) AS total_price FROM order2 WHERE order_status = 2 GROUP BY DATE_FORMAT(created_at, '%b %e')";
+// $sqlChartData = "SELECT DATE_FORMAT(created_at, '%b %e') AS date, SUM(total_price) AS total_price FROM order2 GROUP BY DATE_FORMAT(created_at, '%b %e')";
+$stmtChartData = $conn->prepare($sqlChartData);
+$stmtChartData->execute();
+$chartData = $stmtChartData->fetchAll(PDO::FETCH_ASSOC);
+
+
+// Encode the data into JSON format
+$chartDataJSON = json_encode($chartData);
+// หลังจากประกาศ $chartData
+echo '<script>console.log(' . json_encode($chartData) . ');</script>';
 
 
 
+
+
+// SQL query to fetch data from database
+$sql = "SELECT * FROM patien";
+$stmt = $conn->prepare($sql);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Dashboard</title>
-    <!-- Include ECharts -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  
-</head>
-<style>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dashboard - SB Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script>
+        var chartData = <?php echo $chartDataJSON; ?>;
+    </script>
+            
+    </head>
+   
+  <style>
     body {
-      padding-top: 56px; /* สำหรับ Navbar ด้านบน */
+      padding-top: 56px;
+      /* สำหรับ Navbar ด้านบน */
     }
+
     .sidebar {
       position: fixed;
-      top: 56px; /* ความสูงของ Navbar ด้านบน */
+      top: 56px;
+      /* ความสูงของ Navbar ด้านบน */
       bottom: 0;
       left: 0;
-      z-index: 100; /* จัดการความสูงให้สูงกว่าเนื้อหาหลัก */
-      padding: 48px 0; /* การเรียงสลับแถบการนำทางและเนื้อหา */
+      z-index: 100;
+      /* จัดการความสูงให้สูงกว่าเนื้อหาหลัก */
+      padding: 48px 0;
+      /* การเรียงสลับแถบการนำทางและเนื้อหา */
       box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
     }
-    .sidebar-sticky {
-      position: relative;
-      top: 0;
-      height: calc(100vh - 48px); /* สูงของแถบการนำทางลบความสูงของ Navbar ที่ด้านบน */
-      padding-top: .5rem;
-      overflow-x: hidden;
-      overflow-y: auto; /* สำหรับเลื่อนแถบการนำทาง */
-    }
-    .sidebar .nav-link {
-      color: #fff;
-      padding: 10px 20px; /* กำหนดระยะห่างของ nav-link ด้านบนและด้านล่าง 20px ด้านซ้ายและด้านขวา 10px */
-    }
-    .sidebar .nav-link:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-    .main-content {
-      margin-left: 240px; /* กว้างของ Sidebar */
-      padding: 20px;
-    }
-    .sidebar {
-      width: 200px; /* เพิ่มความกว้างที่ต้องการ */
-    }
+
+
+
+
+
     .sidebar .nav-item {
-      margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างของแต่ละ nav-item ไปยัง nav-item ถัดไป */
-    }
-
-    .sidebar-sticky {
-      padding-top: 1rem; /* เพิ่มขอบบนเพื่อให้มีพื้นที่ */
-      height: calc(100vh - 48px); /* ลบความสูงของ Navbar ที่ด้านบนออกจากความสูงทั้งหมดที่ต้องการให้ Sidebar มีได้ */
-      overflow-x: hidden;
-      overflow-y: auto;
+      margin-bottom: 10px;
+      /* เพิ่มระยะห่างด้านล่างของแต่ละ nav-item ไปยัง nav-item ถัดไป */
     }
 
 
-</style>
 
+  </style>
+</head>
 
-
-<body>
-    
-     <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Dashboard</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          
-          <li class="nav-item">
+<body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="index.html">FUND CLINIC</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                   
+                    
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                <li class="nav-item">
             <a class="nav-link" href="#"><?php echo $row['firstname'] . ' ' . $row['lastname']?></a>
           </li>
-                  <!-- Display the logged-in username -->
-        
-        
-        <!-- Add the Log Out button -->
-          <li class="nav-item">
-          <a class="nav-link" href="../logout2.php">ออกจากระบบ</a>
-        </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
 
-  <!-- Sidebar -->
-  <nav class="sidebar bg-dark sidebar-dark">
-    <div class="sidebar-sticky">
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link active" href="main_dashboard.php">
-            <i class="fas fa-tachometer-alt"></i> Dashboard <span class="sr-only">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="">
-            <i class="fas fa-shopping-cart"></i> Orders
-          </a>
-        </li>
-        <li class="nav-item" id="accountsSubMenu">
-    <a href="#" class="nav-link" onclick="toggleSubMenu('accountsSubMenu')">
-        <i class="fas fa-box"></i> Products
-    </a>
-    <ul style="display: <?php echo ($current_page == 'dash_produc.php') ? 'block' : 'none'; ?>">
-        <a class="nav-link" href="dash_produc.php">Statistic</a>
-        <a class="nav-link" href="..\shopping cart\admin.php">Upload</a>
-    </ul>
-</li>
-<script>
-        function toggleSubMenu(subMenuId) {
-            var subMenu = document.getElementById(subMenuId).querySelector('ul');
-            subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
-        }
-    </script>
-        <li class="nav-item">
-          <a class="nav-link" href="dashb.php">
-            <i class="fas fa-users"></i> Patient
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="dashbapomen.php">
-            <i class="fas fa-users"></i> Appointment
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="finishreceipt.php">
-            <i class="fas fa-users"></i> Receipt
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="doctorsdash.php">
-            <i class="fas fa-users"></i> doctor
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="reveiw_dashboard.php">
-            <i class="fas fa-users"></i> Reviews
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="Report.php">
-            <i class="fas fa-chart-bar"></i> Reports
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+                        <li><a class="dropdown-item" href="../logout2.php">ออกจากระบบ</a></li>
+                        
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Main</div>
+                            <a class="nav-link" href="main_dashboard.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Products
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="dash_produc.php">Overview</a>
+                                    <a class="nav-link" href="order.php">Order</a>
+                                    <a class="nav-link" href="../shopping cart/admin.php">Upload</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Info
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="dashb.php">Patient</a>
+                                    <a class="nav-link" href="doctorsdash.php">Doctor</a>
+                                </nav>
+                            </div>
+                            <div class="sb-sidenav-menu-heading">Addons</div>
+                            <a class="nav-link" href="dashbapomen.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Appointment
+                            </a>
+                            <a class="nav-link" href="finishreceipt.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Receipt
+                            </a>
+                            <a class="nav-link" href="Report.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Report
+                            </a>
+                            <a class="nav-link" href="reveiw_dashboard.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Review
+                            </a>
+                        </div>
+                    </div>
 
-  <!-- Content -->
+                </nav>
+            </div>
 
-    <!-- Patient List Table -->
-    <div class="table-responsive mt-5">
-        <table class="table table-striped table-bordered">
-            
-            <tbody>
-                <?php
-                    // Your existing PHP code to fetch and display patient data
-                    // ...
-                ?>
-            </tbody>
-        </table>
-    </div>
-</div>
-    <!-- Set the width and height directly -->
-    <div id="chart-container" style="width: 1200px; height: 300px;">
-    <div id="productChart" style="width: 100%; height: 100%;  margin-left: 300px;"></div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Overview Product</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Charts</li>
+                            
+                        </ol>
+                        <div class="card mb-4">
+                            
 
-        <div id="legend" style="width: 30%; height: 100%; float: left; padding-top: 50px;"></div>
-    </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-area me-1"></i>
+                                กราฟแสดงภาพรวมรายได้สินค้า
+                            </div>
+                            <div class="card-body"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>
+                            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>
+                                        Bar Chart Example
+                                    </div>
+                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="50"></canvas></div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-pie me-1"></i>
+                                        Pie Chart Example
+                                    </div>
+                                    <div class="card-body"><canvas id="myPieChart" width="100%" height="50"></canvas></div>
+                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
 
-    <script>
-        // Prepare data for ECharts
-        var productData = <?php echo json_encode($productData); ?>;
-        var productLabels = Object.keys(productData);
-        var productCounts = Object.values(productData);
-
-        // Create a pie chart with ECharts
-        var productChart = echarts.init(document.getElementById('productChart'));
-
-        // Specify chart configuration
-        var option = {
-    backgroundColor: '#f5f5f5',  // กำหนดสีพื้นหลัง
-    tooltip: {
-        trigger: 'item',
-        formatter: '{b}: {c} ({d}%)'
-    },
-    series: [
-        {
-            type: 'pie',
-            radius: '50%',
-            center: ['30%', '50%'],  // ปรับตำแหน่ง Pie Chart
-            data: productLabels.map(function (label, index) {
-                return { value: productCounts[index], name: label };
-            }),
-            itemStyle: {
-                emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            },
-            label: {
-                show: true,
-                formatter: '{b}: {d}%',
-                position: 'outside',
-                alignTo: 'labelLine'  // ปรับการแสดงตำแหน่งของ label
-            },
-            tooltip: {
-                trigger: 'item',
-                formatter: function (params) {
-                    var productName = params.name;
-                    var productCount = productData[productName] || 0;
-                    return productName + ': ' + productCount + ' ชิ้น';
-                }
-            },
-            emphasis: {
-                label: {
-                    show: true,
-                    fontSize: '16',
-                    fontWeight: 'bold'
-                }
-            }
-        }
-    ]
-};
-
-// Set the chart option
-productChart.setOption(option);
-
-// ปรับแต่ง legendContainer ให้เรียงลงมา
-legendContainer.style.float = 'left';
-legendContainer.style.paddingTop = '50px';
-
-
-        // Set the chart option
-        productChart.setOption(option);
-
-        // Create a separate legend container
-        var legendContainer = document.getElementById('legend');
-        var legendChart = echarts.init(legendContainer);
-
-        // Specify legend configuration
-        var legendOption = {
-            orient: 'vertical',
-            right: 10,
-            data: productLabels,
-        };
-        
-
-        // Set the legend option
-        legendChart.setOption(legendOption);
-        var productCounts = Object.values(productData).map(function (product) {
-    return product.total_price; // หรือแต่คุณต้องการจะดึงข้อมูลอะไรมาแสดง
-});
-
-        
-    </script>
+     
+      </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="assets/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>
