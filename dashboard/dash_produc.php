@@ -7,6 +7,7 @@ if (!isset($_SESSION['admin_login'])) {
   header('location:../signin2.php');
 }
 
+
 // Count of Patients
 $sqlPatient = "SELECT COUNT(*) as patientCount FROM patien";
 $stmtPatient = $conn->prepare($sqlPatient);
@@ -49,6 +50,7 @@ $chartData = $stmtChartData->fetchAll(PDO::FETCH_ASSOC);
 $chartDataJSON = json_encode($chartData);
 // หลังจากประกาศ $chartData
 echo '<script>console.log(' . json_encode($chartData) . ');</script>';
+
 
 
 
@@ -265,6 +267,7 @@ $stmt = $conn->prepare($sql);
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="assets/demo/chart-pie-demo.js"></script>
+        
 </body>
 
 </html>
