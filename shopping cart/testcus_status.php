@@ -10,8 +10,12 @@ if (!isset($_SESSION['user_login'])) {
 }
 
 // เรียกข้อมูลลูกค้าที่ชำระเงินแล้วจากฐานข้อมูล โดยใช้ email เป็นเงื่อนไข
-$sql = "SELECT * FROM order2 WHERE order_status IN ('0', '1', '2') AND email IN (SELECT email FROM patien) ORDER BY created_at DESC";
-$result = $conn->query($sql);
+$user_email = $_SESSION['user_login']; // เก็บ email ของผู้ใช้ที่เข้าสู่ระบบ
+$sql = "SELECT * FROM order2 WHERE order_status IN ('0', '1', '2') AND email = :email ORDER BY created_at DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(':email', $user_email);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -88,35 +92,17 @@ $result = $conn->query($sql);
                     <!-- PHP code to fetch and display order data here -->
                     <!-- Sample data for demonstration purposes -->
                     <?php if ($result && $result->rowCount() > 0): ?>
-                        <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
+                        <?php foreach ($result as $row): ?>
                             <tr>
-                                <td>
-                                    <?php echo $row['id']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['name']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['number']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['email']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['method']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['flat'] . ', ' . $row['street'] . ', ' . $row['city'] . ', ' . $row['state'] . ', ' . $row['country'] . ', ' . $row['pin_code']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['total_products']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['total_price']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row['created_at']; ?>
-                                </td>
+                                <td><?php echo $row['id']; ?></td>
+                                <td><?php echo $row['name']; ?></td>
+                                <td><?php echo $row['number']; ?></td>
+                                <td><?php echo $row['email']; ?></td>
+                                <td><?php echo $row['method']; ?></td>
+                                <td><?php echo $row['flat'] . ', ' . $row['street'] . ', ' . $row['city'] . ', ' . $row['state'] . ', ' . $row['country'] . ', ' . $row['pin_code']; ?></td>
+                                <td><?php echo $row['total_products']; ?></td>
+                                <td><?php echo $row['total_price']; ?></td>
+                                <td><?php echo $row['created_at']; ?></td>
                                 <td>
                                     <?php
                                     if ($row['order_status'] == 0) {
@@ -131,7 +117,7 @@ $result = $conn->query($sql);
                                     ?>
                                 </td>
                             </tr>
-                        <?php endwhile; ?>
+                        <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
                             <td colspan="10">ไม่พบข้อมูลการสั่งซื้อที่มีการชำระเงิน</td>

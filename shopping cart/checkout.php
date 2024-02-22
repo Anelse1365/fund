@@ -36,6 +36,7 @@ if (isset($_POST['order_btn'])) {
     $country = $_POST['country'];
     $pin_code = $_POST['pin_code'];
     $total_products = $_POST['total_products'];
+    
 
     $cart_query = mysqli_query($conn, "SELECT * FROM `cart`");
     $price_total = 0;
