@@ -196,7 +196,7 @@ if (isset($_SESSION['user_login'])) {
 													<ul class="dropdown">
 												<li>  <a href="user2.php">โปรไฟล์</a></li> 
 												<li>  <a href=" receipt.php ">ใบเสร็จการนัดจอง</a></li> 
-                                                <li>  <a href=" receipt_apo.php ">ใบเสร็จการนัดจอง2</a></li> 
+                                                <li>  <a href=" receipt_apo.php ">ประวัติการทำฟัน</a></li> 
 												<li><a href="logout2.php">ออกจากระบบ</a></li> 
 
 
@@ -238,105 +238,27 @@ if (isset($_SESSION['user_login'])) {
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css'>
 
 
-<div class="student-profile py-4">
-    <div class="container">
-        <div class="row">
+
             <div class="col-lg-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-transparent text-center">
-                        <h3><?php echo $row['firstname'] . ' ' . $row['lastname']?> </h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="mb-0"><strong class="pr-1">ชื่อ-นามสกุล:</strong><?php echo $row['firstname'] . ' ' . $row['lastname']?> </p>
-                        <p class="mb-0"><strong class="pr-1">อีเมล:</strong><?php echo $row['email'] ?> </p>
-                        <p class="mb-0"><strong class="pr-1">เบอร์มือถือ:</strong><?php echo $row['phone_number'] ?></p>
-                        <p class="mb-0"><strong class="pr-1">เพศ:</strong><?php echo $row['gender'] ?></p>
-                        <p class="mb-0"><strong class="pr-1">อายุ:</strong><?php echo $row['age'] ?></p>
-                        <p class="mb-0"><strong class="pr-1">สัญชาติ:</strong><?php echo $row['nationality'] ?></p>
-                        <p class="mb-0"><strong class="pr-1">ที่อยู่:</strong><?php echo $row['address'] ?></p>
-                        <br>
-                        <hr class="mt-1 mb-6">
-                        <p class="mb-0"><strong class="pr-1">แต้มสะสม:</strong><?php echo $row['Poin'] ?> P</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-transparent border-0">
-                        <h3 class="mb-0"><i class="far fa-clone pr-1"></i>ข้อมูลการนัดจองทำฟัน</h3>
-                    </div>
-                    <div class="card-body pt-0">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th width="30%">วันที่</th>
-                                <td width="2%">:</td>
-                                <td>05/01/2024</td>
-                            </tr>
-                            <tr>
-                                <th width="30%">เวลา </th>
-                                <td width="2%">:</td>
-                                <td>10:00 AM</td>
-                            </tr>
-                            <tr>
-                                <th width="30%">หมายเหตุ</th>
-                                <td width="2%">:</td>
-                                <td>ตรวจสุขภาพช่องปาก</td>
-                            </tr>
-                            <tr>
-                                <th width="30%">สาขา</th>
-                                <td width="2%">:</td>
-                                <td>พิษณุโลก</td>
-                            </tr>
-                            <tr>
-                                <th width="30%">ทันตเเพทย์>
-                                <td width="2%">:</td>
-                                <td>หมอA</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div style="height: 26px"></div>
-                <div class="card shadow-sm">
-                    <div class="card-header bg-transparent border-0">
-                        <h3 class="mb-0"><i class="far fa-clone pr-1"></i>ประวัติการนัดจอง</h3>
-                    </div>
-                    <div class="card-body pt-0">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th width="30%">วันเมื่อวันที่</th>
-                                <td width="2%">:</td>
-                                <td>05/01/2024</td>
-                            </tr>
-                            <tr>
-                                <th width="30%">เวลา </th>
-                                <td width="2%">:</td>
-                                <td>10:00 AM</td>
-                            </tr>
-                            <tr>
-                                <th width="30%">หมายเหตุ</th>
-                                <td width="2%">:</td>
-                                <td>ตรวจสุขภาพช่องปาก</td>
-                            </tr>
-                            <tr>
-                                <th width="30%">สาขา</th>
-                                <td width="2%">:</td>
-                                <td>พิษณุโลก</td>
-                            </tr>
-                            <tr>
-                                <th width="30%">ทันตเเพทย์>
-                                <td width="2%">:</td>
-                                <td>หมอA</td>
-                            </tr>
-                        </table>
-                        <!-- Pagination กดเปลี่ยนหน้า -->
-                        
-                        <ul class="pagination mt-3" >
-                            <li class="page-item"><a class="page-link" href="#">ก่อนหน้า</a></li>
-                            <li class="page-item active"><span class="page-link">1</span></li>
-                            <li class="page-item"><span class="page-link">2</span></li>
-                            <li class="page-item"><a class="page-link" href="#">ถัดไป</a></li>
-                        </ul>
-               
+    <div class="card shadow-sm mx-auto">
+        <div class="card-header bg-transparent text-center">
+            <h3><?php echo $row['firstname'] . ' ' . $row['lastname']?> </h3>
+        </div>
+        <div class="card-body">
+            <p class="mb-0"><strong class="pr-1">ชื่อ-นามสกุล:</strong><?php echo $row['firstname'] . ' ' . $row['lastname']?> </p>
+            <p class="mb-0"><strong class="pr-1">อีเมล:</strong><?php echo $row['email'] ?> </p>
+            <p class="mb-0"><strong class="pr-1">เบอร์มือถือ:</strong><?php echo $row['phone_number'] ?></p>
+            <p class="mb-0"><strong class="pr-1">เพศ:</strong><?php echo $row['gender'] ?></p>
+            <p class="mb-0"><strong class="pr-1">อายุ:</strong><?php echo $row['age'] ?></p>
+            <p class="mb-0"><strong class="pr-1">สัญชาติ:</strong><?php echo $row['nationality'] ?></p>
+            <p class="mb-0"><strong class="pr-1">ที่อยู่:</strong><?php echo $row['address'] ?></p>
+            <br>
+        </div>
+    </div>
+</div>
+
+          
+                      
                     </div>
                 </div>
             </div>
