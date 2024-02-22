@@ -153,10 +153,38 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <div class="card mb-4 mt-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                DataTable Example
+                                แสดงข้อมูลการสั่งซื้อ
+                                
+                                <div>
+                                    <br>
+                                <a href="order_yes.php"><button type="button" class="btn btn-outline-success">ชำระแล้ว</button></a>
+                                <a href="order.php"><button type="button" class="btn btn-outline-success">ยังไม่ชำระเงิน</button></a>
+                                <a href="order_no.php"><button type="button" class="btn btn-outline-success">ยกเลิกการสั่งซื้อ</button></a>
+                                </div>
+                                <br>
+                                <div>
+                                    <form name="for1" method="POST" action="order.php">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <input type="date" name="dt1" class="form-control">
+                                        </div>
+                                        <div class="col-sm-2">
+                                        <input type="date" name="dt2" class="form-control">
+                                        </div>
+                                        <div class="col-sm-4">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                        </div>
+                                        </div>
+
+
+                                    </form>
+
+                                </div>
+
                             </div>
+
                             <div class="card-body">
-                                <table id="datatablesSimple">
+                                <table id="datatablesSimple" table class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -165,7 +193,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                             <th>อีเมลล์</th>
                                             <th>วิธีชำระเงิน</th>
                                             <th>ที่อยู่</th>
-                                            <th>ถนน</th>
+                                            <th>ตำบล</th>
                                             <th>อำเภอ</th>
                                             <th>จังหวัด</th>
                                             <th>ประเทศ</th>
@@ -174,7 +202,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                             <th>ยอดรวม</th>
                                             <th>วันที่สั่งซื้อ</th>
                                             <th>สถานะการสั่งซื้อ</th>
-                                            <th>หลักฐานการโอน  </th>
+                                            <th>ยืนยันคำสั่งซื้อ</th>
+                                            <th>ยกเลิกคำสั่งซื้อ</th>
+                                            <th>หลักฐานการโอน</th>
+                                            
+                                            
 
                                         </tr>
                                         </thead>
@@ -184,8 +216,21 @@ $current_page = basename($_SERVER['PHP_SELF']);
 // Include database configuration
 require_once '../config2/db2.php';
 
+$ddt1=@$_POST['dt1'];
+$ddt2=@$_POST['dt2'];
+$add_date=date('Y-m-d', strtotime($ddt2 . "+1 days"));
+
+if(($ddt1 != "") & ($ddt2 != "")){
+    echo "ค้นหาจากวันที่ $ddt1 ถึง $ddt2";
+    $sql = "SELECT * FROM order2 WHERE order_status='1' AND created_at BETWEEN '$ddt1' AND '$add_date' ORDER BY created_at DESC";
+} else {
+    $sql = "SELECT * FROM `order2` WHERE order_status ='1' ORDER BY created_at DESC";
+}
+
+
 // SQL query to fetch data from order2 table
-$sql = "SELECT * FROM `order2` ORDER BY `created_at` DESC";
+// $sql = "SELECT * FROM `order2` ORDER BY `created_at` DESC"; ขึ้นหมด
+
 $result = $conn->query($sql);
 
 if ($result->rowCount() > 0) {
@@ -206,8 +251,31 @@ if ($result->rowCount() > 0) {
         echo "<td>" . $row['total_products'] . "</td>";
         echo "<td>" . $row['total_price'] . "</td>";
         echo "<td>" . $row['created_at'] . "</td>";
-        echo "<td>" . $row['order_status'] . "</td>";
+        echo "<td>"; // Open the <td> tag for order status
+
         
+                // Check order status and display appropriate text
+if (isset($row['order_status'])) {
+    $status = $row['order_status'];
+    if ($status == 1) {
+        echo "ยังไม่ได้ชำระเงิน";
+    } else if ($status == 2) {
+        echo "<b style= 'color:green'>ชำระเงินแล้ว</b>";
+    } else if ($status == 0) {
+        echo "<b style= 'color:red'> ยกเลิกการสั่งซื้อ</b>";
+    }
+}
+echo "</td>"; // Close the <td> tag for order status
+
+        echo "<td> <a href='product_dash/pay_order.php?id=" . $row['id'] . "' class='btn btn-success' onclick=\"del1(this.href); return false;\">ยืนยัน</a></td>";
+        echo "<td> <a href='product_dash/cancel_order.php?id=" . $row['id'] . "' class='btn btn-danger' onclick=\"del(this.href); return false;\">ยกเลิก</a></td>";
+
+
+
+
+
+        
+
         // Check if 'pay' field has a value (image filename)
         if (!empty($row['pay'])) {
             // Construct the image path
@@ -229,12 +297,25 @@ if ($result->rowCount() > 0) {
         echo "</tr>";
     }
 } else {
-    echo "No records found";
+    echo "ไม่พบ";
 }
+
+ 
+
 ?>
-</tbody>
+                            </tbody>
                                   <tfoot>
-                                        <tr>  
+                                    <tr>
+                                            <th>ID</th>
+                                            <th>ลูกค้า</th>
+                                            <th>เบอร์</th>
+                                            <th>อีเมลล์</th>
+                                            <th>วิธีชำระเงิน</th>
+
+                                    </tr>
+ 
+                                       </tfoot>
+                                       <tr>  
                                             <td><?=$row['id'] ?></td>
                                             <td><?=$row['name'] ?></td>
                                             <td><?=$row['method'] ?></td>
@@ -246,12 +327,12 @@ if ($result->rowCount() > 0) {
                                             <td><?=$row['pin_code'] ?></td>
                                             <td><?=$row['total_products'] ?></td>
                                             <td><?=$row['total_price'] ?></td>
-                                            <td><?=$row['order_status'] ?></td>
                                             <td><?=$row['created_at'] ?></td>
-                                            <td><img src='<?php echo $row['pay']; ?>' width='100' height='100'></td>
+                                            <td><?=$row['order_status'] ?></td>
+                                            
+
 
                                         </tr>
-                                       </tfoot>
                                     
                                 </table>
                             </div>
@@ -272,6 +353,21 @@ if ($result->rowCount() > 0) {
     document.addEventListener('DOMContentLoaded', function () {
         new simpleDatatables.DataTable('#datatablesSimple');
     });
+</script>
+<script>
+  function del(mypage){
+    var agree = confirm('คุณต้องการยกเลิกคำสั่งซื้อหรือไม่');
+    if(agree){
+      window.location=mypage;
+    }
+  }
+  function del1(mypage1){
+    var agree = confirm('คุณต้องการยืนยันคำสั่งซื้อหรือไม่');
+    if(agree){
+      window.location=mypage1;
+    }
+  }
+
 </script>
 
         
