@@ -50,7 +50,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Main</div>
-                            <a class="nav-link" href="main_dashboard.php">
+                            <a class="nav-link" href="../dashboard/main_dashboard.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
@@ -73,20 +73,24 @@
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="dashb.php">Patient</a>
-                                    <a class="nav-link" href="doctorsdash.php">Doctor</a>
+                                    <a class="nav-link" href="../dashboard/dashb.php">Patient</a>
+                                    <a class="nav-link" href="../dashboard/doctorsdash.php">Doctor</a>
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="dashbapomen.php">
+                            <a class="nav-link" href="../dashboard/dashbapomen.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Appointment
                             </a>
-                            <a class="nav-link" href="Report.php">
+                            <a class="nav-link" href="../dashboard/finishreceipt.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Receipt
+                            </a>
+                            <a class="nav-link" href="../dashboard/Report.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Report
                             </a>
-                            <a class="nav-link" href="reveiw_dashboard.php">
+                            <a class="nav-link" href="../dashboard/reveiw_dashboard.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Review
                             </a>

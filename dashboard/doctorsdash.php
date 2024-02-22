@@ -120,6 +120,10 @@ try {
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Appointment
                             </a>
+                            <a class="nav-link" href="finishreceipt.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Receipt
+                            </a>
                             <a class="nav-link" href="Report.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Report
