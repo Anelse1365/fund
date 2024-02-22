@@ -78,7 +78,7 @@ try {
             position: absolute;
             margin: auto;
             width: 500px;
-            height: 500px;
+            height: 600px;
             margin-left: 9cm;
             margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
@@ -88,7 +88,7 @@ try {
             position: absolute;
             margin: auto;
             width: 500px;
-            height: 500px;
+            height: 600px;
             margin-left:23cm;
             margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
@@ -98,7 +98,7 @@ try {
             position: absolute;
             margin: auto;
             width: 500px;
-            height: 500px;
+            height: 600px;
             margin-left:37cm;
             margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
@@ -108,7 +108,7 @@ try {
             position: absolute;
             margin: auto;
             width: 500px;
-            height: 500px;
+            height: 600px;
             margin-left:51cm;
             margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
@@ -289,35 +289,53 @@ try {
     var option;
 
 option = {
-  tooltip: {
-    trigger: 'item'
+  title: {
+    text: 'คะแนนรีวิวของหมอปกป้อง',
+    left: 'center',
+    top:'5%',
+    textStyle: {
+      fontSize: 32,
+      color:'black'
+    }
   },
   legend: {
-    top: '5%',
-    left: 'center'
+    type: 'scroll', // กำหนดเป็น scroll type
+    top: '16%',
+    left: 'center',
+    textStyle: {
+      fontSize: 22,
+      color:'black'
+    }
   },
   series: [
-    {
+    { 
+      top: '23%',
       name: 'Access From',
       type: 'pie',
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
+        borderColor: 'black', // สีขอบ                 
+        borderWidth: 1 ,// ความหนาขอบ
       },
       label: {
         show: false,
         position: 'center'
       },
       emphasis: {
-        label: {
-          show: true,
-          fontSize: 40,
-          fontWeight: 'bold'
-        }
+        itemStyle: {
+          borderColor: 'black', // สีขอบ                 
+          borderWidth: 1, // ความหนาขอบ             
+          shadowBlur: 10,                         
+          shadowOffsetX: 0,                         
+          shadowColor: 'rgba(1, 1, 1, 1)',
+        },
+
       },
+      tooltip: {
+    
+            },
       labelLine: {
         show: false
       },
@@ -404,30 +422,50 @@ $sql = "SELECT
     var myChart = echarts.init(chartDom);
     var option;
 
-option = {
-  tooltip: {
-    trigger: 'item'
+    option = {
+  type: 'scroll', // กำหนดเป็น scroll type
+  title: {
+    text: 'คะแนนรีวิวของหมอกอล์ฟ',
+    left: 'center',
+    top:'5%',
+    textStyle: {
+      fontSize: 32,
+      color:'black'
+    }
   },
   legend: {
-    top: '5%',
-    left: 'center'
+    type: 'scroll', // กำหนดเป็น scroll type
+    top: '16%',
+    left: 'center',
+    textStyle: {
+      fontSize:22,
+      color:'black'
+    }
   },
   series: [
     {
+      top: '23%',
       name: 'Access From',
       type: 'pie',
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
+        borderColor: 'black', // สีขอบ                 
+        borderWidth: 1 ,// ความหนาขอบ
       },
       label: {
         show: false,
         position: 'center'
       },
       emphasis: {
+        itemStyle: {
+          borderColor: 'black', // สีขอบ                 
+          borderWidth: 1, // ความหนาขอบ             
+          shadowBlur: 10,                         
+          shadowOffsetX: 0,                         
+          shadowColor: 'rgba(1, 1, 1, 1)',
+        },
         label: {
           show: true,
           fontSize: 40,
@@ -520,30 +558,50 @@ $sql = "SELECT
     var myChart = echarts.init(chartDom);
     var option;
 
-option = {
-  tooltip: {
-    trigger: 'item'
+    option = {
+  type: 'scroll', // กำหนดเป็น scroll type
+  title: {
+    text: 'คะแนนรีวิวของหมอสัภยา',
+    left: 'center',
+    top:'5%',
+    textStyle: {
+      fontSize: 32,
+      color:'black'
+    }
   },
   legend: {
-    top: '5%',
-    left: 'center'
+    type: 'scroll', // กำหนดเป็น scroll type
+    top: '16%',
+    left: 'center',
+    textStyle: {
+      fontSize: 22,
+      color:'black'
+    }
   },
   series: [
     {
+      top: '23%',
       name: 'Access From',
       type: 'pie',
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
+        borderColor: 'black', // สีขอบ                 
+        borderWidth: 1 ,// ความหนาขอบ
       },
       label: {
         show: false,
         position: 'center'
       },
       emphasis: {
+        itemStyle: {
+          borderColor: 'black', // สีขอบ                 
+          borderWidth: 1, // ความหนาขอบ             
+          shadowBlur: 10,                         
+          shadowOffsetX: 0,                         
+          shadowColor: 'rgba(1, 1, 1, 1)',
+        },
         label: {
           show: true,
           fontSize: 40,
@@ -555,7 +613,7 @@ option = {
       },
       data: [
         { value: review3[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
-        { value: review3[0]['3point'], name: '3 Point' },
+        { value: review3[0]['2point'], name: '2 Point' },
         { value: review3[0]['3point'], name: '3 Point' },
         { value: review3[0]['4point'], name: '4 Point' },
         { value: review3[0]['5point'], name: '5 Point' },
@@ -636,30 +694,50 @@ $sql = "SELECT
     var myChart = echarts.init(chartDom);
     var option;
 
-option = {
-  tooltip: {
-    trigger: 'item'
+    option = {
+  type: 'scroll', // กำหนดเป็น scroll type
+  title: {
+    text: 'คะแนนรีวิวของหมอเพชร',
+    left: 'center',
+    top:'5%',
+    textStyle: {
+      fontSize: 32,
+      color:'black'
+    }
   },
   legend: {
-    top: '5%',
-    left: 'center'
+    type: 'scroll', // กำหนดเป็น scroll type
+    top: '16%',
+    left: 'center',
+    textStyle: {
+      fontSize: 22,
+      color:'black'
+    }
   },
   series: [
     {
+      top: '23%',
       name: 'Access From',
       type: 'pie',
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
+        borderColor: 'black', // สีขอบ                 
+        borderWidth: 1 ,// ความหนาขอบ
       },
       label: {
         show: false,
         position: 'center'
       },
       emphasis: {
+        itemStyle: {
+          borderColor: 'black', // สีขอบ                 
+          borderWidth: 1, // ความหนาขอบ             
+          shadowBlur: 10,                         
+          shadowOffsetX: 0,                         
+          shadowColor: 'rgba(1, 1, 1, 1)',
+        },
         label: {
           show: true,
           fontSize: 40,

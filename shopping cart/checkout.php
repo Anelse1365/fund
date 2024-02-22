@@ -3,6 +3,7 @@
 session_start();
 require_once 'config.php';
 
+
 // Check if the user is logged in
 if (isset($_SESSION['user_login'])) {
     $user_id = $_SESSION['user_login'];
@@ -52,6 +53,7 @@ if (isset($_POST['order_btn'])) {
 
     // Define $pay_image variable to avoid undefined variable warning
     $pay_image = '';
+    
 
     if ($method === 'paypal' || $method === 'credit card') {
         // Check if payment method requires an image upload
