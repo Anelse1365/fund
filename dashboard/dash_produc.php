@@ -70,10 +70,10 @@ $stmtLatestTotalPrice = $conn->prepare($sqlLatestTotalPrice);
 $stmtLatestTotalPrice->execute();
 $latestTotalPriceResult = $stmtLatestTotalPrice->fetch(PDO::FETCH_ASSOC);
 $latestTotalPriceValue = ($latestTotalPriceResult !== false) ? $latestTotalPriceResult['total_price'] : null;
-?>
 
 
-?>
+
+
 
 
 
