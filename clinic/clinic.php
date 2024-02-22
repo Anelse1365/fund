@@ -1,18 +1,46 @@
-<?php 
+<?php
+// เชื่อมต่อกับฐานข้อมูล
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fund";
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    // เซ็ตโหมดของ PDO เพื่อให้แสดงข้อผิดพลาดออกมา
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
+}
+
+// สร้างคำสั่ง SQL เพื่อดึงข้อมูลจากตาราง reports
+$sql = "SELECT * FROM reports";
+                        
+// ประมวลผลคำสั่ง SQL
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     session_start();
     require_once '../config2/db2.php';
     if (!isset($_SESSION['admin_login'])) {
         $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
         header('location:../signin2.php');
-  
+    
     }
-      //แสดงชื่อ
-  if (isset($_SESSION['admin_login'])) {
-    $user_id = $_SESSION['admin_login'];
-    $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-}
+
+    if (isset($_SESSION['admin_login'])) {
+        $user_id = $_SESSION['admin_login'];
+        $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+  
+  
+                // SQL query to fetch data from database
+    $sql = "SELECT * FROM patien";
+    $stmt = $conn->prepare($sql);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +63,9 @@
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">     
+                <div class="input-group">
+                   
+                    
                 </div>
             </form>
             <!-- Navbar-->
@@ -49,7 +79,9 @@
                         <li><a class="dropdown-item" href="#!">Settings</a></li>
                         <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="../logout2.php">ออกจากระบบ</a></li>                     
+
+                        <li><a class="dropdown-item" href="../logout2.php">ออกจากระบบ</a></li>
+                        
                     </ul>
                 </li>
             </ul>
@@ -132,7 +164,12 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="doctorsdash.php">
-            <i class="fas fa-users"></i> doctor
+            <i class="fas fa-users"></i> Doctor
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="finishreceipt.php">
+            <i class="fas fa-users"></i> Receipt
           </a>
         </li>
         <li class="nav-item">
@@ -145,136 +182,65 @@
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="clinic/clinic.php">
+            <i class="fas fa-chart-bar"></i> Clinic FanD
+          </a>
+        </li>
       </ul>
     </div>
   </nav>
-  <div class="container mt-5">
-    <h2 class="mb-3">Appointment</h2>
-    <!-- เพิ่มฟอร์มสำหรับกรองข้อมูล -->
-<!-- เพิ่มฟอร์มสำหรับกรองข้อมูล -->
-<form method="get" action="">
-    <div class="row mb-3">
-        <div class="col">
-            <input type="text" class="form-control" placeholder="ค้นหาตามชื่อ" name="search_patient">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="ค้นหาตามอีเมล" name="search_email">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="ค้นหาตามเบอร์โทร" name="search_phone">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="อายุ" name="age">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="สัญชาติ" name="nationality">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="เพศ" name="gender">
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="คลินิก" name="state">
-        </div>
-        <!-- เพิ่มฟิลเตอร์อื่น ๆ ตามต้องการ -->
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary">ค้นหา</button>
-        </div>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">ประวัติคนไข้</h1>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ชื่อ-นามสกุล</th>
+                    <th>อีเมล</th>
+                    <th>เบอร์โทร</th>
+                    <th>อายุ</th>
+                    <th>เพศ</th>
+                    <th>สัญชาติ</th>
+                    <th>คลินิก</th>
+                    <th>หมอ</th>
+                    <th>วันที่</th>
+                    <th>เวลา</th>
+                    <th>บริการ</th>
+                    <th>ราคา</th>
+                    <th>ความคิดเห็น</th>
+                    <th>แก้ไข</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($reports as $report): ?>
+                <tr>
+                    <td><?php echo $report['patient']; ?></td>
+                    <td><?php echo $report['email']; ?></td>
+                    <td><?php echo $report['phone_number']; ?></td>
+                    <td><?php echo $report['age']; ?></td>
+                    <td><?php echo $report['gender']; ?></td>
+                    <td><?php echo $report['nationality']; ?></td>
+                    <td><?php echo $report['state']; ?></td>
+                    <td><?php echo $report['doctor']; ?></td>
+                    <td><?php echo $report['date']; ?></td>
+                    <td><?php echo $report['timeInput']; ?></td>
+                    <td><?php echo $report['information']; ?></td>
+                    <td><?php echo $report['price']; ?></td>
+                    <td><?php echo $report['comment']; ?></td>
+                    <td>
+                        <a href='edit_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-primary'>แก้ไข</a>
+                        <a href='delete_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>
+                       
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <a href="dashbapomen.php" class="btn btn-secondary">ย้อนกลับ</a>
+        <a href="dashb.php" class="btn btn-secondary">กลับหน้าหลัก</a>
     </div>
-</form>
-
-
-<div class="table-responsive">
-  <table class="table table-striped table-bordered"> 
-    <thead>
-      <tr>
-        <th>ชื่อ</th>
-        <th>Email</th>
-        <th>เบอร์โทร</th>
-        <th>อายุ</th>
-        <th>เพศ</th>
-        <th>สัญชาติ</th>
-        <th>คลินิก</th>     
-        <th>เวลาที่ส่ง</th>
-        <th>แก้ไข</th>
-      </tr>
-    </thead>
-    <tbody>
-<?php
-// Connection to database
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "fund";
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // SQL query to fetch data from database with filtering
-    $sql = "SELECT * FROM appointmen WHERE 1";
-
-    // Check if search parameters are provided
-    if(isset($_GET['search_patient']) && !empty($_GET['search_patient'])) {
-        $search_patient = $_GET['search_patient'];
-        $sql .= " AND patient LIKE '%$search_patient%'";
-    }
-
-    if(isset($_GET['search_email']) && !empty($_GET['search_email'])) {
-        $search_email = $_GET['search_email'];
-        $sql .= " AND email LIKE '%$search_email%'";
-    }
-
-    if(isset($_GET['search_phone']) && !empty($_GET['search_phone'])) {
-        $search_phone = $_GET['search_phone'];
-        $sql .= " AND phone_number LIKE '%$search_phone%'";
-    }
-    if(isset($_GET['age']) && !empty($_GET['age'])) {
-        $age = $_GET['age'];
-        $sql .= " AND age LIKE '%$age%'";
-    }
-    if(isset($_GET['gender']) && !empty($_GET['gender'])) {
-        $gender = $_GET['gender'];
-        $sql .= " AND gender          LIKE '%$gender%'";
-    }
-    if(isset($_GET['nationality']) && !empty($_GET['nationality'])) {
-        $nationality  = $_GET['nationality'];
-        $sql .= " AND  nationality    LIKE '%$nationality%'";
-    }
-    if(isset($_GET['state']) && !empty($_GET['state'])) {
-        $state  = $_GET['state'];
-        $sql .= " AND  state    LIKE '%$state%'";
-    }
-
-    // Add more filters for other columns as needed
-
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-
-    // Output data of each row
-    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        echo "<tr>
-               <td>".$row["patient"]."</td>
-               <td>".$row["email"]."</td>
-               <td>".$row["phone_number"]."</td>
-               <td>".$row["age"]."</td>
-               <td>".$row["gender"]."</td>
-               <td>".$row["nationality"]."</td>
-               <td>".$row["state"]."</td>
-               <td>".$row["created_at"]."</td>
-               <td><a href='receiptapomen.php?id=".$row['id']."' class='btn btn-primary'>ทำการนัด</a>
-               <a href='deleteappointment.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>
-               <a href='finishreceipt.php?id=".$row["id"]."' class='btn btn-info btn-sm'><i class='fas fa-eye'></i> ดูใบเสร็จ</a></td>
-              </tr>";
-    }
-} catch(PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
-?>
-
-
-    </tbody>
-  </table>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="assets/demo/chart-area-demo.js"></script>
@@ -283,7 +249,3 @@ try {
         <script src="js/datatables-simple-demo.js"></script>  
 </body>
 </html>
-
-
-                            
-                         
