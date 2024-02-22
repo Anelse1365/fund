@@ -231,7 +231,7 @@ try {
         $age = $_GET['age'];
         $sql .= " AND age LIKE '%$age%'";
     }
-   if(isset($_GET['gender']) && !empty($_GET['gender'])) {
+    if(isset($_GET['gender']) && !empty($_GET['gender'])) {
         $gender = $_GET['gender'];
         $sql .= " AND gender          LIKE '%$gender%'";
     }
