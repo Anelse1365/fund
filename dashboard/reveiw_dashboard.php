@@ -80,7 +80,7 @@ try {
             width: 500px;
             height: 500px;
             margin-left: 9cm;
-            margin-top: 6.5cm;
+            margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
         }
@@ -89,8 +89,8 @@ try {
             margin: auto;
             width: 500px;
             height: 500px;
-            margin-left:20cm;
-            margin-top: 6.5cm;
+            margin-left:23cm;
+            margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
         }
@@ -99,8 +99,8 @@ try {
             margin: auto;
             width: 500px;
             height: 500px;
-            margin-left:25cm;
-            margin-top: 6.5cm;
+            margin-left:37cm;
+            margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
         }
@@ -109,14 +109,21 @@ try {
             margin: auto;
             width: 500px;
             height: 500px;
-            margin-left:40cm;
-            margin-top: 6.5cm;
+            margin-left:51cm;
+            margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
+        }
+        h2 {
+            text-align: center; /* จัดตำแหน่งให้อยู่ตรงกลาง */
+            color: black; /* กำหนดสีข้อความเป็นดำ */
+            font-weight: bold; /* กำหนดให้ตัวหนา */
+            font-size: 50px; /* เพิ่มขนาดตัวอักษร */
         }
         </style>
     </head>
     <body class="sb-nav-fixed">
+      <br><br>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="main1.php">FUND CLINIC</a>
@@ -210,39 +217,7 @@ try {
             subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
         }
     </script>
-        <li class="nav-item">
-          <a class="nav-link" href="dashb.php">
-            <i class="fas fa-users"></i> Patient
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="dashbapomen.php">
-            <i class="fas fa-users"></i> Appointment
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="finishreceipt.php">
-            <i class="fas fa-users"></i> Receipt
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="doctorsdash.php">
-            <i class="fas fa-users"></i> doctor
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="reveiw_dashboard.php">
-            <i class="fas fa-users"></i> Reviews
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="Report.php">
-            <i class="fas fa-chart-bar"></i> Reports
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+
 
 <?php
     // เชื่อมต่อกับฐานข้อมูล
@@ -712,6 +687,10 @@ option = {
 
 option && myChart.setOption(option);
 </script>
+
+  <div class="container mt-5">
+        <h2 class="text-center mb-4">Reviews Dashboard</h2>
+    </div>
 
 <!-- ลิงก์ JavaScript ของ Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
