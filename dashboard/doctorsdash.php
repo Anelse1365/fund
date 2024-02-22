@@ -40,6 +40,30 @@ try {
         $email = $_GET['email'];
         $sql .= " AND email LIKE '%$email%'";
     }
+    if (isset($_GET['phone_number']) && !empty($_GET['phone_number'])) {
+        $phone_number = $_GET['phone_number'];
+        $sql .= " AND phone_number LIKE '%$phone_number%'";
+    }
+    if (isset($_GET['age']) && !empty($_GET['age'])) {
+        $age = $_GET['age'];
+        $sql .= " AND age LIKE '%$age%'";
+    }
+    if (isset($_GET['nationality']) && !empty($_GET['nationality'])) {
+        $nationality = $_GET['nationality'];
+        $sql .= " AND nationality LIKE '%$nationality%'";
+    }
+    if (isset($_GET['gender']) && !empty($_GET['gender'])) {
+        $gender = $_GET['gender'];
+        $sql .= " AND gender LIKE '%$gender%'";
+    }
+    if (isset($_GET['education']) && !empty($_GET['education'])) {
+        $education = $_GET['education'];
+        $sql .= " AND education LIKE '%$education%'";
+    }
+    if (isset($_GET['graduation']) && !empty($_GET['graduation'])) {
+        $graduation = $_GET['graduation'];
+        $sql .= " AND graduation LIKE '%$graduation%'";
+    }
 
     // เพิ่มเงื่อนไขการกรองฟิลเตอร์อื่น ๆ ตามต้องการ
 
@@ -204,7 +228,7 @@ try {
             <input type="text" class="form-control" placeholder="ค้นหาตามอีเมล" name="email">
         </div>
         <div class="col">
-            <input type="text" class="form-control" placeholder="ค้นหาตามเบอร์โทร" name="search_phone">
+            <input type="text" class="form-control" placeholder="ค้นหาตามเบอร์โทร" name="phone_number">
         </div>
         <div class="col">
             <input type="text" class="form-control" placeholder="อายุ" name="age">
