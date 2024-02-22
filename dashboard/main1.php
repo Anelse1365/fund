@@ -155,6 +155,7 @@ try {
                         </a>
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="dash_produc.php">Overview</a>
                                 <a class="nav-link" href="order.php">Order</a>
                                 <a class="nav-link" href="../shopping cart/admin.php">Upload</a>
                             </nav>
@@ -168,6 +169,7 @@ try {
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="dashb.php">Patient</a>
                                 <a class="nav-link" href="doctorsdash.php">Doctor</a>
+                                <a class="nav-link" href="cilnic_d.php">Cilnic</a>
                             </nav>
                         </div>
                         <div class="sb-sidenav-menu-heading">Addons</div>
