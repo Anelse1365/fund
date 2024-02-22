@@ -53,7 +53,7 @@ try {
             width: 500px;
             height: 500px;
             margin-left: 9cm;
-            margin-top: 6.5cm;
+            /*margin-top: 6.5cm;*/
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
         }
@@ -64,7 +64,7 @@ try {
             width: 500px;
             height: 500px;
             margin-left: 22.5cm;
-            margin-top: 6.5cm;
+            /*margin-top: 6.5cm;*/
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
         }
@@ -75,7 +75,7 @@ try {
             width: 500px;
             height: 500px;
             margin-left: 36cm;
-            margin-top: 6.5cm;
+            /*margin-top: 6.5cm;*/
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
 
@@ -84,15 +84,22 @@ try {
         #maindashboard3 {
             position: absolute;
             margin: auto;
-            width: 1500px;
+            width: 1520px;
             height: 410px;
-            top: 25cm;
-            right: 3cm;
+            top: 18.85cm;
+            left: 9cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
+            margin-bottom: 20px; /* เพิ่ม margin ด้านล่าง 20px */
         }
 
     
+        h2 {
+            text-align: center; /* จัดตำแหน่งให้อยู่ตรงกลาง */
+            color: black; /* กำหนดสีข้อความเป็นดำ */
+            font-weight: bold; /* กำหนดให้ตัวหนา */
+            font-size: 50px; /* เพิ่มขนาดตัวอักษร */
+        }
     </style>
 </head>
 
@@ -100,6 +107,7 @@ try {
 </head>
 
 <body class="sb-nav-fixed">
+    <h2>Dashboard</h2>
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="main_dashboard.php">FUND CLINIC</a>
@@ -190,39 +198,15 @@ try {
                 subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
             }
         </script>
-        <li class="nav-item">
-            <a class="nav-link" href="dashb.php">
-                <i class="fas fa-users"></i> Patient
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="dashbapomen.php">
-                <i class="fas fa-users"></i> Appointment
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="finishreceipt.php">
-                <i class="fas fa-users"></i> Receipt
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="doctorsdash.php">
-                <i class="fas fa-users"></i> doctor
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="reveiw_dashboard.php">
-                <i class="fas fa-users"></i> Reviews
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="Report.php">
-                <i class="fas fa-chart-bar"></i> Reports
-            </a>
-        </li>
+        
         </ul>
     </div>
     </nav>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Dashboard</h2>
+    </div>
+
     <!-- ลิงก์ JavaScript ของ Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
@@ -231,6 +215,7 @@ try {
     <script src="assets/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="js/datatables-simple-demo.js"></script>
+    
     <?php
     // เชื่อมต่อกับฐานข้อมูล
     $servername = "localhost";
@@ -279,6 +264,7 @@ try {
     }
     $conn->close();
     ?>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <div id="maindashboard"></div>
     <div class='frame'></div>
@@ -294,25 +280,33 @@ try {
                 left: 'center',
                 top:'5%',
                 textStyle: {
-                    fontSize: 24
+                    fontSize: 24,
+                    color:'black'
+
                 }
             },
             legend: {
                 top: '16%',
                 left: 'center',
                 textStyle: {
-                    fontSize: 18
+                    fontSize: 18,
+                    color:'black'
                 }
 
             },
             tooltip: {
                 trigger: 'item',
-                formatter: '{a} <br/>{b} : {c} ({d}%)',
+                formatter: '{a} <br/>{b} : {c} คน ({d}%)',
                 textStyle: {
-                    fontSize: 18
+                    fontSize: 18,
+                    color:'black'
                 }
             },
             series: [{
+                itemStyle:{
+                borderColor: 'black', // สีขอบ
+                borderWidth: 1 // ความหนาขอบ
+                },
                 name: 'จำนวนผู้ป่วย',
                 type: 'pie',
                 borderColor: 'black',
@@ -327,7 +321,7 @@ try {
                         borderWidth: 1, // ความหนาขอบ
                         shadowBlur: 10,
                         shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        shadowColor: 'rgba(0, 0, 0, 0.5)',
                     }
                 }
             }]
@@ -377,23 +371,31 @@ try {
                 left: 'center',
                 top: '4.3%',
                 textStyle: {
-                    fontSize: 24
+                    fontSize: 24,
+                    color:'black'
                 }
             },
             tooltip: {
+                formatter: '{a} <br/>{b} : {c} คน ({d}%)',
                 trigger: 'item',
                 textStyle: {
-                    fontSize: 24
+                    fontSize: 24,
+                    color:'black'
                 }
             },
             legend: {
                 top: '17%',
                 left: 'center',
                 textStyle: {
-                    fontSize: 24
+                    fontSize: 24,
+                    color:'black'
                 }
             },
             series: [{
+                itemStyle:{
+                borderColor: 'black', // สีขอบ
+                borderWidth: 1 // ความหนาขอบ
+                },
                 name: 'Access From',
                 type: 'pie',
                 top: '20%',
@@ -407,7 +409,8 @@ try {
                     label: {
                         show: true,
                         fontSize: 40,
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        color:'black'
                     },
                 itemStyle: { // เพิ่มการกำหนดขอบให้วงกลม
                 borderColor: 'black', // สีขอบ
@@ -464,32 +467,50 @@ try {
             title: {
                 text: 'จำนวนผู้ชายและผู้หญิงในฐานข้อมูล',
                 left: 'center',
+                top:'1%',
                 textStyle: {
-                    fontSize: 24
+                    fontSize: 22,
+                    color:'black'
                 }
             },
             tooltip: {
+                formatter: 'จำนวน <br/>{b} : {c} คน',
                 trigger: 'axis',
                 axisPointer: {
                     type: 'shadow'
+                },
+                textStyle: {
+                    fontSize: 24,
+                    color:'black'
                 }
             },
             xAxis: {
+                top:'6%',
                 type: 'category',
                 data: ['ชาย', 'หญิง'],
-                textStyle: {
-                    fontSize: 24
-                }
+                axisLabel: {
+        textStyle: {
+            fontSize: 20 ,// ขนาดตัวอักษร
+            color:'black'
+        }
+    }
             },
             yAxis: {
+                top:'6%',
                 type: 'value',
                 name: 'จำนวน',
-                formatter: 1
+                formatter: 1,
+                
+                
             },
             series: [{
                 data: sex,
                 type: 'bar',
-                top: '17%'
+                bottom:'20px',
+                itemStyle:{
+                    borderColor: 'black', // สีขอบ
+                    borderWidth: 1 ,// ความหนาขอบ
+                }
             }]
         };
 
@@ -555,29 +576,71 @@ try {
             ]);
         }
         option = {
-            legend: {
-
+            title: {
+                text: 'จำนวนการนัดจองในแต่ละประเภท',
+                left: 'center',
+                top:'1%',
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
             },
-            tooltip: {},
+            legend: {
+                top:'13%',
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
+            },
+            grid: {
+        top: '27%', // ปรับตำแหน่งด้านซ้า
+        containLabel: true // ปรับให้กราฟอยู่ในพื้นที่ที่กำหนดไว้
+        
+    },
+            tooltip: {
+            
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
+            },
             dataset: {
-                source: sourceData
+                source: sourceData,
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
             },
             xAxis: {
-                type: 'category'
+                type: 'category',
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
             },
             yAxis: {
-                formatter: 1
+                formatter: 1,
+                textStyle: {
+                    fontSize: 22,
+                    color:'black'
+                }
             },
-            series: [{
+            series: [
+                {
                     type: 'bar',
                     itemStyle: {
-                        color: 'skyblue'
+                        color: 'skyblue',
+                         barBorderRadius: [5, 5, 0, 0] ,// เพิ่มเส้นขอบด้านบนเป็นโค้ง
+                        borderColor:'black'
                     }
                 },
                 {
                     type: 'bar',
                     itemStyle: {
-                        color: 'pink'
+                        color: 'pink',
+                        fontWeight: 'bold',
+                        barBorderRadius: [5, 5, 0, 0], // เพิ่มเส้นขอบด้านบนเป็นโค้ง
+                        borderColor:'black'
                     }
                 }
             ]
