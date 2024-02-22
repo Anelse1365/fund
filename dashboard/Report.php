@@ -176,7 +176,7 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Report
                             </a>
-                            <a class="nav-link" href="reveiwdash.php">
+                            <a class="nav-link" href="reveiw_dashboard.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Review
                             </a>
