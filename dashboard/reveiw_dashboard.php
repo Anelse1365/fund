@@ -78,9 +78,9 @@ try {
             position: absolute;
             margin: auto;
             width: 500px;
-            height: 500px;
+            height: 600px;
             margin-left: 9cm;
-            margin-top: 6.5cm;
+            margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
         }
@@ -88,9 +88,9 @@ try {
             position: absolute;
             margin: auto;
             width: 500px;
-            height: 500px;
-            margin-left:20cm;
-            margin-top: 6.5cm;
+            height: 600px;
+            margin-left:23cm;
+            margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
         }
@@ -98,9 +98,9 @@ try {
             position: absolute;
             margin: auto;
             width: 500px;
-            height: 500px;
-            margin-left:25cm;
-            margin-top: 6.5cm;
+            height: 600px;
+            margin-left:37cm;
+            margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
         }
@@ -108,18 +108,25 @@ try {
             position: absolute;
             margin: auto;
             width: 500px;
-            height: 500px;
-            margin-left:40cm;
-            margin-top: 6.5cm;
+            height: 600px;
+            margin-left:51cm;
+            margin-top: 5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
+        }
+        h2 {
+            text-align: center; /* จัดตำแหน่งให้อยู่ตรงกลาง */
+            color: black; /* กำหนดสีข้อความเป็นดำ */
+            font-weight: bold; /* กำหนดให้ตัวหนา */
+            font-size: 50px; /* เพิ่มขนาดตัวอักษร */
         }
         </style>
     </head>
     <body class="sb-nav-fixed">
+      <br><br>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="main_dashboard.php">FUND CLINIC</a>
+            <a class="navbar-brand ps-3" href="main1.php">FUND CLINIC</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -153,7 +160,7 @@ try {
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Main</div>
-                            <a class="nav-link" href="main_dashboard.php">
+                            <a class="nav-link" href="main1.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
@@ -210,39 +217,7 @@ try {
             subMenu.style.display = (subMenu.style.display === 'none') ? 'block' : 'none';
         }
     </script>
-        <li class="nav-item">
-          <a class="nav-link" href="dashb.php">
-            <i class="fas fa-users"></i> Patient
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="dashbapomen.php">
-            <i class="fas fa-users"></i> Appointment
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="finishreceipt.php">
-            <i class="fas fa-users"></i> Receipt
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="doctorsdash.php">
-            <i class="fas fa-users"></i> doctor
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="reveiw_dashboard.php">
-            <i class="fas fa-users"></i> Reviews
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="Report.php">
-            <i class="fas fa-chart-bar"></i> Reports
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+
 
 <?php
     // เชื่อมต่อกับฐานข้อมูล
@@ -314,35 +289,53 @@ try {
     var option;
 
 option = {
-  tooltip: {
-    trigger: 'item'
+  title: {
+    text: 'คะแนนรีวิวของหมอปกป้อง',
+    left: 'center',
+    top:'5%',
+    textStyle: {
+      fontSize: 32,
+      color:'black'
+    }
   },
   legend: {
-    top: '5%',
-    left: 'center'
+    type: 'scroll', // กำหนดเป็น scroll type
+    top: '16%',
+    left: 'center',
+    textStyle: {
+      fontSize: 22,
+      color:'black'
+    }
   },
   series: [
-    {
+    { 
+      top: '23%',
       name: 'Access From',
       type: 'pie',
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
+        borderColor: 'black', // สีขอบ                 
+        borderWidth: 1 ,// ความหนาขอบ
       },
       label: {
         show: false,
         position: 'center'
       },
       emphasis: {
-        label: {
-          show: true,
-          fontSize: 40,
-          fontWeight: 'bold'
-        }
+        itemStyle: {
+          borderColor: 'black', // สีขอบ                 
+          borderWidth: 1, // ความหนาขอบ             
+          shadowBlur: 10,                         
+          shadowOffsetX: 0,                         
+          shadowColor: 'rgba(1, 1, 1, 1)',
+        },
+
       },
+      tooltip: {
+    
+            },
       labelLine: {
         show: false
       },
@@ -429,30 +422,50 @@ $sql = "SELECT
     var myChart = echarts.init(chartDom);
     var option;
 
-option = {
-  tooltip: {
-    trigger: 'item'
+    option = {
+  type: 'scroll', // กำหนดเป็น scroll type
+  title: {
+    text: 'คะแนนรีวิวของหมอกอล์ฟ',
+    left: 'center',
+    top:'5%',
+    textStyle: {
+      fontSize: 32,
+      color:'black'
+    }
   },
   legend: {
-    top: '5%',
-    left: 'center'
+    type: 'scroll', // กำหนดเป็น scroll type
+    top: '16%',
+    left: 'center',
+    textStyle: {
+      fontSize:22,
+      color:'black'
+    }
   },
   series: [
     {
+      top: '23%',
       name: 'Access From',
       type: 'pie',
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
+        borderColor: 'black', // สีขอบ                 
+        borderWidth: 1 ,// ความหนาขอบ
       },
       label: {
         show: false,
         position: 'center'
       },
       emphasis: {
+        itemStyle: {
+          borderColor: 'black', // สีขอบ                 
+          borderWidth: 1, // ความหนาขอบ             
+          shadowBlur: 10,                         
+          shadowOffsetX: 0,                         
+          shadowColor: 'rgba(1, 1, 1, 1)',
+        },
         label: {
           show: true,
           fontSize: 40,
@@ -463,16 +476,16 @@ option = {
         show: false
       },
       data: [
-        { value: review2[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
-        { value: review2[0]['2point'], name: '2 Point' },
-        { value: review2[0]['3point'], name: '3 Point' },
-        { value: review2[0]['4point'], name: '4 Point' },
-        { value: review2[0]['5point'], name: '5 Point' },
-        { value: review2[0]['6point'], name: '6 Point' },
-        { value: review2[0]['7point'], name: '7 Point' },
-        { value: review2[0]['8point'], name: '8 Point' },
-        { value: review2[0]['9point'], name: '9 Point' },
-        { value: review2[0]['10point'], name: '10 Point'},
+        { value: review[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
+        { value: review[0]['2point'], name: '2 Point' },
+        { value: review[0]['3point'], name: '3 Point' },
+        { value: review[0]['4point'], name: '4 Point' },
+        { value: review[0]['5point'], name: '5 Point' },
+        { value: review[0]['6point'], name: '6 Point' },
+        { value: review[0]['7point'], name: '7 Point' },
+        { value: review[0]['8point'], name: '8 Point' },
+        { value: review[0]['9point'], name: '9 Point' },
+        { value: review[0]['10point'], name: '10 Point'},
       ]
     }
   ]
@@ -545,30 +558,50 @@ $sql = "SELECT
     var myChart = echarts.init(chartDom);
     var option;
 
-option = {
-  tooltip: {
-    trigger: 'item'
+    option = {
+  type: 'scroll', // กำหนดเป็น scroll type
+  title: {
+    text: 'คะแนนรีวิวของหมอสัภยา',
+    left: 'center',
+    top:'5%',
+    textStyle: {
+      fontSize: 32,
+      color:'black'
+    }
   },
   legend: {
-    top: '5%',
-    left: 'center'
+    type: 'scroll', // กำหนดเป็น scroll type
+    top: '16%',
+    left: 'center',
+    textStyle: {
+      fontSize: 22,
+      color:'black'
+    }
   },
   series: [
     {
+      top: '23%',
       name: 'Access From',
       type: 'pie',
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
+        borderColor: 'black', // สีขอบ                 
+        borderWidth: 1 ,// ความหนาขอบ
       },
       label: {
         show: false,
         position: 'center'
       },
       emphasis: {
+        itemStyle: {
+          borderColor: 'black', // สีขอบ                 
+          borderWidth: 1, // ความหนาขอบ             
+          shadowBlur: 10,                         
+          shadowOffsetX: 0,                         
+          shadowColor: 'rgba(1, 1, 1, 1)',
+        },
         label: {
           show: true,
           fontSize: 40,
@@ -579,16 +612,16 @@ option = {
         show: false
       },
       data: [
-        { value: review3[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
-        { value: review3[0]['3point'], name: '3 Point' },
-        { value: review3[0]['3point'], name: '3 Point' },
-        { value: review3[0]['4point'], name: '4 Point' },
-        { value: review3[0]['5point'], name: '5 Point' },
-        { value: review3[0]['6point'], name: '6 Point' },
-        { value: review3[0]['7point'], name: '7 Point' },
-        { value: review3[0]['8point'], name: '8 Point' },
-        { value: review3[0]['9point'], name: '9 Point' },
-        { value: review3[0]['10point'], name: '10 Point'},
+        { value: review[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
+        { value: review[0]['2point'], name: '2 Point' },
+        { value: review[0]['3point'], name: '3 Point' },
+        { value: review[0]['4point'], name: '4 Point' },
+        { value: review[0]['5point'], name: '5 Point' },
+        { value: review[0]['6point'], name: '6 Point' },
+        { value: review[0]['7point'], name: '7 Point' },
+        { value: review[0]['8point'], name: '8 Point' },
+        { value: review[0]['9point'], name: '9 Point' },
+        { value: review[0]['10point'], name: '10 Point'},
       ]
     }
   ]
@@ -661,30 +694,50 @@ $sql = "SELECT
     var myChart = echarts.init(chartDom);
     var option;
 
-option = {
-  tooltip: {
-    trigger: 'item'
+    option = {
+  type: 'scroll', // กำหนดเป็น scroll type
+  title: {
+    text: 'คะแนนรีวิวของหมอเพชร',
+    left: 'center',
+    top:'5%',
+    textStyle: {
+      fontSize: 32,
+      color:'black'
+    }
   },
   legend: {
-    top: '5%',
-    left: 'center'
+    type: 'scroll', // กำหนดเป็น scroll type
+    top: '16%',
+    left: 'center',
+    textStyle: {
+      fontSize: 22,
+      color:'black'
+    }
   },
   series: [
     {
+      top: '23%',
       name: 'Access From',
       type: 'pie',
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 10,
-        borderColor: '#fff',
-        borderWidth: 2
+        borderColor: 'black', // สีขอบ                 
+        borderWidth: 1 ,// ความหนาขอบ
       },
       label: {
         show: false,
         position: 'center'
       },
       emphasis: {
+        itemStyle: {
+          borderColor: 'black', // สีขอบ                 
+          borderWidth: 1, // ความหนาขอบ             
+          shadowBlur: 10,                         
+          shadowOffsetX: 0,                         
+          shadowColor: 'rgba(1, 1, 1, 1)',
+        },
         label: {
           show: true,
           fontSize: 40,
@@ -695,16 +748,16 @@ option = {
         show: false
       },
       data: [
-        { value: review4[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
-        { value: review4[0]['2point'], name: '2 Point' },
-        { value: review4[0]['3point'], name: '3 Point' },
-        { value: review4[0]['4point'], name: '4 Point' },
-        { value: review4[0]['5point'], name: '5 Point' },
-        { value: review4[0]['6point'], name: '6 Point' },
-        { value: review4[0]['7point'], name: '7 Point' },
-        { value: review4[0]['8point'], name: '8 Point' },
-        { value: review4[0]['9point'], name: '9 Point' },
-        { value: review4[0]['10point'], name: '10 Point'},
+        { value: review[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
+        { value: review[0]['2point'], name: '2 Point' },
+        { value: review[0]['3point'], name: '3 Point' },
+        { value: review[0]['4point'], name: '4 Point' },
+        { value: review[0]['5point'], name: '5 Point' },
+        { value: review[0]['6point'], name: '6 Point' },
+        { value: review[0]['7point'], name: '7 Point' },
+        { value: review[0]['8point'], name: '8 Point' },
+        { value: review[0]['9point'], name: '9 Point' },
+        { value: review[0]['10point'], name: '10 Point'},
       ]
     }
   ]
@@ -712,6 +765,10 @@ option = {
 
 option && myChart.setOption(option);
 </script>
+
+  <div class="container mt-5">
+        <h2 class="text-center mb-4">Reviews Dashboard</h2>
+    </div>
 
 <!-- ลิงก์ JavaScript ของ Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
