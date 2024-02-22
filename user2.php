@@ -196,7 +196,12 @@ if (isset($_SESSION['user_login'])) {
 													<ul class="dropdown">
 												<li>  <a href="user2.php">โปรไฟล์</a></li> 
 												<li>  <a href=" receipt.php ">ใบเสร็จการนัดจอง</a></li> 
+                                                <li>  <a href=" receipt_apo.php ">ใบเสร็จการนัดจอง2</a></li> 
 												<li><a href="logout2.php">ออกจากระบบ</a></li> 
+
+
+
+
 										</ul>
 									</nav>
 								</div>
