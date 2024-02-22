@@ -1,23 +1,66 @@
 <?php
 session_start();
 
-require_once '../config2/db2.php';
+    require_once '../config2/db2.php';
+    if (!isset($_SESSION['admin_login'])) {
+        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+        header('location:../signin2.php');
+    }
 
-if (!isset($_SESSION['admin_login'])) {
-    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-    header('location:../signin2.php');
-    exit; // จบการทำงานทันทีหลังจาก redirect
+    if (isset($_SESSION['admin_login'])) {
+      $user_id = $_SESSION['admin_login'];
+      $stmt = $conn->query("SELECT * FROM reviews WHERE id = $user_id");
+      $stmt->execute();
+      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+
+
+              // SQL query to fetch data from database
+  $sql = "SELECT * FROM reviews  WHERE 1";
+
+  if(isset($_GET['patient']) && !empty($_GET['patient'])) {
+    $patient = $_GET['patient'];
+    $sql .= " AND patient LIKE '%$patient%'";
 }
 
-if (isset($_SESSION['admin_login'])) {
-    $user_id = $_SESSION['admin_login'];
-    $stmt = $conn->prepare("SELECT * FROM patien WHERE id = ?");
-    $stmt->execute([$user_id]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+if(isset($_GET['search_email']) && !empty($_GET['search_email'])) {
+    $search_email = $_GET['search_email'];
+    $sql .= " AND email LIKE '%$search_email%'";
+}
+if(isset($_GET['doctor_name']) && !empty($_GET['doctor_name'])) {
+    $doctor_name  = $_GET['doctor_name'];
+    $sql .= " AND  doctor_name    LIKE '%$doctor_name%'";
+}
+if(isset($_GET['rating']) && !empty($_GET['rating'])) {
+    $rating  = $_GET['rating'];
+    $sql .= " AND  rating    LIKE '%$rating%'";
+}
+if(isset($_GET['comment']) && !empty($_GET['comment'])) {
+    $comment  = $_GET['comment'];
+    $sql .= " AND  comment    LIKE '%$comment%'";
 }
 
+  $stmt = $conn->prepare($sql);
+
+// เชื่อมต่อฐานข้อมูล
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fund";
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    // เซ็ตโหมดของ PDO เพื่อให้แสดงข้อผิดพลาดออกมา
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // ดึงข้อมูลจากตาราง reviews
+    $stmt = $conn->query("SELECT * FROM reviews");
+    $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    // หากเกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล
+    echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -31,13 +74,13 @@ if (isset($_SESSION['admin_login'])) {
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <style>
-              #reviewdashboard {
+        #review_dashboard {
             position: absolute;
             margin: auto;
             width: 500px;
             height: 500px;
             margin-left: 9cm;
-            /*margin-top: 6.5cm;*/
+            margin-top: 6.5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
         }
@@ -170,7 +213,7 @@ if (isset($_SESSION['admin_login'])) {
     </div>
   </nav>
 
-  <?php
+<?php
     // เชื่อมต่อกับฐานข้อมูล
     $servername = "localhost";
     $username = "root";
@@ -184,60 +227,60 @@ if (isset($_SESSION['admin_login'])) {
         die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
     }
 
-    // คำสั่ง SQL เพื่อดึงข้อมูลจำนวนผู้ป่วยในแต่ละกลุ่มช่วงอายุ
-    $sql = "SELECT doctor_name, 
-               SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) AS rating_1count,
-               SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) AS rating_2count,
-               SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) AS rating_3count,
-               SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) AS rating_4count,
-               SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) AS rating_5count,
-               SUM(CASE WHEN rating = 6 THEN 1 ELSE 0 END) AS rating_6count,
-               SUM(CASE WHEN rating = 7 THEN 1 ELSE 0 END) AS rating_7count,
-               SUM(CASE WHEN rating = 8 THEN 1 ELSE 0 END) AS rating_8count,
-               SUM(CASE WHEN rating = 9 THEN 1 ELSE 0 END) AS rating_9count,
-               SUM(CASE WHEN rating = 10 THEN 1 ELSE 0 END) AS rating_10count,
-               COUNT(*) AS total_reviews
-        FROM reviews
-        WHERE doctor_name = 'หมอปกป้อง' 
-        GROUP BY doctor_name";
-
+    $sql = "SELECT 
+            doctor_name,
+            SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) AS 1_point,
+            SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) AS 2_point,
+            SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) AS 3_point,
+            SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) AS 4_point,
+            SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) AS 5_point,
+            SUM(CASE WHEN rating = 6 THEN 1 ELSE 0 END) AS 6_point,
+            SUM(CASE WHEN rating = 7 THEN 1 ELSE 0 END) AS 7_point,
+            SUM(CASE WHEN rating = 8 THEN 1 ELSE 0 END) AS 8_point,
+            SUM(CASE WHEN rating = 9 THEN 1 ELSE 0 END) AS 9_point,
+            SUM(CASE WHEN rating = 10 THEN 1 ELSE 0 END) AS 10_point
+        FROM 
+            reviews
+        WHERE 
+            doctor_name = 'หมอปกป้อง'
+        GROUP BY 
+            doctor_name";
     $result = $conn->query($sql);
+
     // ตรวจสอบว่ามีข้อมูลหรือไม่
     if ($result->num_rows > 0) {
-        // สร้างข้อมูลสำหรับใช้ในกราฟ
+        // สร้าง array เพื่อเก็บข้อมูล
         $data = array();
-        while ($row = $result->fetch_assoc()) {
-            $data[] = array(
-                'doctor_name' => $row['doctor_name'],
-                'rate1' => $row['rating_1count'],
-                'rate2' => $row['rating_2count'],
-                'rate3' => $row['rating_3count'],
-                'rate4' => $row['rating_4count'],
-                'rate5' => $row['rating_5count'],
-                'rate6' => $row['rating_6count'],
-                'rate7' => $row['rating_7count'],
-                'rate8' => $row['rating_8count'],
-                'rate9' => $row['rating_9count'],
-                'rate10' => $row['rating_10count'],
-            );
+        while($row = $result->fetch_assoc()) {
+          $data[] = array(
+                'doc_name' => $row['doctor_name'],
+                '1point' => $row['1_point'],
+                '2point' => $row['2_point'],
+                '3point' => $row['3_point'],
+                '4point' => $row['4_point'],
+                '5point' => $row['5_point'],
+                '6point' => $row['6_point'],
+                '7point' => $row['7_point'],
+                '8point' => $row['8_point'],
+                '9point' => $row['9_point'],
+                '10point' => $row['10_point'],
+          );
         }
-    } else {
-        echo "ไม่พบข้อมูล";
-    }
-    $conn->close();
-  ?>
- 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <div id="reviewdashboard"></div>
-    <div class='frame'></div>
+    } $conn->close();
+?>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <div id="review_dashboard"></div>
 
     <script>
-        var data = <?php echo json_encode($data); ?>;
-        // สร้าง Pie Chart
-        var pieChart = echarts.init(document.getElementById('reviewdashboard'));
-        var myChart = echarts.init(chartDom);
-        var option;
-        option = {
+    var review = <?php echo json_encode($data); ?>;
+
+    // สร้าง Pie Chart
+    var chartDom = document.getElementById('review_dashboard');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
   tooltip: {
     trigger: 'item'
   },
@@ -271,18 +314,22 @@ if (isset($_SESSION['admin_login'])) {
         show: false
       },
       data: [
-        { value: 1048, name: 'Search Engine' },
-        { value: 735, name: 'Direct' },
-        { value: 580, name: 'Email' },
-        { value: 484, name: 'Union Ads' },
-        { value: 300, name: 'Video Ads' }
+        { value: review[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
+        { value: review[0]['2point'], name: '2 Point' },
+        { value: review[0]['3point'], name: '3 Point' },
+        { value: review[0]['4point'], name: '4 Point' },
+        { value: review[0]['5point'], name: '5 Point' },
+        { value: review[0]['6point'], name: '6 Point' },
+        { value: review[0]['7point'], name: '7 Point' },
+        { value: review[0]['8point'], name: '8 Point' },
+        { value: review[0]['9point'], name: '9 Point' },
+        { value: review[0]['10point'], name: '10 Point' },
       ]
     }
   ]
 };
 
 option && myChart.setOption(option);
-
 </script>
 <!-- ลิงก์ JavaScript ของ Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
