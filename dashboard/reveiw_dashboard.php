@@ -9,7 +9,7 @@ session_start();
 
     if (isset($_SESSION['admin_login'])) {
       $user_id = $_SESSION['admin_login'];
-      $stmt = $conn->query("SELECT * FROM reviews WHERE id = $user_id");
+      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
       $stmt->execute();
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
   }
@@ -80,6 +80,36 @@ try {
             width: 500px;
             height: 500px;
             margin-left: 9cm;
+            margin-top: 6.5cm;
+            border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
+            border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
+        }
+        #review_dashboard1 {
+            position: absolute;
+            margin: auto;
+            width: 500px;
+            height: 500px;
+            margin-left:20cm;
+            margin-top: 6.5cm;
+            border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
+            border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
+        }
+        #review_dashboard2 {
+            position: absolute;
+            margin: auto;
+            width: 500px;
+            height: 500px;
+            margin-left:25cm;
+            margin-top: 6.5cm;
+            border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
+            border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
+        }
+        #review_dashboard3 {
+            position: absolute;
+            margin: auto;
+            width: 500px;
+            height: 500px;
+            margin-left:40cm;
             margin-top: 6.5cm;
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
@@ -242,7 +272,7 @@ try {
             SUM(CASE WHEN rating = 10 THEN 1 ELSE 0 END) AS 10_point
         FROM 
             reviews
-        WHERE 
+        WHERE
             doctor_name = 'หมอปกป้อง'
         GROUP BY 
             doctor_name";
@@ -271,15 +301,17 @@ try {
 ?>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <div id="review_dashboard"></div>
 
+
+
+<div id="review_dashboard"></div>
     <script>
     var review = <?php echo json_encode($data); ?>;
 
     // สร้าง Pie Chart
     var chartDom = document.getElementById('review_dashboard');
-var myChart = echarts.init(chartDom);
-var option;
+    var myChart = echarts.init(chartDom);
+    var option;
 
 option = {
   tooltip: {
@@ -332,6 +364,355 @@ option = {
 
 option && myChart.setOption(option);
 </script>
+
+<?php
+ // เชื่อมต่อกับฐานข้อมูล
+ $servername = "localhost";
+ $username = "root";
+ $password = "";
+ $dbname = "fund";
+
+ $conn = new mysqli($servername, $username, $password, $dbname);
+
+ // ตรวจสอบการเชื่อมต่อ
+ if ($conn->connect_error) {
+     die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+ }
+
+$sql = "SELECT 
+            doctor_name,
+            SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) AS 1_point,
+            SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) AS 2_point,
+            SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) AS 3_point,
+            SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) AS 4_point,
+            SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) AS 5_point,
+            SUM(CASE WHEN rating = 6 THEN 1 ELSE 0 END) AS 6_point,
+            SUM(CASE WHEN rating = 7 THEN 1 ELSE 0 END) AS 7_point,
+            SUM(CASE WHEN rating = 8 THEN 1 ELSE 0 END) AS 8_point,
+            SUM(CASE WHEN rating = 9 THEN 1 ELSE 0 END) AS 9_point,
+            SUM(CASE WHEN rating = 10 THEN 1 ELSE 0 END) AS 10_point
+        FROM 
+            reviews
+        WHERE
+            doctor_name = 'หมอกอล์ฟ'
+        GROUP BY 
+            doctor_name";
+    $result = $conn->query($sql);
+
+    // ตรวจสอบว่ามีข้อมูลหรือไม่
+    if ($result->num_rows > 0) {
+        // สร้าง array เพื่อเก็บข้อมูล
+        $datagolf = array();
+        while($row = $result->fetch_assoc()) {
+          $datagolf[] = array(
+                'doc_name' => $row['doctor_name'],
+                '1point' => $row['1_point'],
+                '2point' => $row['2_point'],
+                '3point' => $row['3_point'],
+                '4point' => $row['4_point'],
+                '5point' => $row['5_point'],
+                '6point' => $row['6_point'],
+                '7point' => $row['7_point'],
+                '8point' => $row['8_point'],
+                '9point' => $row['9_point'],
+                '10point' => $row['10_point'],
+          );
+        }
+    } $conn->close();
+?>
+<div id="review_dashboard1"></div>
+<script>
+    var review2 = <?php echo json_encode($datagolf); ?>;
+
+    // สร้าง Pie Chart
+    var chartDom = document.getElementById('review_dashboard1');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+option = {
+  tooltip: {
+    trigger: 'item'
+  },
+  legend: {
+    top: '5%',
+    left: 'center'
+  },
+  series: [
+    {
+      name: 'Access From',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: 40,
+          fontWeight: 'bold'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: [
+        { value: review2[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
+        { value: review2[0]['2point'], name: '2 Point' },
+        { value: review2[0]['3point'], name: '3 Point' },
+        { value: review2[0]['4point'], name: '4 Point' },
+        { value: review2[0]['5point'], name: '5 Point' },
+        { value: review2[0]['6point'], name: '6 Point' },
+        { value: review2[0]['7point'], name: '7 Point' },
+        { value: review2[0]['8point'], name: '8 Point' },
+        { value: review2[0]['9point'], name: '9 Point' },
+        { value: review2[0]['10point'], name: '10 Point'},
+      ]
+    }
+  ]
+};
+
+option && myChart.setOption(option);
+</script>
+
+<?php
+ // เชื่อมต่อกับฐานข้อมูล
+ $servername = "localhost";
+ $username = "root";
+ $password = "";
+ $dbname = "fund";
+
+ $conn = new mysqli($servername, $username, $password, $dbname);
+
+ // ตรวจสอบการเชื่อมต่อ
+ if ($conn->connect_error) {
+     die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+ }
+
+$sql = "SELECT 
+            doctor_name,
+            SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) AS 1_point,
+            SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) AS 2_point,
+            SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) AS 3_point,
+            SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) AS 4_point,
+            SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) AS 5_point,
+            SUM(CASE WHEN rating = 6 THEN 1 ELSE 0 END) AS 6_point,
+            SUM(CASE WHEN rating = 7 THEN 1 ELSE 0 END) AS 7_point,
+            SUM(CASE WHEN rating = 8 THEN 1 ELSE 0 END) AS 8_point,
+            SUM(CASE WHEN rating = 9 THEN 1 ELSE 0 END) AS 9_point,
+            SUM(CASE WHEN rating = 10 THEN 1 ELSE 0 END) AS 10_point
+        FROM 
+            reviews
+        WHERE
+            doctor_name = 'สัภยา'
+        GROUP BY 
+            doctor_name";
+    $result = $conn->query($sql);
+
+    // ตรวจสอบว่ามีข้อมูลหรือไม่
+    if ($result->num_rows > 0) {
+        // สร้าง array เพื่อเก็บข้อมูล
+        $datasap = array();
+        while($row = $result->fetch_assoc()) {
+          $datasap[] = array(
+                'doc_name' => $row['doctor_name'],
+                '1point' => $row['1_point'],
+                '2point' => $row['2_point'],
+                '3point' => $row['3_point'],
+                '4point' => $row['4_point'],
+                '5point' => $row['5_point'],
+                '6point' => $row['6_point'],
+                '7point' => $row['7_point'],
+                '8point' => $row['8_point'],
+                '9point' => $row['9_point'],
+                '10point' => $row['10_point'],
+          );
+        }
+    } $conn->close();
+?>
+<div id="review_dashboard2"></div>
+<script>
+    var review3 = <?php echo json_encode($datasap); ?>;
+
+    // สร้าง Pie Chart
+    var chartDom = document.getElementById('review_dashboard2');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+option = {
+  tooltip: {
+    trigger: 'item'
+  },
+  legend: {
+    top: '5%',
+    left: 'center'
+  },
+  series: [
+    {
+      name: 'Access From',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: 40,
+          fontWeight: 'bold'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: [
+        { value: review3[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
+        { value: review3[0]['3point'], name: '3 Point' },
+        { value: review3[0]['3point'], name: '3 Point' },
+        { value: review3[0]['4point'], name: '4 Point' },
+        { value: review3[0]['5point'], name: '5 Point' },
+        { value: review3[0]['6point'], name: '6 Point' },
+        { value: review3[0]['7point'], name: '7 Point' },
+        { value: review3[0]['8point'], name: '8 Point' },
+        { value: review3[0]['9point'], name: '9 Point' },
+        { value: review3[0]['10point'], name: '10 Point'},
+      ]
+    }
+  ]
+};
+
+option && myChart.setOption(option);
+</script>
+
+<?php
+ // เชื่อมต่อกับฐานข้อมูล
+ $servername = "localhost";
+ $username = "root";
+ $password = "";
+ $dbname = "fund";
+
+ $conn = new mysqli($servername, $username, $password, $dbname);
+
+ // ตรวจสอบการเชื่อมต่อ
+ if ($conn->connect_error) {
+     die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+ }
+
+$sql = "SELECT 
+            doctor_name,
+            SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) AS 1_point,
+            SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) AS 2_point,
+            SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) AS 3_point,
+            SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) AS 4_point,
+            SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) AS 5_point,
+            SUM(CASE WHEN rating = 6 THEN 1 ELSE 0 END) AS 6_point,
+            SUM(CASE WHEN rating = 7 THEN 1 ELSE 0 END) AS 7_point,
+            SUM(CASE WHEN rating = 8 THEN 1 ELSE 0 END) AS 8_point,
+            SUM(CASE WHEN rating = 9 THEN 1 ELSE 0 END) AS 9_point,
+            SUM(CASE WHEN rating = 10 THEN 1 ELSE 0 END) AS 10_point
+        FROM 
+            reviews
+        WHERE
+            doctor_name = 'เพชร'
+        GROUP BY 
+            doctor_name";
+    $result = $conn->query($sql);
+
+    // ตรวจสอบว่ามีข้อมูลหรือไม่
+    if ($result->num_rows > 0) {
+        // สร้าง array เพื่อเก็บข้อมูล
+        $datapet = array();
+        while($row = $result->fetch_assoc()) {
+          $datapet[] = array(
+                'doc_name' => $row['doctor_name'],
+                '1point' => $row['1_point'],
+                '2point' => $row['2_point'],
+                '3point' => $row['3_point'],
+                '4point' => $row['4_point'],
+                '5point' => $row['5_point'],
+                '6point' => $row['6_point'],
+                '7point' => $row['7_point'],
+                '8point' => $row['8_point'],
+                '9point' => $row['9_point'],
+                '10point' => $row['10_point'],
+          );
+        }
+    } $conn->close();
+?>
+<div id="review_dashboard3"></div>
+<script>
+    var review4 = <?php echo json_encode($datapet); ?>;
+
+    // สร้าง Pie Chart
+    var chartDom = document.getElementById('review_dashboard3');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+option = {
+  tooltip: {
+    trigger: 'item'
+  },
+  legend: {
+    top: '5%',
+    left: 'center'
+  },
+  series: [
+    {
+      name: 'Access From',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: 40,
+          fontWeight: 'bold'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: [
+        { value: review4[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
+        { value: review4[0]['2point'], name: '2 Point' },
+        { value: review4[0]['3point'], name: '3 Point' },
+        { value: review4[0]['4point'], name: '4 Point' },
+        { value: review4[0]['5point'], name: '5 Point' },
+        { value: review4[0]['6point'], name: '6 Point' },
+        { value: review4[0]['7point'], name: '7 Point' },
+        { value: review4[0]['8point'], name: '8 Point' },
+        { value: review4[0]['9point'], name: '9 Point' },
+        { value: review4[0]['10point'], name: '10 Point'},
+      ]
+    }
+  ]
+};
+
+option && myChart.setOption(option);
+</script>
+
 <!-- ลิงก์ JavaScript ของ Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
