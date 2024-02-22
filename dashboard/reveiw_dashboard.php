@@ -50,6 +50,18 @@ try {
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <style>
+        #review_dashboard {
+            position: absolute;
+            margin: auto;
+            width: 500px;
+            height: 500px;
+            margin-left: 9cm;
+            /*margin-top: 6.5cm;*/
+            border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
+            border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
+        }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -177,46 +189,111 @@ try {
     </div>
   </nav>
 
+<?php
+    // เชื่อมต่อกับฐานข้อมูล
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "fund";
 
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4">ข้อมูลการรีวิว</h2>
+    // ตรวจสอบการเชื่อมต่อ
+    if ($conn->connect_error) {
+        die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+    }
 
+    $sql = "SELECT 
+            doctor_name,
+            SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) AS 1_point,
+            SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) AS 2_point,
+            SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) AS 3_point,
+            SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) AS 4_point,
+            SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) AS 5_point,
+            SUM(CASE WHEN rating = 6 THEN 1 ELSE 0 END) AS 6_point,
+            SUM(CASE WHEN rating = 7 THEN 1 ELSE 0 END) AS 7_point,
+            SUM(CASE WHEN rating = 8 THEN 1 ELSE 0 END) AS 8_point,
+            SUM(CASE WHEN rating = 9 THEN 1 ELSE 0 END) AS 9_point,
+            SUM(CASE WHEN rating = 10 THEN 1 ELSE 0 END) AS 10_point
+        FROM 
+            reviews
+        WHERE 
+            doctor_name = 'หมอปกป้อง'
+        GROUP BY 
+            doctor_name";
+    $result = $conn->query($sql);
 
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>ผู้รีวิว</th>
-                    <th>ชื่อหมอ</th>
-                    <th>comment</th>
-                    <th>คะแนน</th>
-                    <th>อีเมล</th>
-                    <th>วันที่/เวลา</th>
-                    <th>แก้ไข</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($reviews as $reviews): ?>
-                <tr>
-                    <td><?php echo $reviews['patient']; ?></td>
-                    <td><?php echo $reviews['doctor_name']; ?></td>
-                    <td><?php echo $reviews['comment']; ?></td>
-                    <td><?php echo $reviews['rating']; ?></td>
-                    <td><?php echo $reviews['email']; ?></td>
-                    <td><?php echo $reviews['created_at']; ?></td>
-                    <td>
-                       <!-- <a href="edit_review_dashboard.php?id=<?php echo $reviews['id']; ?>" class="btn btn-primary btn-sm">แก้ไข</a> -->
-                        <a href="delete_review_dashboard.php?id=<?php echo $reviews['id']; ?>" class="btn btn-danger btn-sm">ลบ</a>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-       
-    </div>
-</div>
+    // ตรวจสอบว่ามีข้อมูลหรือไม่
+    if ($result->num_rows > 0) {
+        // สร้าง array เพื่อเก็บข้อมูล
+        $data = array();
+        while($row = $result->fetch_assoc()) {
+          $data[] = $row;
+        }
+    } $conn->close();
+?>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <div id="review_dashboard"></div>
+    <div class='frame'></div>
 
+    <script>
+    var data = <?php echo json_encode($data); ?>;
+
+    // สร้าง Pie Chart
+    var pieChart = echarts.init(document.getElementById('review_dashboard'));
+    var option = {
+        title: {
+            text: 'จำนวนผู้ป่วยที่ให้คะแนน',
+            left: 'center',
+            top:'5%',
+            textStyle: {
+                fontSize: 24,
+                color:'black'
+            }
+        },
+        legend: {
+            top: '16%',
+            left: 'center',
+            textStyle: {
+                fontSize: 18,
+                color:'black'
+            }
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} คน ({d}%)',
+            textStyle: {
+                fontSize: 18,
+                color:'black'
+            }
+        },
+        series: [{
+            itemStyle:{
+            borderColor: 'black', // สีขอบ
+            borderWidth: 1 // ความหนาขอบ
+            },
+            name: 'จำนวนผู้ป่วย',
+            type: 'pie',
+            borderColor: 'black',
+            borderWidth:2,
+            radius: '55%',
+            top: '-1%',
+            center: ['50%', '60%'],
+            data: data,
+            emphasis: {
+                itemStyle: {
+                    borderColor: 'black', // สีขอบ
+                    borderWidth: 1, // ความหนาขอบ
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)',
+                }
+            }
+        }]
+    };
+    pieChart.setOption(option);
+</script>
 <!-- ลิงก์ JavaScript ของ Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
