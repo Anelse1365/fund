@@ -1,6 +1,27 @@
 <?php
 
-@include 'config.php';
+session_start();
+require_once 'config.php';
+
+// Check if the user is logged in
+if (isset($_SESSION['user_login'])) {
+    $user_id = $_SESSION['user_login'];
+
+    // Query to get user details from the database
+    $user_query = $conn->prepare("SELECT email FROM patien WHERE id = ?");
+    $user_query->bind_param("i", $user_id);
+    $user_query->execute();
+    $user_query->store_result();
+
+    // Check if user details are found
+    if ($user_query->num_rows > 0) {
+        $user_query->bind_result($user_email);
+        $user_query->fetch();
+
+        // Add the user's email to the checkout form
+        echo '<input type="hidden" name="user_email" value="' . $user_email . '">';
+    }
+}
 
 if (isset($_POST['order_btn'])) {
 
@@ -71,6 +92,7 @@ if (isset($_POST['order_btn'])) {
         ";
     }
 }
+
 
 ?>
 
@@ -145,9 +167,9 @@ if (isset($_POST['order_btn'])) {
             <input type="number" placeholder="xxxxxxxxx" name="number" required>
          </div>
          <div class="inputBox">
-            <span>your email</span>
-            <input type="email" placeholder=" " name="email" required>
-         </div>
+    <span>your email</span>
+    <input type="email" placeholder=" " name="email" value="<?php echo isset($user_email) ? $user_email : ''; ?>" readonly>
+</div>
          <div class="inputBox">
    <span>Payment Method</span>
    <select name="method" onchange="toggleUploadTab(this.value)">
