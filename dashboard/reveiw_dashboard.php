@@ -476,16 +476,16 @@ $sql = "SELECT
         show: false
       },
       data: [
-        { value: review[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
-        { value: review[0]['2point'], name: '2 Point' },
-        { value: review[0]['3point'], name: '3 Point' },
-        { value: review[0]['4point'], name: '4 Point' },
-        { value: review[0]['5point'], name: '5 Point' },
-        { value: review[0]['6point'], name: '6 Point' },
-        { value: review[0]['7point'], name: '7 Point' },
-        { value: review[0]['8point'], name: '8 Point' },
-        { value: review[0]['9point'], name: '9 Point' },
-        { value: review[0]['10point'], name: '10 Point'},
+        { value: review2[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
+        { value: review2[0]['2point'], name: '2 Point' },
+        { value: review2[0]['3point'], name: '3 Point' },
+        { value: review2[0]['4point'], name: '4 Point' },
+        { value: review2[0]['5point'], name: '5 Point' },
+        { value: review2[0]['6point'], name: '6 Point' },
+        { value: review2[0]['7point'], name: '7 Point' },
+        { value: review2[0]['8point'], name: '8 Point' },
+        { value: review2[0]['9point'], name: '9 Point' },
+        { value: review2[0]['10point'], name: '10 Point'},
       ]
     }
   ]
@@ -612,16 +612,16 @@ $sql = "SELECT
         show: false
       },
       data: [
-        { value: review[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
-        { value: review[0]['2point'], name: '2 Point' },
-        { value: review[0]['3point'], name: '3 Point' },
-        { value: review[0]['4point'], name: '4 Point' },
-        { value: review[0]['5point'], name: '5 Point' },
-        { value: review[0]['6point'], name: '6 Point' },
-        { value: review[0]['7point'], name: '7 Point' },
-        { value: review[0]['8point'], name: '8 Point' },
-        { value: review[0]['9point'], name: '9 Point' },
-        { value: review[0]['10point'], name: '10 Point'},
+        { value: review3[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
+        { value: review3[0]['2point'], name: '2 Point' },
+        { value: review3[0]['3point'], name: '3 Point' },
+        { value: review3[0]['4point'], name: '4 Point' },
+        { value: review3[0]['5point'], name: '5 Point' },
+        { value: review3[0]['6point'], name: '6 Point' },
+        { value: review3[0]['7point'], name: '7 Point' },
+        { value: review3[0]['8point'], name: '8 Point' },
+        { value: review3[0]['9point'], name: '9 Point' },
+        { value: review3[0]['10point'], name: '10 Point'},
       ]
     }
   ]
@@ -748,16 +748,16 @@ $sql = "SELECT
         show: false
       },
       data: [
-        { value: review[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
-        { value: review[0]['2point'], name: '2 Point' },
-        { value: review[0]['3point'], name: '3 Point' },
-        { value: review[0]['4point'], name: '4 Point' },
-        { value: review[0]['5point'], name: '5 Point' },
-        { value: review[0]['6point'], name: '6 Point' },
-        { value: review[0]['7point'], name: '7 Point' },
-        { value: review[0]['8point'], name: '8 Point' },
-        { value: review[0]['9point'], name: '9 Point' },
-        { value: review[0]['10point'], name: '10 Point'},
+        { value: review4[0]['1point'], name: '1 Point' }, // ใช้ค่า 1point จาก JSON
+        { value: review4[0]['2point'], name: '2 Point' },
+        { value: review4[0]['3point'], name: '3 Point' },
+        { value: review4[0]['4point'], name: '4 Point' },
+        { value: review4[0]['5point'], name: '5 Point' },
+        { value: review4[0]['6point'], name: '6 Point' },
+        { value: review4[0]['7point'], name: '7 Point' },
+        { value: review4[0]['8point'], name: '8 Point' },
+        { value: review4[0]['9point'], name: '9 Point' },
+        { value: review4[0]['10point'], name: '10 Point'},
       ]
     }
   ]
