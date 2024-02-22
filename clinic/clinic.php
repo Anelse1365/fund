@@ -182,17 +182,13 @@ $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <i class="fas fa-chart-bar"></i> Reports
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="clinic/clinic.php">
-            <i class="fas fa-chart-bar"></i> Clinic FanD
-          </a>
         </li>
       </ul>
     </div>
   </nav>
 
     <div class="container mt-5">
-        <h1 class="text-center mb-4">ประวัติคนไข้</h1>
+        <h1 class="text-center mb-4">CILNIC FUND</h1>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
