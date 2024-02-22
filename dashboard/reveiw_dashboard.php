@@ -135,6 +135,7 @@ try {
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="dash_produc.php">Overview</a>
                                     <a class="nav-link" href="order.php">Order</a>
                                     <a class="nav-link" href="../shopping cart/admin.php">Upload</a>
                                 </nav>
@@ -323,7 +324,7 @@ option = {
         { value: review[0]['7point'], name: '7 Point' },
         { value: review[0]['8point'], name: '8 Point' },
         { value: review[0]['9point'], name: '9 Point' },
-        { value: review[0]['10point'], name: '10 Point' },
+        { value: review[0]['10point'], name: '10 Point'},
       ]
     }
   ]

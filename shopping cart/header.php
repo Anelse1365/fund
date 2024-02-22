@@ -62,6 +62,7 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="../dashboard/dash_produc.php">Overview</a>
                                     <a class="nav-link" href="../dashboard/order.php">Order</a>
                                     <a class="nav-link" href="../shopping cart/admin.php">Upload</a>
                                 </nav>
@@ -75,6 +76,7 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="../dashboard/dashb.php">Patient</a>
                                     <a class="nav-link" href="../dashboard/doctorsdash.php">Doctor</a>
+                                    <a class="nav-link" href="../dashboard/cilnic_d.php">Cilnic</a>
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Addons</div>
