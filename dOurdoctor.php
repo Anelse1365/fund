@@ -86,8 +86,14 @@
 			}
 
 
-	
-    </style>
+		
+			
+    .btn btn-primary {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
 		
     </head>
     <body>
@@ -365,7 +371,7 @@ $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 				<div class="container">
-        <form action="submit_review.php" method="post">
+        <form action="submit_review.php" method="post" >
             <div class="form-group">
                 <label for="doctor_name">เลือกหมอ:</label>
                 <select class="form-control" name="doctor_name" required>
@@ -397,7 +403,13 @@ $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <input type="text" class="form-control" name="email" value="<?php echo $row['email']?>" required> 
 </div>
 			
-            <button type="submit" class="btn btn-primary">ส่งรีวิว</button>
+
+    <button type="submit" class="btn btn-primary "  onclick="goBack()">ส่งรีวิว</button>
+	<script>
+	function goBack() {
+  	window.history.back();
+	}
+	</script>
         </form>
     </div>
 
@@ -490,8 +502,7 @@ $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			</div>
 			<!--/ End Copyright -->
 		</footer>
-		<!--/ End Footer Area -->
-		
+		<!--/ End Footer Area -->\
 		<!-- jquery Min JS -->
         <script src="js/jquery.min.js"></script>
 		<!-- jquery Migrate JS -->

@@ -97,7 +97,7 @@ $result = $conn->query($sql);
             // แสดงข้อมูลในตาราง
             echo "<div class='receipt'>";
             echo "<div class='receipt-header'>";
-            echo "<h2>ใบเสร็จการนัดจอง</h2>";
+            echo "<h2>ประวัติการทำฟัน</h2>";
             
             echo "</div>";
             echo "<table class='table table-bordered'>";
