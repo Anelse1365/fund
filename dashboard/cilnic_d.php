@@ -15,7 +15,7 @@ try {
 
 // สร้างคำสั่ง SQL เพื่อดึงข้อมูลจากตาราง reports
 $sql = "SELECT * FROM reports";
-                        
+
 // ประมวลผลคำสั่ง SQL
 $stmt = $conn->prepare($sql);
 $stmt->execute();
@@ -35,7 +35,20 @@ if (isset($_SESSION['admin_login'])) {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// เพิ่มโค้ดนี้เพื่อคำนวณผลรวมเงินทั้งหมด
+// ปรับโค้ด SQL เพื่อให้รองรับคำค้นหา
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+if (!empty($search)) {
+    $sql = "SELECT * FROM reports WHERE state LIKE :search";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':search', '%' . $search . '%');
+} else {
+    $sql = "SELECT * FROM reports";
+    $stmt = $conn->prepare($sql);
+}
+$stmt->execute();
+$reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// เพิ่มโค้ดนี้เพื่อคำนวณผลรวมเงินทั้งหมดในตารางที่ถูกกรองด้วยคำค้นหา
 $totalPrice = 0;
 foreach ($reports as $report) {
     $totalPrice += $report['price'];
@@ -73,49 +86,80 @@ foreach ($reports as $report) {
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-            <!-- โค้ดเมนูด้านซ้าย -->
+            <!-- เพิ่มฟอร์มค้นหา -->
+            <form action="" method="GET" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="ค้นหาจากสถานะ">
+                    <button type="submit" class="btn btn-primary">ค้นหา</button>
+                </div>
+            </form>
+            <!-- ส่วนของเมนูด้านข้าง -->
         </div>
         <div class="container mt-5">
-            <h1 class="text-center mb-4">CILNIC FUND</h1>
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>             
-                        <th>คลินิก</th>          
-                        <th>บริการ</th>
-                        <th>ราคา</th>        
-                        <th>แก้ไข</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($reports as $report): ?>
-                    <tr>
-                        <td><?php echo $report['state']; ?></td>
-                        <td><?php echo $report['information']; ?></td>
-                        <td><?php echo $report['price']; ?></td> 
-                        <td>
-                            <a href='edit_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-primary'>แก้ไข</a>
-                            <a href='delete_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>          
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-            
-            <!-- แสดงผลรวมเงินทั้งหมด -->
-            <div class="total-price">
-                <h4>ผลรวมเงินทั้งหมด: <?php echo $totalPrice; ?> บาท</h4>
-            </div>
-            
-            <a href="dashbapomen.php" class="btn btn-secondary">ย้อนกลับ</a>
-            <a href="dashb.php" class="btn btn-secondary">กลับหน้าหลัก</a>
+    <h1 class="text-center mb-4">CILNIC FUND</h1>
+    
+    <!-- เพิ่มฟอร์มค้นหา -->
+    <form action="" method="GET" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="ค้นหาจากสถานะ">
+            <button type="submit" class="btn btn-primary">ค้นหา</button>
         </div>
+    </form>
+    
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>             
+                <th>คลินิก</th>          
+                <th>บริการ</th>
+                <th>ราคา</th>        
+                <th>แก้ไข</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($reports as $report): ?>
+            <tr>
+                <td><?php echo $report['state']; ?></td>
+                <td><?php echo $report['information']; ?></td>
+                <td><?php echo $report['price']; ?></td> 
+                <td>
+                    <a href='edit_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-primary'>แก้ไข</a>
+                    <a href='delete_report.php?id=<?php echo $report["id"]; ?>' class='btn btn-danger btn-sm'>ลบ</a>          
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <!-- แสดงผลรวมเงินทั้งหมด -->
+    <div class="total-price">
+        <h4>ผลรวมเงินทั้งหมด: <?php echo $totalPrice; ?> บาท</h4>
     </div>
+    <a href="dashbapomen.php" class="btn btn-secondary">ย้อนกลับ</a>
+    <a href="dashb.php" class="btn btn-secondary">กลับหน้าหลัก</a>
+</div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="assets/demo/chart-area-demo.js"></script>
     <script src="assets/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    <script src="js/datatables-simple-demo.js"></script>  
+    <script src="js/datatables-simple-demo.js"></script> 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector('form').addEventListener('submit', function(event) {
+                event.preventDefault(); // ป้องกันการส่งแบบฟอร์ม
+                var searchValue = document.querySelector('input[name="search"]').value.toLowerCase();
+                var rows = document.querySelectorAll('tbody tr');
+                rows.forEach(function(row) {
+                    var state = row.querySelector('td:first-child').textContent.toLowerCase();
+                    if (state.includes(searchValue)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>  
 </body>
 </html>
