@@ -83,7 +83,9 @@ if ($user_result->num_rows > 0) {
 <body>
     <div class="container">
         <div class="text-right">
-            <p>ยินดีต้อนรับ, <?php echo $user_email; ?> | <a href="../logout2.php">ออกจากระบบ</a></p>
+             
+            
+            <p>ยินดีต้อนรับ, <?php echo $user_email; ?> | <a href="products.php">กลับ</a> | <a href="../logout2.php">ออกจากระบบ</a></p>
         </div>
         <h1>Orders with Payment</h1>
         <div class="table-responsive">
