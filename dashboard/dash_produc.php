@@ -71,13 +71,13 @@ $stmtLatestTotalPrice->execute();
 $latestTotalPriceResult = $stmtLatestTotalPrice->fetch(PDO::FETCH_ASSOC);
 $latestTotalPriceValue = ($latestTotalPriceResult !== false) ? $latestTotalPriceResult['total_price'] : null;
 
-
-
-
 // SQL query to fetch data from database
 $sql = "SELECT * FROM patien";
 $stmt = $conn->prepare($sql);
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -272,7 +272,7 @@ $stmt = $conn->prepare($sql);
             ?>
         </div>
         <div class="card-footer d-flex align-items-center justify-content-between">
-            <a class="small text-white stretched-link" href="#">ดูการยืนยันสินค้า</a>
+            <a class="small text-white stretched-link" href="order_yes.php">ดูการยืนยันสินค้า</a>
             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
         </div>
     </div>
@@ -290,7 +290,7 @@ $stmt = $conn->prepare($sql);
             ?>
         </div>
         <div class="card-footer d-flex align-items-center justify-content-between">
-            <a class="small text-white stretched-link" href="#">ยืนยัน Order</a>
+            <a class="small text-white stretched-link" href="order_no.php">ยืนยัน Order</a>
             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
         </div>
     </div>
