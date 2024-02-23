@@ -73,17 +73,8 @@ $latestTotalPriceValue = ($latestTotalPriceResult !== false) ? $latestTotalPrice
 ?>
 
 
-?>
 
 
-
-
-
-
-// SQL query to fetch data from database
-$sql = "SELECT * FROM patien";
-$stmt = $conn->prepare($sql);
-?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
