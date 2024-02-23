@@ -69,7 +69,7 @@ if ($conn->connect_error) {
 }
 
 // คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง receipt
-$sql = "SELECT * FROM receipe";
+$sql = "SELECT * FROM reports";
 $result = $conn->query($sql);
 
 ?>
@@ -110,6 +110,9 @@ $result = $conn->query($sql);
             echo "<tr><th scope='row'>สัญชาติ</th><td>" . $row['nationality'] . "</td></tr>";
             echo "<tr><th scope='row'>คลินิกที่ทำ</th><td>" . $row['state'] . "</td></tr>";
             echo "<tr><th scope='row'>หมอ</th><td>" . $row['doctor'] . "</td></tr>";
+            echo "<tr><th scope='row'>บริการ</th><td>" . $row['information'] . "</td></tr>";
+            echo "<tr><th scope='row'>ราคา</th><td>" . $row['price'] . "</td></tr>";
+            echo "<tr><th scope='row'>comment</th><td>" . $row['comment'] . "</td></tr>";
             echo "<tr><th scope='row'>เวลาที่ส่ง</th><td>" . $row['created_at'] . "</td></tr>";
             echo "<tr><th scope='row'>วันที่นัด</th><td>" . $row['date'] . "</td></tr>";
             echo "<tr><th scope='row'>เวลาที่นัด</th><td>" . $row['timeInput'] . "</td></tr>";
