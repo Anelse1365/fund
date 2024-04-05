@@ -16,6 +16,7 @@ if (isset($_SESSION['admin_login'])) {
 $sql = "SELECT * FROM patien";
 $stmt = $conn->prepare($sql);
 
+
 // เชื่อมต่อฐานข้อมูล
 $servername = "localhost";
 $username = "root";
