@@ -457,11 +457,11 @@ try {
     $conn->close();
 
     ?>
-    <div id="maindashboard1"></div>
+    <div id="maindashboard2"></div>
     <div class='frame1'></div>
     <script>
         var info = <?php echo json_encode($data); ?>;
-        var chartDom = document.getElementById('maindashboard1');
+        var chartDom = document.getElementById('maindashboard2');
         var myChart = echarts.init(chartDom);
         var option;
 
@@ -496,7 +496,6 @@ try {
                 borderColor: 'black', // สีขอบ
                 borderWidth: 1 // ความหนาขอบ
                 },
-                name: 'Access From',
                 type: 'pie',
                 top: '20%',
                 radius: ['40%', '70%'],
@@ -525,122 +524,6 @@ try {
         };
         option && myChart.setOption(option);
     </script>
-
-
-
-
-
-
-
-
-
-
-
-
-<?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "fund";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // ตรวจสอบการเชื่อมต่อ
-    if ($conn->connect_error) {
-        die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
-    }
-
-
-    $sql = "SELECT state, COUNT(*) AS count_info FROM appointmen GROUP BY state";
-    $result = $conn->query($sql);
-
-
-    $data = array();
-    while ($row = $result->fetch_assoc()) {
-        $data[] = array(
-            'name' => $row['state'],
-            'value' => $row['count_info']
-        );
-    }
-    $conn->close();
-
-    ?>
-    <div id="maindashboard4"></div>
-    <div class='frame4'></div>
-    <script>
-        var info = <?php echo json_encode($data); ?>;
-        var chartDom = document.getElementById('maindashboard4');
-        var myChart = echarts.init(chartDom);
-        var option;
-
-        option = {
-            title: {
-                text: 'จำนวนการนัดจองต่างๆ',
-                left: 'center',
-                top: '4.3%',
-                textStyle: {
-                    fontSize: 24,
-                    color:'black'
-                }
-            },
-            tooltip: {
-                formatter: '{a} <br/>{b} : {c} คน ({d}%)',
-                trigger: 'item',
-                textStyle: {
-                    fontSize: 24,
-                    color:'black'
-                }
-            },
-            legend: {
-                top: '17%',
-                left: 'center',
-                textStyle: {
-                    fontSize: 24,
-                    color:'black'
-                }
-            },
-            series: [{
-                itemStyle:{
-                borderColor: 'black', // สีขอบ
-                borderWidth: 1 // ความหนาขอบ
-                },
-                name: 'Access From',
-                type: 'pie',
-                top: '20%',
-                radius: ['40%', '70%'],
-                avoidLabelOverlap: false,
-                label: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: 40,
-                        fontWeight: 'bold',
-                        color:'black'
-                    },
-                itemStyle: { // เพิ่มการกำหนดขอบให้วงกลม
-                borderColor: 'black', // สีขอบ
-                borderWidth: 2 // ความหนาขอบ
-            }
-                },
-                labelLine: {
-                    show: false
-                },
-                data: info
-            }]
-        };
-        option && myChart.setOption(option);
-    </script>
-
-
-
-
-
-
-
-
 
     <?php
     // การเชื่อมต่อกับฐานข้อมูล
@@ -648,9 +531,9 @@ try {
     $username = "root";
     $password = "";
     $dbname = "fund";
-
+    
     $conn = new mysqli($servername, $username, $password, $dbname);
-
+    
     // ตรวจสอบการเชื่อมต่อ
     if ($conn->connect_error) {
         die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
@@ -659,7 +542,7 @@ try {
     // คำสั่ง SQL
     $sql = "SELECT gender, COUNT(*) AS count_sex FROM patien GROUP BY gender";
     $result = $conn->query($sql);
-
+    
     // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
     $data = array();
     while ($row = $result->fetch_assoc()) {
@@ -738,9 +621,9 @@ try {
     $username = "root";
     $password = "";
     $dbname = "fund";
-
+    
     $conn = new mysqli($servername, $username, $password, $dbname);
-
+    
     // ตรวจสอบการเชื่อมต่อ
     if ($conn->connect_error) {
         die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
@@ -753,7 +636,7 @@ try {
   GROUP BY 
       information";
     $result = $conn->query($sql);
-
+    
     // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
     $data = array();
     if ($result->num_rows > 0) {
@@ -862,5 +745,105 @@ try {
         };
         option && myChart.setOption(option);
     </script>
+    
+    <?php
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "fund";
+    
+        $conn = new mysqli($servername, $username, $password, $dbname);
+    
+        // ตรวจสอบการเชื่อมต่อ
+        if ($conn->connect_error) {
+            die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+        }
+    
+    
+        $sql = "SELECT state, COUNT(*) AS count_info FROM appointmen GROUP BY state";
+        $result = $conn->query($sql);
+    
+    
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = array(
+                'name' => $row['state'],
+                'value' => $row['count_info']
+            );
+        }
+        $conn->close();
+    
+        ?>
+        <div id="maindashboard4"></div>
+        <div class='frame4'></div>
+        <script>
+            var info = <?php echo json_encode($data); ?>;
+            var chartDom = document.getElementById('maindashboard4');
+            var myChart = echarts.init(chartDom);
+            var option;
+    
+            option = {
+                title: {
+                    text: 'จำนวนการนัดจองต่างๆ',
+                    left: 'center',
+                    top: '4.3%',
+                    textStyle: {
+                        fontSize: 24,
+                        color:'black'
+                    }
+                },
+                tooltip: {
+                    formatter: '{a} <br/>{b} : {c} คน ({d}%)',
+                    trigger: 'item',
+                    textStyle: {
+                        fontSize: 24,
+                        color:'black'
+                    }
+                },
+                legend: {
+                    top: '17%',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 24,
+                        color:'black'
+                    }
+                },
+                series: [{
+                    itemStyle:{
+                    borderColor: 'black', // สีขอบ
+                    borderWidth: 1 // ความหนาขอบ
+                    },
+                    name: 'Access From',
+                    type: 'pie',
+                    top: '20%',
+                    radius: ['40%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: 40,
+                            fontWeight: 'bold',
+                            color:'black'
+                        },
+                    itemStyle: { // เพิ่มการกำหนดขอบให้วงกลม
+                    borderColor: 'black', // สีขอบ
+                    borderWidth: 2 // ความหนาขอบ
+                }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: info
+                }]
+            };
+            option && myChart.setOption(option);
+        </script>
 </body>
+    
+    
+    
 </html>
