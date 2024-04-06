@@ -87,6 +87,17 @@ try {
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
             margin-bottom: 20px; /* เพิ่ม margin ด้านล่าง 20px */
         }
+        #maindashboard4 {
+            position: absolute;
+            margin: auto;
+            width: 1520px;
+            height: 410px;
+            top: 29.85cm;
+            left: 9cm;
+            border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
+            border-radius: 3px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
+            margin-bottom: 20px; /* เพิ่ม margin ด้านล่าง 20px */
+        }
         h2 {
             text-align: center; /* จัดตำแหน่งให้อยู่ตรงกลาง */
             color: black; /* กำหนดสีข้อความเป็นดำ */
@@ -98,7 +109,7 @@ try {
 </style>
 </head>
 <body class="sb-nav-fixed">
-    <h2>Dashboard</h2>
+
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="main1.php">FUND CLINIC</a>
@@ -417,6 +428,220 @@ try {
         };
         option && myChart.setOption(option);
     </script>
+
+    <?php
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "fund";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // ตรวจสอบการเชื่อมต่อ
+    if ($conn->connect_error) {
+        die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+    }
+
+
+    $sql = "SELECT information, COUNT(*) AS count_info FROM reports GROUP BY information";
+    $result = $conn->query($sql);
+
+
+    $data = array();
+    while ($row = $result->fetch_assoc()) {
+        $data[] = array(
+            'name' => $row['information'],
+            'value' => $row['count_info']
+        );
+    }
+    $conn->close();
+
+    ?>
+    <div id="maindashboard1"></div>
+    <div class='frame1'></div>
+    <script>
+        var info = <?php echo json_encode($data); ?>;
+        var chartDom = document.getElementById('maindashboard1');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        option = {
+            title: {
+                text: 'จำนวนการนัดจองต่างๆ',
+                left: 'center',
+                top: '4.3%',
+                textStyle: {
+                    fontSize: 24,
+                    color:'black'
+                }
+            },
+            tooltip: {
+                formatter: '{a} <br/>{b} : {c} คน ({d}%)',
+                trigger: 'item',
+                textStyle: {
+                    fontSize: 24,
+                    color:'black'
+                }
+            },
+            legend: {
+                top: '17%',
+                left: 'center',
+                textStyle: {
+                    fontSize: 24,
+                    color:'black'
+                }
+            },
+            series: [{
+                itemStyle:{
+                borderColor: 'black', // สีขอบ
+                borderWidth: 1 // ความหนาขอบ
+                },
+                name: 'Access From',
+                type: 'pie',
+                top: '20%',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: 40,
+                        fontWeight: 'bold',
+                        color:'black'
+                    },
+                itemStyle: { // เพิ่มการกำหนดขอบให้วงกลม
+                borderColor: 'black', // สีขอบ
+                borderWidth: 2 // ความหนาขอบ
+            }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: info
+            }]
+        };
+        option && myChart.setOption(option);
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "fund";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // ตรวจสอบการเชื่อมต่อ
+    if ($conn->connect_error) {
+        die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+    }
+
+
+    $sql = "SELECT state, COUNT(*) AS count_info FROM appointmen GROUP BY state";
+    $result = $conn->query($sql);
+
+
+    $data = array();
+    while ($row = $result->fetch_assoc()) {
+        $data[] = array(
+            'name' => $row['state'],
+            'value' => $row['count_info']
+        );
+    }
+    $conn->close();
+
+    ?>
+    <div id="maindashboard4"></div>
+    <div class='frame4'></div>
+    <script>
+        var info = <?php echo json_encode($data); ?>;
+        var chartDom = document.getElementById('maindashboard4');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        option = {
+            title: {
+                text: 'จำนวนการนัดจองต่างๆ',
+                left: 'center',
+                top: '4.3%',
+                textStyle: {
+                    fontSize: 24,
+                    color:'black'
+                }
+            },
+            tooltip: {
+                formatter: '{a} <br/>{b} : {c} คน ({d}%)',
+                trigger: 'item',
+                textStyle: {
+                    fontSize: 24,
+                    color:'black'
+                }
+            },
+            legend: {
+                top: '17%',
+                left: 'center',
+                textStyle: {
+                    fontSize: 24,
+                    color:'black'
+                }
+            },
+            series: [{
+                itemStyle:{
+                borderColor: 'black', // สีขอบ
+                borderWidth: 1 // ความหนาขอบ
+                },
+                name: 'Access From',
+                type: 'pie',
+                top: '20%',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: 40,
+                        fontWeight: 'bold',
+                        color:'black'
+                    },
+                itemStyle: { // เพิ่มการกำหนดขอบให้วงกลม
+                borderColor: 'black', // สีขอบ
+                borderWidth: 2 // ความหนาขอบ
+            }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: info
+            }]
+        };
+        option && myChart.setOption(option);
+    </script>
+
+
+
+
+
+
+
+
+
     <?php
     // การเชื่อมต่อกับฐานข้อมูล
     $servername = "localhost";
