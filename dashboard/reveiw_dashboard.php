@@ -429,7 +429,7 @@ $sql = "SELECT
     var review2 = <?php echo json_encode($datagolf); ?>;
 
     // สร้าง Pie Chart
-    var chartDom = document.getElementById('review_dashboard1');
+    var chartDom = document.getElementById('review_dashboard1'); 
     var myChart = echarts.init(chartDom);
     var option;
 
@@ -580,7 +580,7 @@ $sql = "SELECT
     option = {
   type: 'scroll', // กำหนดเป็น scroll type
   title: {
-    text: 'คะแนนรีวิวของหมอสัภยา',
+    text: 'คะแนนรีวิวของสัภยา',
     left: 'center',
     top:'5%',
     textStyle: {
@@ -724,7 +724,7 @@ $sql = "SELECT
     option = {
   type: 'scroll', // กำหนดเป็น scroll type
   title: {
-    text: 'คะแนนรีวิวของหมอเพชร',
+    text: 'คะแนนรีวิวของเพชร',
     left: 'center',
     top:'5%',
     textStyle: {

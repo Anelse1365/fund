@@ -226,6 +226,11 @@ th {
                             Dashboard2
                             
                         </a>
+                        <a class="nav-link" href="main3.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard สินค้า
+                            
+                        </a>
                         <div class="sb-sidenav-menu-heading">Interface</div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -394,6 +399,7 @@ $conn->close();
         <option value="หมอปกป้อง">หมอปกป้อง</option>
         <option value="เพชร">เพชร</option>
         <option value="สัภยา">สัภยา</option>
+        <option value="หมอกอล์ฟ">หมอกอล์ฟ</option>
     </select>
     <button type="submit">ค้นหา</button>
 </form>
