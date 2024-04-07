@@ -181,8 +181,6 @@ try {
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="js/datatables-simple-demo.js"></script>  
   
-  
-  
     <?php
 // เชื่อมต่อกับฐานข้อมูล
 $servername = "localhost";
@@ -205,13 +203,14 @@ $sql = "SELECT
               ELSE '>50'
             END AS age_group,
             gender,
+            information,
             COUNT(*) AS total
           FROM 
-          reports 
+          reports
           GROUP BY 
-            age_group, gender
+            age_group, gender, information
           ORDER BY 
-            age_group, gender";
+            age_group, gender, information";
 
 $result = $conn->query($sql);
 // ตรวจสอบว่ามีข้อมูลหรือไม่
@@ -222,6 +221,7 @@ if ($result->num_rows > 0) {
         $data[] = array(
             'age_group' => $row['age_group'],
             'gender' => $row['gender'],
+            'information' => $row['information'],
             'total' => $row['total']
         );
     }
@@ -232,7 +232,7 @@ $conn->close();
 ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<center>
+<div id="maindashboard"></div>
 <form id="filterForm">
     <label for="ageGroup">กรองตามช่วงอายุ:</label>
     <select id="ageGroup" name="ageGroup">
@@ -250,95 +250,101 @@ $conn->close();
         <option value="ชาย">ชาย</option>
         <option value="หญิง">หญิง</option>
     </select>
+    <label for="information">บริการ:</label>
+    <select id="information" name="information">
+        <option value="">ทั้งหมด</option>
+        <option value="อุดฟัน">อุดฟัน</option>
+        <option value="ผ่าฟัน">ผ่าฟัน</option>
+        <option value="บริการ C">บริการ C</option>
+    </select>
     <button type="submit">ค้นหา</button>
 </form>
-</center>
-<br>
-<div id="maindashboard"></div>
+
 <div class='frame'></div>
 
 <script>
     var data = <?php echo json_encode($data); ?>;
 
     // สร้าง Pie Chart
-var pieChart = echarts.init(document.getElementById('maindashboard'));
-var option = {
-    title: {
-        text: 'จำนวนช่วงอายุและเพศของผู้มาใช้บริการ',
-        left: 'center',
-        top: '5%',
-        textStyle: {
-            fontSize: 24,
-            color: 'black'
-        }
-    },
-    legend: {
-        top: '16%',
-        left: 'center',
-        textStyle: {
-            fontSize: 18,
-            color: 'black'
-        }
-    },
-    tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} คน ({d}%)',
-        textStyle: {
-            fontSize: 18,
-            color: 'black'
-        }
-    },
-    series: [{
-        itemStyle: {
-            borderColor: 'black',
-            borderWidth: 1
+    var pieChart = echarts.init(document.getElementById('maindashboard'));
+    var option = {
+        title: {
+            text: 'จำนวนช่วงอายุและเพศของผู้มาใช้บริการ',
+            left: 'center',
+            top: '5%',
+            textStyle: {
+                fontSize: 24,
+                color: 'black'
+            }
         },
-        name: 'จำนวนผู้ป่วย',
-        type: 'pie',
-        borderColor: 'black',
-        borderWidth: 2,
-        radius: '55%',
-        top: '-1%',
-        center: ['50%', '60%'],
-        data: [],
-        emphasis: {
+        legend: {
+            top: '16%',
+            left: 'center',
+            textStyle: {
+                fontSize: 18,
+                color: 'black'
+            }
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} คน ({d}%)',
+            textStyle: {
+                fontSize: 18,
+                color: 'black'
+            }
+        },
+        series: [{
             itemStyle: {
                 borderColor: 'black',
-                borderWidth: 1,
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)',
+                borderWidth: 1
+            },
+            name: 'จำนวนผู้ป่วย',
+            type: 'pie',
+            borderColor: 'black',
+            borderWidth: 2,
+            radius: '55%',
+            top: '-1%',
+            center: ['50%', '60%'],
+            data: [],
+            emphasis: {
+                itemStyle: {
+                    borderColor: 'black',
+                    borderWidth: 1,
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)',
+                }
             }
-        }
-    }]
-};
-pieChart.setOption(option);
-
-document.getElementById('filterForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var formData = new FormData(this);
-    var ageGroup = formData.get('ageGroup');
-    var gender = formData.get('gender');
-    var filteredData = data.filter(function(item) {
-        return (ageGroup === '' || item.age_group === ageGroup) &&
-            (gender === '' || item.gender === gender);
-    });
-    updateChart(filteredData);
-});
-
-function updateChart(filteredData) {
-    var processedData = [];
-    filteredData.forEach(function(item) {
-        var label = item.age_group + ' (' + item.gender + ')';
-        processedData.push({
-            name: label,
-            value: item.total
-        });
-    });
-    option.series[0].data = processedData;
+        }]
+    };
     pieChart.setOption(option);
-}
 
+    document.getElementById('filterForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+        var ageGroup = formData.get('ageGroup');
+        var gender = formData.get('gender');
+        var information = formData.get('information');
+        var filteredData = data.filter(function(item) {
+            return (ageGroup === '' || item.age_group === ageGroup) &&
+                (gender === '' || item.gender === gender) &&
+                (information === '' || item.information === information);
+        });
+        updateChart(filteredData);
+    });
+
+    function updateChart(filteredData) {
+        var processedData = [];
+        filteredData.forEach(function(item) {
+            var label = item.age_group + ' (' + item.gender + ') - ' + item.information;
+            processedData.push({
+                name: label,
+                value: item.total
+            });
+        });
+        option.series[0].data = processedData;
+        pieChart.setOption(option);
+    }
 </script>
 
 
