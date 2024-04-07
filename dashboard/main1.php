@@ -48,12 +48,14 @@ try {
         #maindashboard {
             position: absolute;
             margin: auto;
-            width: 500px;
-            height: 500px;
-            margin-left: 19cm;
+            width: 750px;
+            height: 730px;
+            margin-left: 17cm;
+            margin-top: 0.5cm;
             /*margin-top: 6.5cm;*/
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
+            
         }
        
         h2 {
@@ -62,6 +64,67 @@ try {
             font-weight: bold; /* กำหนดให้ตัวหนา */
             font-size: 50px; /* เพิ่มขนาดตัวอักษร */
         }
+        /* ใช้ Flexbox */
+#filterForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* จัดตำแหน่งฟอร์มที่ด้านซ้าย */
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px; /* ปรับขนาดฟอร์มตามต้องการ */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* เพิ่มเงา */
+    margin-left: calc(-25cm - 20px); /* 14cm - 20px (ค่า margin ต้นฉบับ) */
+    margin-top: calc(2cm - 20px);
+}
+
+
+/* ให้ฟอร์มเต็มความกว้างของพื้นที่ที่กำหนด */
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+/* สีขอบของฟอร์ม */
+#filterForm label, #filterForm select, #filterForm button {
+    margin-bottom: 10px;
+}
+
+/* สีขอบของเลเบล */
+label {
+    color: #555; /* สีเทาเข้ม */
+    font-weight: bold;
+    display: block; /* ให้เลเบลเรียงต่อกันแนวดิ่ง */
+}
+
+/* สีของเลือก */
+select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc; /* เส้นขอบสีเทา */
+    width: calc(100% - 22px); /* ลดขนาดของเลือกเล็กน้อยเพื่อให้พอดีกับขอบ */
+}
+
+/* สีของปุ่ม */
+button[type="submit"] {
+    background-color: #4CAF50; /* เขียว */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049; /* เขียวเข้ม */
+}
+
+/* เรียงตัวเลือกให้อยู่ในแนวดิ่ง */
+select, button {
+    display: block;
+}
+
     </style>
 </head>
 </style>
@@ -172,7 +235,14 @@ try {
     <div class="container mt-5">
         <h2 class="text-center mb-4">Dashboard</h2>
     </div>
-    <!-- ลิงก์ JavaScript ของ Bootstrap -->
+    
+    <!-- ลิงก์ JavaScript ของ Bootstrap 
+
+
+ <option value="พิษณุโลก">พิษณุโลก</option>
+        <option value="กำเเพงเพชร">กำเเพงเพชร</option>
+
+-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
@@ -180,7 +250,6 @@ try {
     <script src="assets/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="js/datatables-simple-demo.js"></script>  
-  
     <?php
 // เชื่อมต่อกับฐานข้อมูล
 $servername = "localhost";
@@ -192,7 +261,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
 }
-// คำสั่ง SQL เพื่อดึงข้อมูลจำนวนผู้ป่วยในแต่ละกลุ่มช่วงอายุและเพศ
+// คำสั่ง SQL เพื่อดึงข้อมูลจำนวนผู้ป่วยในแต่ละกลุ่มช่วงอายุ, เพศ, บริการ, คลินิก, และหมอ
 $sql = "SELECT 
             CASE 
               WHEN age BETWEEN 1 AND 10 THEN '1-10'
@@ -204,13 +273,15 @@ $sql = "SELECT
             END AS age_group,
             gender,
             information,
+            state,
+            doctor,
             COUNT(*) AS total
           FROM 
           reports
           GROUP BY 
-            age_group, gender, information
+            age_group, gender, information, state, doctor
           ORDER BY 
-            age_group, gender, information";
+            age_group, gender, information, state, doctor";
 
 $result = $conn->query($sql);
 // ตรวจสอบว่ามีข้อมูลหรือไม่
@@ -222,6 +293,8 @@ if ($result->num_rows > 0) {
             'age_group' => $row['age_group'],
             'gender' => $row['gender'],
             'information' => $row['information'],
+            'state' => $row['state'],
+            'doctor' => $row['doctor'],
             'total' => $row['total']
         );
     }
@@ -233,6 +306,7 @@ $conn->close();
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <div id="maindashboard"></div>
+<center>
 <form id="filterForm">
     <label for="ageGroup">กรองตามช่วงอายุ:</label>
     <select id="ageGroup" name="ageGroup">
@@ -253,13 +327,25 @@ $conn->close();
     <label for="information">บริการ:</label>
     <select id="information" name="information">
         <option value="">ทั้งหมด</option>
-        <option value="อุดฟัน">อุดฟัน</option>
         <option value="ผ่าฟัน">ผ่าฟัน</option>
-        <option value="บริการ C">บริการ C</option>
+        <option value="อุดฟัน">อุดฟัน</option>
+    </select>
+    <label for="state">คลินิก:</label>
+    <select id="state" name="state">
+        <option value="">ทั้งหมด</option>
+        <option value="พิษณุโลก">พิษณุโลก</option>
+        <option value="กำเเพงเพชร">กำเเพงเพชร</option>
+    </select>
+    <label for="doctor">หมอ:</label>
+    <select id="doctor" name="doctor">
+        <option value="">ทั้งหมด</option>
+        <option value="หมอปกป้อง">หมอปกป้อง</option>
+        <option value="เพชร">เพชร</option>
+        <option value="สัภยา">สัภยา</option>
     </select>
     <button type="submit">ค้นหา</button>
 </form>
-
+</center>
 <div class='frame'></div>
 
 <script>
@@ -269,7 +355,7 @@ $conn->close();
     var pieChart = echarts.init(document.getElementById('maindashboard'));
     var option = {
         title: {
-            text: 'จำนวนช่วงอายุและเพศของผู้มาใช้บริการ',
+            text: 'จำนวนผู้ป่วยแยกรายช่วงอายุ, เพศ, บริการ, คลินิก, และหมอ',
             left: 'center',
             top: '5%',
             textStyle: {
@@ -325,10 +411,14 @@ $conn->close();
         var ageGroup = formData.get('ageGroup');
         var gender = formData.get('gender');
         var information = formData.get('information');
+        var state = formData.get('state');
+        var doctor = formData.get('doctor');
         var filteredData = data.filter(function(item) {
             return (ageGroup === '' || item.age_group === ageGroup) &&
                 (gender === '' || item.gender === gender) &&
-                (information === '' || item.information === information);
+                (information === '' || item.information === information) &&
+                (state === '' || item.state === state) &&
+                (doctor === '' || item.doctor === doctor);
         });
         updateChart(filteredData);
     });
@@ -336,7 +426,7 @@ $conn->close();
     function updateChart(filteredData) {
         var processedData = [];
         filteredData.forEach(function(item) {
-            var label = item.age_group + ' (' + item.gender + ') - ' + item.information;
+            var label = item.age_group + ' (' + item.gender + ') - ' + item.information + ' - ' + item.state + ' - ' + item.doctor;
             processedData.push({
                 name: label,
                 value: item.total
@@ -346,6 +436,7 @@ $conn->close();
         pieChart.setOption(option);
     }
 </script>
+
 
 
 
