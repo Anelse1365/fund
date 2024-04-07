@@ -92,6 +92,17 @@
         display: flex;
         justify-content: center;
     }
+	.eimoji {
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	}
+
 </style>
 
 		
@@ -412,8 +423,6 @@ $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	</script>
         </form>
     </div>
-
-
 
 
 		<!-- Footer Area -->
