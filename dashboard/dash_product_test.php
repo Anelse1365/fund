@@ -247,6 +247,7 @@ $stmt = $conn->prepare($sql);
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="dash_produc.php">Overview</a>
+                                    <a class="nav-link" href="dash_product_test.php">TEST</a>
                                     <a class="nav-link" href="order.php">Order</a>
                                     <a class="nav-link" href="../shopping cart/admin.php">Upload</a>
                                 </nav>
@@ -396,8 +397,12 @@ $stmt = $conn->prepare($sql);
         <a href="dash_products2.php">next</a>
     </div>
 </div>
-                </footer>
 
+                </footer>
+            
+            
+
+     
       </script>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 

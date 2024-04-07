@@ -1,14 +1,13 @@
+// สร้าง Pie Chart
+var chart = am4core.create("chartdiv2", am4charts.PieChart);
 
-var chart = am4core.create("chartdiv", am4charts.PieChart);
-
-// Add data from PHP variable chartData
+// กำหนดข้อมูลสินค้าที่ได้จาก PHP variable chartData
 chart.data = chartData;
 
-// Add and configure Series
+// สร้างและกำหนดค่า Series
 var pieSeries = chart.series.push(new am4charts.PieSeries());
-pieSeries.dataFields.value = "sold"; // ใช้ข้อมูลจำนวนสินค้าที่ขายได้จากตาราง products
+pieSeries.dataFields.value = "sold"; // ใช้จำนวนสินค้าที่ขายได้
 pieSeries.dataFields.category = "name"; // ใช้ชื่อสินค้าจากตาราง products
-
 
 pieSeries.ticks.template.disabled = true;
 pieSeries.alignLabels = false;
@@ -30,4 +29,5 @@ pieSeries.labels.template.adapter.add("fill", function(color, target) {
   return color;
 });
 
-chart.legend = new am4charts.Legend();  
+// เพิ่ม Legend
+chart.legend = new am4charts.Legend();
