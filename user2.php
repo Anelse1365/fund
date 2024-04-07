@@ -254,9 +254,7 @@ if (isset($_SESSION['user_login'])) {
 </div>
 
 </div>
-
-          
-                      
+      
                     </div>
                 </div>
             </div>

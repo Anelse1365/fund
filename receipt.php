@@ -21,13 +21,49 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง receipt โดยใช้ user_id ของผู้ใช้ที่เข้าสู่ระบบเป็นเงื่อนไข
-$stmt = $conn->prepare("SELECT * FROM receipe WHERE id_patient = ?");
-$stmt->bind_param('i', $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
+// เตรียมคำสั่ง SQL เริ่มต้น
+$sql = "SELECT * FROM receipe WHERE id_patient = $user_id";
+
+// การกรองข้อมูลจากฟอร์มค้นหา
+
+if(isset($_GET['nationality']) && !empty($_GET['nationality'])) {
+    $nationality  = $_GET['nationality'];
+    $sql .= " AND nationality LIKE '%$nationality%'";
+}
+if(isset($_GET['state']) && !empty($_GET['state'])) {
+    $state  = $_GET['state'];
+    $sql .= " AND state LIKE '%$state%'";
+}
+if(isset($_GET['doctor']) && !empty($_GET['doctor'])) {
+    $doctor  = $_GET['doctor'];
+    $sql .= " AND doctor LIKE '%$doctor%'";
+}
+if(isset($_GET['information']) && !empty($_GET['information'])) {
+    $information  = $_GET['information'];
+    $sql .= " AND information LIKE '%$information%'";
+}
+if(isset($_GET['comment']) && !empty($_GET['comment'])) {
+    $comment  = $_GET['comment'];
+    $sql .= " AND comment LIKE '%$comment%'";
+}
+if(isset($_GET['date']) && !empty($_GET['date'])) {
+    $date  = $_GET['date'];
+    $sql .= " AND date LIKE '%$date%'";
+}
+if(isset($_GET['timeInput']) && !empty($_GET['timeInput'])) {
+    $timeInput  = $_GET['timeInput'];
+    $sql .= " AND timeInput LIKE '%$timeInput%'";
+}
+if(isset($_GET['created_at']) && !empty($_GET['created_at'])) {
+    $created_at  = $_GET['created_at'];
+    $sql .= " AND created_at LIKE '%$created_at%'";
+}
+
+// ส่งคำสั่ง SQL ไปยังฐานข้อมูล
+$result = $conn->query($sql);
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -72,6 +108,31 @@ $result = $stmt->get_result();
 </head>
 <body>
 <div class="container">
+                  <!-- เพิ่มฟอร์มสำหรับกรองข้อมูล -->
+<form method="get" action="">    
+    <div class="row mb-3">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="คลินิก" name="state">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="หมอ" name="doctor">
+        </div>
+
+        <div class="col" >
+            <input type="text" class="form-control" placeholder="วันที่ส่ง" name="created_at">
+        </div>
+        <div class="col" >
+            <input type="text" class="form-control" placeholder="วันที่นัด" name="date">
+        </div>
+        <div class="col" >
+            <input type="text" class="form-control" placeholder="เวลานัด" name="timeInput">
+        </div>
+        <!-- เพิ่มฟิลเตอร์อื่น ๆ ตามต้องการ -->
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">ค้นหา</button>
+        </div>
+    </div>
+</form>
     <?php
     // ตรวจสอบว่ามีข้อมูลในฐานข้อมูลหรือไม่
     if ($result->num_rows > 0) {
