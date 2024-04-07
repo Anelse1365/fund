@@ -422,7 +422,7 @@ $conn->close();
             }
         },
         legend: {
-            top: '16%',
+            top: '10%',
             left: 'center',
             textStyle: {
                 fontSize: 18,
