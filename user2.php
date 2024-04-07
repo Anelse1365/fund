@@ -79,13 +79,11 @@
         .appointment-history {
             margin-top: 20px;
         }
-
         .appointment-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
         }
-
         .appointment-table th, .appointment-table td {
             border: 1px solid #ddd;
             padding: 8px;
@@ -239,22 +237,22 @@ if (isset($_SESSION['user_login'])) {
 
 
 
-            <div class="col-lg-4">
-    <div class="card shadow-sm mx-auto">
-        <div class="card-header bg-transparent text-center">
-            <h3><?php echo $row['firstname'] . ' ' . $row['lastname']?> </h3>
-        </div>
-        <div class="card-body">
-            <p class="mb-0"><strong class="pr-1">ชื่อ-นามสกุล:</strong><?php echo $row['firstname'] . ' ' . $row['lastname']?> </p>
-            <p class="mb-0"><strong class="pr-1">อีเมล:</strong><?php echo $row['email'] ?> </p>
-            <p class="mb-0"><strong class="pr-1">เบอร์มือถือ:</strong><?php echo $row['phone_number'] ?></p>
-            <p class="mb-0"><strong class="pr-1">เพศ:</strong><?php echo $row['gender'] ?></p>
-            <p class="mb-0"><strong class="pr-1">อายุ:</strong><?php echo $row['age'] ?></p>
-            <p class="mb-0"><strong class="pr-1">สัญชาติ:</strong><?php echo $row['nationality'] ?></p>
-            <p class="mb-0"><strong class="pr-1">ที่อยู่:</strong><?php echo $row['address'] ?></p>
-            <br>
-        </div>
+            <div class="col">
+    <div class="card shadow-sm mx-auto" style="max-width: 500px;">
+    <div class="card-header bg-transparent text-center">
+        <h3 class="mb-0"><?php echo $row['firstname'] . ' ' . $row['lastname']?> </h3>
     </div>
+    <div class="card-body">
+        <p class="mb-2"><strong class="pr-1">ชื่อ-นามสกุล:</strong><?php echo $row['firstname'] . ' ' . $row['lastname']?> </p>
+        <p class="mb-2"><strong class="pr-1">อีเมล:</strong><?php echo $row['email'] ?> </p>
+        <p class="mb-2"><strong class="pr-1">เบอร์มือถือ:</strong><?php echo $row['phone_number'] ?></p>
+        <p class="mb-2"><strong class="pr-1">เพศ:</strong><?php echo $row['gender'] ?></p>
+        <p class="mb-2"><strong class="pr-1">อายุ:</strong><?php echo $row['age'] ?></p>
+        <p class="mb-2"><strong class="pr-1">สัญชาติ:</strong><?php echo $row['nationality'] ?></p>
+        <p class="mb-2"><strong class="pr-1">ที่อยู่:</strong><?php echo $row['address'] ?></p>
+    </div>
+</div>
+
 </div>
 
           
