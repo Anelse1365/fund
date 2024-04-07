@@ -207,7 +207,7 @@ $sql = "SELECT
             gender,
             COUNT(*) AS total
           FROM 
-            patien 
+          reports 
           GROUP BY 
             age_group, gender
           ORDER BY 
