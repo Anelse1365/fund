@@ -40,7 +40,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>Dashboard-Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -125,12 +125,63 @@ select, button {
     display: block;
 }
 
+/* สไตล์ของตาราง */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 5cm; /* เพิ่มระยะห่างด้านล่าง 5 เซ็นติเมตร */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงาใต้ตาราง */
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* สไตล์ของกราฟ */
+#maindashboard3 {
+    width: 600px;
+    height: 400px;
+    margin: 0 auto;
+    margin-bottom: 5cm; /* เพิ่มระยะห่างด้านล่าง 5 เซ็นติเมตร */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงาใต้กราฟ */
+}
+
+/* สไตล์ของฟอร์มกรอง */
+#filterForm {
+    margin-bottom: 6cm; /* เพิ่มระยะห่างด้านล่าง 5 เซ็นติเมตร */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงาใต้ฟอร์ม */
+}
+
+#filterForm label, #filterForm select, #filterForm button {
+    margin-right: 10px;
+}
+
+#filterForm button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+#filterForm button:hover {
+    background-color: #45a049;
+}
+
+
+
     </style>
 </head>
 </style>
 </head>
 <body class="sb-nav-fixed">
-    <h2>Dashboard</h2>
+
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="main1.php">FUND CLINIC</a>
@@ -328,7 +379,8 @@ $conn->close();
     <select id="information" name="information">
         <option value="">ทั้งหมด</option>
         <option value="ผ่าฟัน">ผ่าฟัน</option>
-        <option value="อุดฟัน">อุดฟัน</option>
+        <option value="อุดฟัน">อุดฟัน</option> 
+        <option value="รักษารากฟัน">รักษารากฟัน</option>
     </select>
     <label for="state">คลินิก:</label>
     <select id="state" name="state">
@@ -422,23 +474,52 @@ $conn->close();
         });
         updateChart(filteredData);
     });
-
     function updateChart(filteredData) {
-        var processedData = [];
-        filteredData.forEach(function(item) {
-            var label = item.age_group + ' (' + item.gender + ') - ' + item.information + ' - ' + item.state + ' - ' + item.doctor;
-            processedData.push({
-                name: label,
-                value: item.total
-            });
+    var processedData = [];
+    var tableBody = document.getElementById('summaryTable');
+    // ล้างข้อมูลเก่าที่อาจมีอยู่ในตาราง
+    tableBody.innerHTML = '';
+    filteredData.forEach(function(item) {
+        var label = item.age_group + ' (' + item.gender + ') - ' + item.information + ' - ' + item.state + ' - ' + item.doctor;
+        processedData.push({
+            name: label,
+            value: item.total
         });
-        option.series[0].data = processedData;
-        pieChart.setOption(option);
-    }
+        // สร้างแถวข้อมูลในตาราง
+        var row = document.createElement('tr');
+        row.innerHTML = '<td>' + item.age_group + '</td>' +
+            '<td>' + item.gender + '</td>' +
+            '<td>' + item.information + '</td>' +
+            '<td>' + item.state + '</td>' +
+            '<td>' + item.doctor + '</td>' +
+            '<td>' + item.total + '</td>';
+        // เพิ่มแถวข้อมูลลงในตาราง
+        tableBody.appendChild(row);
+    });
+    // อัพเดทกราฟ
+    option.series[0].data = processedData;
+    pieChart.setOption(option);
+}
+
 </script>
 
 
 
+<table border="1">
+    <thead>
+        <tr>
+            <th>ช่วงอายุ</th>
+            <th>เพศ</th>
+            <th>บริการ</th>
+            <th>คลินิก</th>
+            <th>หมอ</th>
+            <th>จำนวนผู้ป่วย</th>
+        </tr>
+    </thead>
+    <tbody id="summaryTable">
+        <!-- ข้อมูลจะถูกแสดงที่นี่ -->
+    </tbody>
+</table>
 
 
 
