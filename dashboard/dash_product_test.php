@@ -302,15 +302,19 @@ $stmt = $conn->prepare($sql);
     <div class="card bg-primary text-white mb-4">
     <div class="card-body">สินค้าที่มีการสั่งซื้อมากที่สุด
         <?php
-        // SQL query to fetch the product with the highest sold count
-        $sqlMostSoldProduct = "SELECT name FROM products ORDER BY sold DESC LIMIT 1";
-        $stmtMostSoldProduct = $conn->prepare($sqlMostSoldProduct);
-        $stmtMostSoldProduct->execute();
-        $mostSoldProduct = $stmtMostSoldProduct->fetchColumn();
+            // SQL query to fetch the product with the highest sold count
+            $sqlMostSoldProduct = "SELECT name, sold FROM products ORDER BY sold DESC LIMIT 1";
+            $stmtMostSoldProduct = $conn->prepare($sqlMostSoldProduct);
+            $stmtMostSoldProduct->execute();
+            $mostSoldProduct = $stmtMostSoldProduct->fetch(PDO::FETCH_ASSOC);
 
-        // Display the name of the most sold product
-        echo '<div class="h5">' . $mostSoldProduct . '</div>';
-        ?>
+            // Display the name and the number of sold products
+            if ($mostSoldProduct) {
+                echo '<div class="h5">' . $mostSoldProduct['name'] . ' (' . $mostSoldProduct['sold'] . ')</div>';
+            } else {
+                echo '<div class="h5">ไม่มีข้อมูลสินค้า</div>';
+            }
+            ?>
 
         </div>
         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -397,12 +401,8 @@ $stmt = $conn->prepare($sql);
         <a href="dash_products2.php">next</a>
     </div>
 </div>
-
                 </footer>
-            
-            
 
-     
       </script>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 
