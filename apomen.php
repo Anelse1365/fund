@@ -188,7 +188,9 @@ if (isset($_SESSION['user_login'])) {
         <h1>การนัดหมอฟัน</h1>
         <p>กรุณากรอกข้อมูลเพื่อนัดหมอฟัน</p>  
         <form action="submitapomen.php" method="post">
+			
 		<div class="form-group">
+			
     <label for="name">ชื่อ-นามสกุล:</label>
     <input type="text" class="form-control" name="patient" value="<?php echo $row['firstname'] . ' ' . $row['lastname']?>" required> 
 </div>
@@ -197,6 +199,11 @@ if (isset($_SESSION['user_login'])) {
                 <label for="email">อีเมล:</label>
                 <input type="email" class="form-control" name="email" value=" <?php echo $row['email']?>"required> 
             </div>
+			<div class="form-group">
+    <label for="number">รหัส(กรุณาอย่าแก้ไข)</label>
+    <input type="number" class="form-control" name="id_patient" value="<?php echo $row['id']?>" required> 
+</div>
+
             <div class="form-group">
                 <label for="phone_number">เบอร์โทร:</label>
                 <input type="tel" class="form-control" name="phone_number"  value=" <?php echo $row['phone_number']?>  " required> 
@@ -205,6 +212,7 @@ if (isset($_SESSION['user_login'])) {
     <label for="age">อายุ:</label>
     <input type="number" class="form-control" name="age" value="<?php echo $row['age']?>" required>  
 </div>
+
 
             <div class="form-group">
                 <label for="gender">เพศ:</label>

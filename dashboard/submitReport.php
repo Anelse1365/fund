@@ -28,10 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $information = $_POST['information'];
         $price = $_POST['price'];
         $comment = $_POST['comment'];
+        $id_patient = $_POST['id_patient'];
 
         // เตรียมคำสั่ง SQL สำหรับการเพิ่มข้อมูล
-        $sql = "INSERT INTO reports (patient, email, phone_number, age, gender, nationality, state, doctor, date, timeInput, information, price, comment) 
-                VALUES (:patient, :email, :phone_number, :age, :gender, :nationality, :state, :doctor, :date, :timeInput, :information, :price, :comment)";
+        $sql = "INSERT INTO reports (patient, email, phone_number, age, gender, nationality, state, doctor, date, timeInput, information, price, comment,id_patient) 
+                VALUES (:patient, :email, :phone_number, :age, :gender, :nationality, :state, :doctor, :date, :timeInput, :information, :price, :comment,:id_patient)";
         
         // เตรียมคำสั่ง SQL สำหรับการเพิ่มข้อมูล
         $stmt = $conn->prepare($sql);
@@ -48,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':information', $information);
         $stmt->bindParam(':price', $price);
         $stmt->bindParam(':comment', $comment);
+        $stmt->bindParam(':id_patient', $id_patient);
 
         // ประมวลผลคำสั่ง SQL
         $stmt->execute();

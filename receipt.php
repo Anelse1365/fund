@@ -1,27 +1,42 @@
-<?php 
+<?php
 session_start();
 require_once 'config2/db2.php';
 
+// เช็คว่ามีการเข้าสู่ระบบหรือไม่
 if (!isset($_SESSION['user_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
     header('location: signin2.php');
     exit(); 
 }
 
-if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    // สำหรับความปลอดภัยและป้องกันการโจมตี SQL injection ควรใช้ prepared statement
-    $stmt = $conn->prepare("SELECT * FROM receipe WHERE id = :user_id");
-    $stmt->bindParam(':user_id', $user_id);
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+$user_id = $_SESSION['user_login'];
+
+// เชื่อมต่อฐานข้อมูล
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fund";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
+
+// คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง receipt โดยใช้ user_id ของผู้ใช้ที่เข้าสู่ระบบเป็นเงื่อนไข
+$stmt = $conn->prepare("SELECT * FROM receipe WHERE id_patient = ?");
+$stmt->bind_param('i', $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
 ?>
 
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <title>ใบเสร็จการนัดจอง</title>
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -53,41 +68,9 @@ if (isset($_SESSION['user_login'])) {
             background-color: #F8F5FD;
             color: #695A5B;
         }
-    </style>
-</head>
-
-<?php
-// เชื่อมต่อฐานข้อมูล
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "fund";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง receipt
-$sql = "SELECT * FROM receipe";
-$result = $conn->query($sql);
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ใบเสร็จการนัดจอง</title>
-    <!-- Link to Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* CSS styles here */
-    </style>
+        </style>
 </head>
 <body>
-
 <div class="container">
     <?php
     // ตรวจสอบว่ามีข้อมูลในฐานข้อมูลหรือไม่
@@ -97,8 +80,7 @@ $result = $conn->query($sql);
             // แสดงข้อมูลในตาราง
             echo "<div class='receipt'>";
             echo "<div class='receipt-header'>";
-            echo "<h2>ใบเสร็จการนัดจอง</h2>";
-            
+            echo "<h2>ใบเสร็จการนัดจอง</h2>";        
             echo "</div>";
             echo "<table class='table table-bordered'>";
             echo "<tbody>";
