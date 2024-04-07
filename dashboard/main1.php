@@ -232,7 +232,7 @@ $conn->close();
 ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<div id="maindashboard"></div>
+<center>
 <form id="filterForm">
     <label for="ageGroup">กรองตามช่วงอายุ:</label>
     <select id="ageGroup" name="ageGroup">
@@ -252,7 +252,9 @@ $conn->close();
     </select>
     <button type="submit">ค้นหา</button>
 </form>
-
+</center>
+<br>
+<div id="maindashboard"></div>
 <div class='frame'></div>
 
 <script>
