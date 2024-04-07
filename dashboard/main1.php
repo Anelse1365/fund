@@ -50,43 +50,12 @@ try {
             margin: auto;
             width: 500px;
             height: 500px;
-            margin-left: 9cm;
+            margin-left: 19cm;
             /*margin-top: 6.5cm;*/
             border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
             border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
         }
-        #maindashboard1 {
-            position: absolute;
-            margin: auto;
-            width: 500px;
-            height: 500px;
-            margin-left: 22.5cm;
-            /*margin-top: 6.5cm;*/
-            border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
-            border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
-        }
-        #maindashboard2 {
-            position: absolute;
-            margin: auto;
-            width: 500px;
-            height: 500px;
-            margin-left: 36cm;
-            /*margin-top: 6.5cm;*/
-            border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
-            border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
-
-        }
-        #maindashboard3 {
-            position: absolute;
-            margin: auto;
-            width: 1520px;
-            height: 410px;
-            top: 18.85cm;
-            left: 9cm;
-            border: 5px solid black; /* เพิ่มเส้นขอบสีเทา */
-            border-radius: 10px; /* กำหนดรูปร่างของกรอบเป็นรูปสี่เหลี่ยมมนเว้น */
-            margin-bottom: 20px; /* เพิ่ม margin ด้านล่าง 20px */
-        }
+       
         h2 {
             text-align: center; /* จัดตำแหน่งให้อยู่ตรงกลาง */
             color: black; /* กำหนดสีข้อความเป็นดำ */
@@ -211,19 +180,22 @@ try {
     <script src="assets/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="js/datatables-simple-demo.js"></script>  
+  
+  
+  
     <?php
-    // เชื่อมต่อกับฐานข้อมูล
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "fund";
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    // ตรวจสอบการเชื่อมต่อ
-    if ($conn->connect_error) {
-        die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
-    }
-    // คำสั่ง SQL เพื่อดึงข้อมูลจำนวนผู้ป่วยในแต่ละกลุ่มช่วงอายุ
-    $sql = "SELECT 
+// เชื่อมต่อกับฐานข้อมูล
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fund";
+$conn = new mysqli($servername, $username, $password, $dbname);
+// ตรวจสอบการเชื่อมต่อ
+if ($conn->connect_error) {
+    die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
+}
+// คำสั่ง SQL เพื่อดึงข้อมูลจำนวนผู้ป่วยในแต่ละกลุ่มช่วงอายุและเพศ
+$sql = "SELECT 
             CASE 
               WHEN age BETWEEN 1 AND 10 THEN '1-10'
               WHEN age BETWEEN 11 AND 20 THEN '11-20'
@@ -232,410 +204,144 @@ try {
               WHEN age BETWEEN 41 AND 50 THEN '41-50'
               ELSE '>50'
             END AS age_group,
+            gender,
             COUNT(*) AS total
           FROM 
             patien 
           GROUP BY 
-            age_group
+            age_group, gender
           ORDER BY 
-            age_group";
+            age_group, gender";
 
-    $result = $conn->query($sql);
-    // ตรวจสอบว่ามีข้อมูลหรือไม่
-    if ($result->num_rows > 0) {
-        // สร้างข้อมูลสำหรับใช้ในกราฟ
-        $data = array();
-        while ($row = $result->fetch_assoc()) {
-            $data[] = array(
-                'name' => $row['age_group'],
-                'value' => $row['total']
-            );
-        }
-    } else {
-        echo "ไม่พบข้อมูล";
-    }
-    $conn->close();
-    ?>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <div id="maindashboard"></div>
-    <div class='frame'></div>
-
-    <script>
-        var data = <?php echo json_encode($data); ?>;
-
-        // สร้าง Pie Chart
-        var pieChart = echarts.init(document.getElementById('maindashboard'));
-        var option = {
-            title: {
-                text: 'จำนวนช่วงอายุของผู้มาใช้บริการ',
-                left: 'center',
-                top:'5%',
-                textStyle: {
-                    fontSize: 24,
-                    color:'black'
-
-                }
-            },
-            legend: {
-                top: '16%',
-                left: 'center',
-                textStyle: {
-                    fontSize: 18,
-                    color:'black'
-                }
-
-            },
-            tooltip: {
-                trigger: 'item',
-                formatter: '{a} <br/>{b} : {c} คน ({d}%)',
-                textStyle: {
-                    fontSize: 18,
-                    color:'black'
-                }
-            },
-            series: [{
-                itemStyle:{
-                borderColor: 'black', // สีขอบ
-                borderWidth: 1 // ความหนาขอบ
-                },
-                name: 'จำนวนผู้ป่วย',
-                type: 'pie',
-                borderColor: 'black',
-                borderWidth:2,
-                radius: '55%',
-                top: '-1%',
-                center: ['50%', '60%'],
-                data: data,
-                emphasis: {
-                    itemStyle: {
-                        borderColor: 'black', // สีขอบ
-                        borderWidth: 1, // ความหนาขอบ
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)',
-                    }
-                }
-            }]
-        };
-        pieChart.setOption(option);
-    </script>
-
-    <?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "fund";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // ตรวจสอบการเชื่อมต่อ
-    if ($conn->connect_error) {
-        die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
-    }
-
-
-    $sql = "SELECT information, COUNT(*) AS count_info FROM reports GROUP BY information";
-    $result = $conn->query($sql);
-
-
+$result = $conn->query($sql);
+// ตรวจสอบว่ามีข้อมูลหรือไม่
+if ($result->num_rows > 0) {
+    // สร้างข้อมูลสำหรับใช้ในกราฟ
     $data = array();
     while ($row = $result->fetch_assoc()) {
         $data[] = array(
-            'name' => $row['information'],
-            'value' => $row['count_info']
+            'age_group' => $row['age_group'],
+            'gender' => $row['gender'],
+            'total' => $row['total']
         );
     }
-    $conn->close();
+} else {
+    echo "ไม่พบข้อมูล";
+}
+$conn->close();
+?>
 
-    ?>
-    <div id="maindashboard1"></div>
-    <div class='frame1'></div>
-    <script>
-        var info = <?php echo json_encode($data); ?>;
-        var chartDom = document.getElementById('maindashboard1');
-        var myChart = echarts.init(chartDom);
-        var option;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<div id="maindashboard"></div>
+<form id="filterForm">
+    <label for="ageGroup">กรองตามช่วงอายุ:</label>
+    <select id="ageGroup" name="ageGroup">
+        <option value="">ทั้งหมด</option>
+        <option value="1-10">1-10</option>
+        <option value="11-20">11-20</option>
+        <option value="21-30">21-30</option>
+        <option value="31-40">31-40</option>
+        <option value="41-50">41-50</option>
+        <option value=">50">>50</option>
+    </select>
+    <label for="gender">เพศ:</label>
+    <select id="gender" name="gender">
+        <option value="">ทั้งหมด</option>
+        <option value="ชาย">ชาย</option>
+        <option value="หญิง">หญิง</option>
+    </select>
+    <button type="submit">ค้นหา</button>
+</form>
 
-        option = {
-            title: {
-                text: 'จำนวนการนัดจองต่างๆ',
-                left: 'center',
-                top: '4.3%',
-                textStyle: {
-                    fontSize: 24,
-                    color:'black'
-                }
-            },
-            tooltip: {
-                formatter: '{a} <br/>{b} : {c} คน ({d}%)',
-                trigger: 'item',
-                textStyle: {
-                    fontSize: 24,
-                    color:'black'
-                }
-            },
-            legend: {
-                top: '17%',
-                left: 'center',
-                textStyle: {
-                    fontSize: 24,
-                    color:'black'
-                }
-            },
-            series: [{
-                itemStyle:{
-                borderColor: 'black', // สีขอบ
-                borderWidth: 1 // ความหนาขอบ
-                },
-                name: 'Access From',
-                type: 'pie',
-                top: '20%',
-                radius: ['40%', '70%'],
-                avoidLabelOverlap: false,
-                label: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: 40,
-                        fontWeight: 'bold',
-                        color:'black'
-                    },
-                itemStyle: { // เพิ่มการกำหนดขอบให้วงกลม
-                borderColor: 'black', // สีขอบ
-                borderWidth: 2 // ความหนาขอบ
-            }
-                },
-                labelLine: {
-                    show: false
-                },
-                data: info
-            }]
-        };
-        option && myChart.setOption(option);
-    </script>
-    <?php
-    // การเชื่อมต่อกับฐานข้อมูล
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "fund";
+<div class='frame'></div>
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+<script>
+    var data = <?php echo json_encode($data); ?>;
 
-    // ตรวจสอบการเชื่อมต่อ
-    if ($conn->connect_error) {
-        die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
-    }
-
-    // คำสั่ง SQL
-    $sql = "SELECT gender, COUNT(*) AS count_sex FROM patien GROUP BY gender";
-    $result = $conn->query($sql);
-
-    // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
-    $data = array();
-    while ($row = $result->fetch_assoc()) {
-        $gen[] = array(
-            'name' => $row['gender'],
-            'value' => $row['count_sex']
-        );
-    }
-    $conn->close();
-    ?>
-    <div id="maindashboard2"></div>
-    <div class='frame2'></div>
-    <script>
-        // ข้อมูลจากการ query
-        var sex = <?php echo json_encode($gen); ?>;
-
-        // สร้าง Bar Chart ด้วย ECharts
-        var barChart = echarts.init(document.getElementById('maindashboard2'));
-
-        // กำหนดคอนฟิกสำหรับ Bar Chart
-        var option = {
-            title: {
-                text: 'จำนวนผู้ชายและผู้หญิงในฐานข้อมูล',
-                left: 'center',
-                top:'1%',
-                textStyle: {
-                    fontSize: 22,
-                    color:'black'
-                }
-            },
-            tooltip: {
-                formatter: 'จำนวน <br/>{b} : {c} คน',
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'shadow'
-                },
-                textStyle: {
-                    fontSize: 24,
-                    color:'black'
-                }
-            },
-            xAxis: {
-                top:'6%',
-                type: 'category',
-                data: ['ชาย', 'หญิง'],
-                axisLabel: {
+    // สร้าง Pie Chart
+var pieChart = echarts.init(document.getElementById('maindashboard'));
+var option = {
+    title: {
+        text: 'จำนวนช่วงอายุและเพศของผู้มาใช้บริการ',
+        left: 'center',
+        top: '5%',
         textStyle: {
-            fontSize: 20 ,// ขนาดตัวอักษร
-            color:'black'
+            fontSize: 24,
+            color: 'black'
         }
-    }
-            },
-            yAxis: {
-                top:'6%',
-                type: 'value',
-                name: 'จำนวน',
-                formatter: 1,
-                
-                
-            },
-            series: [{
-                data: sex,
-                type: 'bar',
-                bottom:'20px',
-                itemStyle:{
-                    borderColor: 'black', // สีขอบ
-                    borderWidth: 1 ,// ความหนาขอบ
-                }
-            }]
-        };
-        // นำคอนฟิก Option ไปใช้กับ Bar Chart
-        barChart.setOption(option);
-    </script>
-    <?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "fund";
-
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // ตรวจสอบการเชื่อมต่อ
-    if ($conn->connect_error) {
-        die("การเชื่อมต่อล้มเหลว: " . $conn->connect_error);
-    }
-    $sql = "SELECT information,
-      SUM(CASE WHEN gender = 'ชาย' THEN 1 ELSE 0 END) AS male_count,
-      SUM(CASE WHEN gender = 'หญิง' THEN 1 ELSE 0 END) AS female_count
-  FROM 
-      reports
-  GROUP BY 
-      information";
-    $result = $conn->query($sql);
-
-    // สร้างตัวแปร JSON เพื่อใช้กับ ECharts
-    $data = array();
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $data[] = array(
-                'information' => $row['information'],
-                'male_count' => $row['male_count'],
-                'female_count' => $row['female_count']
-            );
-        }
-    } else {
-        echo "0 results";
-    }
-    $conn->close();
-    ?>
-    <div id="maindashboard3"></div>
-    <div class='frame3'></div>
-    <script>
-        // สร้าง Bar Chart ด้วย ECharts
-        var chartDom = document.getElementById('maindashboard3');
-        var myChart = echarts.init(chartDom);
-        var option;
-
-        // ใช้ข้อมูลที่ดึงมาจาก PHP
-        var reportData = <?php echo json_encode($data); ?>;
-        var sourceData = [
-            ['a', 'ชาย', 'หญิง']
-        ]; // สร้าง array ตัวแรกที่เก็บชื่อหัวของแต่ละคอลัมน์
-
-        for (var i = 0; i < reportData.length; i++) {
-            sourceData.push([
-                reportData[i].information,
-                reportData[i].male_count,
-                reportData[i].female_count
-            ]);
-        }
-        option = {
-            title: {
-                text: 'จำนวนการนัดจองในแต่ละประเภท',
-                left: 'center',
-                top:'1%',
-                textStyle: {
-                    fontSize: 22,
-                    color:'black'
-                }
-            },
-            legend: {
-                top:'13%',
-                textStyle: {
-                    fontSize: 22,
-                    color:'black'
-                }
-            },
-            grid: {
-        top: '27%', // ปรับตำแหน่งด้านซ้า
-        containLabel: true // ปรับให้กราฟอยู่ในพื้นที่ที่กำหนดไว้
-        
     },
-            tooltip: {
-            
-                textStyle: {
-                    fontSize: 22,
-                    color:'black'
-                }
-            },
-            dataset: {
-                source: sourceData,
-                textStyle: {
-                    fontSize: 22,
-                    color:'black'
-                }
-            },
-            xAxis: {
-                type: 'category',
-                textStyle: {
-                    fontSize: 22,
-                    color:'black'
-                }
-            },
-            yAxis: {
-                formatter: 1,
-                textStyle: {
-                    fontSize: 22,
-                    color:'black'
-                }
-            },
-            series: [
-                {
-                    type: 'bar',
-                    itemStyle: {
-                        color: 'skyblue',
-                         barBorderRadius: [5, 5, 0, 0] ,// เพิ่มเส้นขอบด้านบนเป็นโค้ง
-                        borderColor:'black'
-                    }
-                },
-                {
-                    type: 'bar',
-                    itemStyle: {
-                        color: 'pink',
-                        fontWeight: 'bold',
-                        barBorderRadius: [5, 5, 0, 0], // เพิ่มเส้นขอบด้านบนเป็นโค้ง
-                        borderColor:'black'
-                    }
-                }
-            ]
-        };
-        option && myChart.setOption(option);
-    </script>
+    legend: {
+        top: '16%',
+        left: 'center',
+        textStyle: {
+            fontSize: 18,
+            color: 'black'
+        }
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} คน ({d}%)',
+        textStyle: {
+            fontSize: 18,
+            color: 'black'
+        }
+    },
+    series: [{
+        itemStyle: {
+            borderColor: 'black',
+            borderWidth: 1
+        },
+        name: 'จำนวนผู้ป่วย',
+        type: 'pie',
+        borderColor: 'black',
+        borderWidth: 2,
+        radius: '55%',
+        top: '-1%',
+        center: ['50%', '60%'],
+        data: [],
+        emphasis: {
+            itemStyle: {
+                borderColor: 'black',
+                borderWidth: 1,
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)',
+            }
+        }
+    }]
+};
+pieChart.setOption(option);
+
+document.getElementById('filterForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var formData = new FormData(this);
+    var ageGroup = formData.get('ageGroup');
+    var gender = formData.get('gender');
+    var filteredData = data.filter(function(item) {
+        return (ageGroup === '' || item.age_group === ageGroup) &&
+            (gender === '' || item.gender === gender);
+    });
+    updateChart(filteredData);
+});
+
+function updateChart(filteredData) {
+    var processedData = [];
+    filteredData.forEach(function(item) {
+        var label = item.age_group + ' (' + item.gender + ')';
+        processedData.push({
+            name: label,
+            value: item.total
+        });
+    });
+    option.series[0].data = processedData;
+    pieChart.setOption(option);
+}
+
+</script>
+
+
+
+
+
 </body>
 </html>
