@@ -1,33 +1,26 @@
-// สร้าง Pie Chart
-var chart = am4core.create("chartdiv2", am4charts.PieChart);
+// ใช้ข้อมูลที่ได้จาก PHP
+// เพื่อสร้าง Bar Chart
 
-// กำหนดข้อมูลสินค้าที่ได้จาก PHP variable chartData
-chart.data = chartData;
 
-// สร้างและกำหนดค่า Series
-var pieSeries = chart.series.push(new am4charts.PieSeries());
-pieSeries.dataFields.value = "sold"; // ใช้จำนวนสินค้าที่ขายได้
-pieSeries.dataFields.category = "name"; // ใช้ชื่อสินค้าจากตาราง products
+// กำหนดข้อมูลให้แกน X เป็นอายุของลูกค้า
+var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+categoryAxis.renderer.grid.template.location = 0;
+categoryAxis.dataFields.category = "age";
 
-pieSeries.ticks.template.disabled = true;
-pieSeries.alignLabels = false;
-pieSeries.labels.template.text = "{value.percent.formatNumber('#.0')}%";
-pieSeries.labels.template.radius = am4core.percent(-40);
-pieSeries.labels.template.fill = am4core.color("white");
+// กำหนดข้อมูลให้แกน Y เป็นจำนวนสินค้าที่ซื้อ
+var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+valueAxis.min = 0;
+valueAxis.renderer.minGridDistance = 30;
 
-pieSeries.labels.template.adapter.add("radius", function(radius, target) {
-  if (target.dataItem && (target.dataItem.values.value.percent < 10)) {
-    return 0;
-  }
-  return radius;
+// สร้าง Bar Chart
+var series = chart.series.push(new am4charts.ColumnSeries());
+series.dataFields.categoryX = "age";
+series.dataFields.valueY = "count"; // เปลี่ยน count เป็นชื่อคอลัมน์ที่เก็บจำนวนสินค้าที่ซื้อ
+series.columns.template.tooltipText = "{valueY.value}";
+series.columns.template.tooltipY = 0;
+series.columns.template.strokeOpacity = 0;
+
+// กำหนดสีให้แต่ละแถวของกราฟแท่ง
+series.columns.template.adapter.add("fill", (fill, target) => {
+  return chart.colors.getIndex(target.dataItem.index);
 });
-
-pieSeries.labels.template.adapter.add("fill", function(color, target) {
-  if (target.dataItem && (target.dataItem.values.value.percent < 10)) {
-    return am4core.color("#000");
-  }
-  return color;
-});
-
-// เพิ่ม Legend
-chart.legend = new am4charts.Legend();

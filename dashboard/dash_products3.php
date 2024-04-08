@@ -1,13 +1,18 @@
 <?php
-
-session_start();
+// เรียกไฟล์การกำหนดค่าของฐานข้อมูล
 require_once '../config2/db2.php';
+
+// เริ่มเซสชัน
+session_start();
+
+// ตรวจสอบสถานะการเข้าสู่ระบบ
 if (!isset($_SESSION['admin_login'])) {
-  $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-  header('location:../signin2.php');
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('location:../signin2.php');
+    exit; // ออกจากสคริปต์หลังจากเปลี่ยนเส้นทาง
 }
 
-// Fetch data from the database
+// ดึงข้อมูลสำหรับกราฟแท่งจากฐานข้อมูล
 $sqlChartData = "SELECT p.name, SUM(p.sold) AS sold 
                  FROM products p
                  GROUP BY p.name";
@@ -15,120 +20,141 @@ $stmtChartData = $conn->prepare($sqlChartData);
 $stmtChartData->execute();
 $chartData = $stmtChartData->fetchAll(PDO::FETCH_ASSOC);
 
-// Encode the data into JSON format
+// แปลงข้อมูลเป็นรูปแบบ JSON
 $chartDataJSON = json_encode($chartData);
-// หลังจากประกาศ $chartData
+
+// แสดงข้อมูลในรูปแบบ JavaScript
 echo '<script>console.log(' . json_encode($chartData) . ');</script>';
-// หลังจากประกาศ $chartDataJSON
-echo '<script>var chartData = ' . $chartDataJSON . ';</script>';
-// ฟังก์ชันสำหรับแยกชื่อสินค้าและจำนวน
-function extractProductInfo($str) {
-    // ใช้ Regular Expression เพื่อแยกชื่อสินค้าและจำนวน
-    preg_match_all('/(\D+)(\d+)/', $str, $matches);
-    $products = array();
-    // เก็บชื่อสินค้าและจำนวนลงในอาร์เรย์
-    foreach ($matches[1] as $index => $productName) {
-        $quantity = (int)$matches[2][$index];
-        $products[] = array('name' => trim($productName), 'quantity' => $quantity);
-    }
-    return $products;
-}
-
-// Fetch data from the database
-$sqlChartData = "SELECT DATE_FORMAT(created_at, '%b %e') AS date, total_products FROM order2 WHERE order_status = 2";
-$stmtChartData = $conn->prepare($sqlChartData);
-$stmtChartData->execute();
-$chartData = $stmtChartData->fetchAll(PDO::FETCH_ASSOC);
-
-// Prepare data for chart
-$chartDataForGraph = array();
-foreach ($chartData as $data) {
-    // Extract product information
-    $products = extractProductInfo($data['total_products']);
-    foreach ($products as $product) {
-        // Add product and quantity to chart data array
-        $chartDataForGraph[] = array('date' => $data['date'], 'product_name' => $product['name'], 'quantity' => $product['quantity']);
-    }
-}
-
-// Encode the data into JSON format
-$chartDataJSON = json_encode($chartDataForGraph);
-// หลังจากประกาศ $chartData
-echo '<script>console.log(' . json_encode($chartDataForGraph) . ');</script>';
-// หลังจากประกาศ $chartDataJSON
 echo '<script>var chartData = ' . $chartDataJSON . ';</script>';
 
-
-
-
-// Count of Patients
+// ดึงจำนวนผู้ป่วย
 $sqlPatient = "SELECT COUNT(*) as patientCount FROM patien";
 $stmtPatient = $conn->prepare($sqlPatient);
 $stmtPatient->execute();
 $resultPatient = $stmtPatient->fetch(PDO::FETCH_ASSOC);
 $patientCount = $resultPatient['patientCount'];
 
-// Count of Appointments
+// ดึงจำนวนการนัดหมาย
 $sqlAppointment = "SELECT COUNT(*) as appointmentCount FROM appointmen";
 $stmtAppointment = $conn->prepare($sqlAppointment);
 $stmtAppointment->execute();
 $resultAppointment = $stmtAppointment->fetch(PDO::FETCH_ASSOC);
 $appointmentCount = $resultAppointment['appointmentCount'];
-$loggedInUser = $_SESSION['admin_login'];
 
-// Count of Total Sales with order_status = 2
+// จำนวนยอดขายทั้งหมดที่มีสถานะ order_status เท่ากับ 2
 $sqlTotalSales = "SELECT SUM(total_price) as totalSales FROM order2 WHERE order_status = 2";
 $stmtTotalSales = $conn->prepare($sqlTotalSales);
 $stmtTotalSales->execute();
 $totalSales = $stmtTotalSales->fetchColumn();
 
-//แสดงชื่อ
+// ดึงชื่อผู้ใช้ที่เข้าสู่ระบบ
 if (isset($_SESSION['admin_login'])) {
-  $user_id = $_SESSION['admin_login'];
-  $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-  $stmt->execute();
-  $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user_id = $_SESSION['admin_login'];
+    $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-// Fetch data from the database
-$sqlChartData = "SELECT DATE_FORMAT(created_at, '%b %e') AS date, SUM(total_price) AS total_price FROM order2 WHERE order_status = 2 GROUP BY DATE_FORMAT(created_at, '%b %e') ORDER BY created_at ASC";
 
-// $sqlChartData = "SELECT DATE_FORMAT(created_at, '%b %e') AS date, SUM(total_price) AS total_price FROM order2 WHERE order_status = 2 GROUP BY DATE_FORMAT(created_at, '%b %e')";
-// $sqlChartData = "SELECT DATE_FORMAT(created_at, '%b %e') AS date, SUM(total_price) AS total_price FROM order2 GROUP BY DATE_FORMAT(created_at, '%b %e')";
+// ดึงข้อมูลสำหรับกราฟแท่งแสดงยอดขายรายวัน
+$sqlChartData = "SELECT DATE_FORMAT(created_at, '%b %e') AS date, SUM(total_price) AS total_price 
+                 FROM order2 
+                 WHERE order_status = 2 
+                 GROUP BY DATE_FORMAT(created_at, '%b %e') 
+                 ORDER BY created_at ASC";
 $stmtChartData = $conn->prepare($sqlChartData);
 $stmtChartData->execute();
 $chartData = $stmtChartData->fetchAll(PDO::FETCH_ASSOC);
 
-
-// Encode the data into JSON format
-$chartDataJSON = json_encode($chartData);
-// หลังจากประกาศ $chartData
+// แสดงข้อมูลในรูปแบบ JSON
 echo '<script>console.log(' . json_encode($chartData) . ');</script>';
-//ทั้งหมด
+
+// ดึงยอดขายรวมทั้งหมด
 $sqlTotalRevenue = "SELECT SUM(total_price) as totalRevenue FROM order2 WHERE order_status = 2";
 $stmtTotalRevenue = $conn->prepare($sqlTotalRevenue);
 $stmtTotalRevenue->execute();
 $resultTotalRevenue = $stmtTotalRevenue->fetch(PDO::FETCH_ASSOC);
 $totalRevenue = $resultTotalRevenue['totalRevenue'];
 
-//
+// ดึงราคาล่าสุดที่มีสถานะ order_status เป็น 1
 $sqlLatestTotalPrice = "SELECT total_price FROM order2 WHERE order_status = 1 ORDER BY created_at DESC LIMIT 1";
 $stmtLatestTotalPrice = $conn->prepare($sqlLatestTotalPrice);
 $stmtLatestTotalPrice->execute();
 $latestTotalPriceResult = $stmtLatestTotalPrice->fetch(PDO::FETCH_ASSOC);
 $latestTotalPrice = ($latestTotalPriceResult !== false) ? $latestTotalPriceResult['total_price'] : null;
 
-// SQL query to fetch the latest total_price with order_status = 2
+// ดึงราคาล่าสุดที่มีสถานะ order_status เป็น 2
 $sqlLatestTotalPrice = "SELECT total_price FROM order2 WHERE order_status = 2 ORDER BY created_at DESC LIMIT 1";
 $stmtLatestTotalPrice = $conn->prepare($sqlLatestTotalPrice);
 $stmtLatestTotalPrice->execute();
 $latestTotalPriceResult = $stmtLatestTotalPrice->fetch(PDO::FETCH_ASSOC);
 $latestTotalPriceValue = ($latestTotalPriceResult !== false) ? $latestTotalPriceResult['total_price'] : null;
 
-// SQL query to fetch data from database
-$sql = "SELECT * FROM patien";
-$stmt = $conn->prepare($sql);
-?>
+// ดึงข้อมูลจากฐานข้อมูลสำหรับกราฟแท่งโดยการระบุช่วงอายุ
+$sql = "SELECT p.name, SUM(p.sold) AS sold
+        FROM products p
+        JOIN order2 o ON p.id = o.product_id
+        JOIN patient pt ON o.email = pt.email
+        WHERE pt.age BETWEEN :minAge AND :maxAge
+        GROUP BY p.name";
 
+// ตรวจสอบว่ามีพารามิเตอร์ minAge และ maxAge หรือไม่
+if(isset($_POST['minAge']) && isset($_POST['maxAge'])) {
+    // รับค่า minAge และ maxAge
+    $minAge = $_POST['minAge'];
+    $maxAge = $_POST['maxAge'];
+
+    // เตรียมและ execute คำสั่ง SQL
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':minAge', $minAge, PDO::PARAM_INT);
+    $stmt->bindParam(':maxAge', $maxAge, PDO::PARAM_INT);
+    $stmt->execute();
+
+    // ดึงข้อมูล
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // แปลงผลลัพธ์เป็น JSON
+    echo json_encode($result);
+
+    $sqlAgeData = "SELECT age, total_products FROM order2";
+    $stmtAgeData = $conn->prepare($sqlAgeData);
+    $stmtAgeData->execute();
+    $ageData = $stmtAgeData->fetchAll(PDO::FETCH_ASSOC);
+    // สร้างอาร์เรย์เพื่อเก็บข้อมูลอายุและจำนวนสินค้าที่ซื้อ
+    $ageProductsData = array();
+
+foreach ($ageData as $row) {
+    $age = $row['age'];
+    $products = explode(",", $row['total_products']);
+    
+    if (!isset($ageProductsData[$age])) {
+        $ageProductsData[$age] = count($products);
+    } else {
+        $ageProductsData[$age] += count($products);
+    }
+}
+
+
+}
+?>  
+<?php
+
+// ดึงข้อมูลจำนวนสินค้าที่ขายได้และราคารวมของแต่ละรายการออร์เดอร์
+$sqlChartData = "SELECT name, COUNT(*) AS total_orders, SUM(total_price) AS total_price 
+                 FROM order2 
+                 WHERE order_status = '2' 
+                 GROUP BY name";
+$stmtChartData = $conn->prepare($sqlChartData);
+$stmtChartData->execute();
+$chartData = $stmtChartData->fetchAll(PDO::FETCH_ASSOC);
+
+// แปลงข้อมูลเป็นรูปแบบ JSON
+$chartDataJSON = json_encode($chartData);
+
+// แสดงข้อมูลในรูปแบบ JavaScript
+echo '<script>console.log(' . json_encode($chartData) . ');</script>';
+echo '<script>var chartData = ' . $chartDataJSON . ';</script>';
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -144,14 +170,15 @@ $stmt = $conn->prepare($sql);
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <!-- เรียกใช้งาน Chart.js ที่นี่ -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-        <script> var chartData = <?php echo $chartDataJSON; ?>;</script>
+
         <script src="https://www.amcharts.com/lib/4/core.js"></script>
         <script src="https://www.amcharts.com/lib/4/charts.js"></script>
-        <!-- test -->
+
         <script src="//cdn.amcharts.com/lib/4/core.js"></script>
         <script src="//cdn.amcharts.com/lib/4/charts.js"></script>
         <script src="//cdn.amcharts.com/lib/4/themes/animated.js"></script>
+        
+
         
         
         
@@ -165,6 +192,14 @@ $stmt = $conn->prepare($sql);
 }
 
 #chartdiv {
+    margin-top: 30px;
+  width: 100%;
+  height: 400px;
+
+  
+}
+#chartdiv2 {
+    margin-top: 30px;
   width: 100%;
   height: 400px;
 }
@@ -195,17 +230,17 @@ $stmt = $conn->prepare($sql);
       margin-bottom: 10px;
       /* เพิ่มระยะห่างด้านล่างของแต่ละ nav-item ไปยัง nav-item ถัดไป */
     }
-
     body {
   height:97vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
-#chartdiv {
-  width: 100%;
-  height: 100%;
-  max-height: 600px;
-}
+    }
+    #chartdiv3 {
+    width: 100%;
+    height: 400px;
+    max-height: 600px;
+    }
+
 
 
 
@@ -315,7 +350,7 @@ $stmt = $conn->prepare($sql);
                         <div class="row">
                         <div class="col-xl-3 col-md-6">
     <div class="card bg-primary text-white mb-4">
-    <div class="card-body">สินค้าที่มีการสั่งซื้อมากที่สุด
+        <div class="card-body">สินค้าที่มีการสั่งซื้อมากที่สุด
         <?php
             // SQL query to fetch the product with the highest sold count
             $sqlMostSoldProduct = "SELECT name, sold FROM products ORDER BY sold DESC LIMIT 1";
@@ -333,7 +368,7 @@ $stmt = $conn->prepare($sql);
 
         </div>
         <div class="card-footer d-flex align-items-center justify-content-between">
-            <a class="small text-white stretched-link" href="#">View Details</a>
+        <a class="small text-white stretched-link" href="dash_products2.php">ดูรายละเอียด</a>
             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
         </div>
     </div>
@@ -352,8 +387,7 @@ $stmt = $conn->prepare($sql);
             ?>
         </div>
         <div class="card-footer d-flex align-items-center justify-content-between">
-        <a class="small text-white stretched-link" href="order_yes.php"></a>
-
+            <a class="small text-white stretched-link" href="#"></a>
             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
         </div>
     </div>
@@ -395,56 +429,53 @@ $stmt = $conn->prepare($sql);
     </div>
 </div>
                         </div>
-                        <div class="card mb-4">
+                        <!-- <div class="card mb-4">
                             
                             
+                            
+                        </div> -->
 
-                        </div>
-                        
-                        <div class="card mb-4">
+    <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-chart-area me-1"></i>
-                                กราฟแสดงภาพรวมรายได้สินค้า
+                                รายชื่อลูกค้าในระบบ
                             </div>
-                            <div class="card-body"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>
+                            <div id="chartdiv3"></div>
+                            <!-- <div class="card-body"><canvas id="myAreaChart" width="100%" height="30"></canvas></div> -->
                             <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-bar me-1"></i>
-                                        Bar Chart Example
-                                    </div>
-                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="50"></canvas></div>
-                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card ">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-pie me-1"></i>
-                                        Pie Chart Example
-                                        
-                                    </div>
-                                    
-                                    
-                                    <!-- <div class="card-body"><canvas id="myPieChart" width="100%" height="50"></canvas></div> -->
-                                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-                                </div>
+           
+
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+
+                            <div>
+
+                                <a href="dash_products2.php">Back</a>
+                                &middot;
+                               
+                                
                             </div>
                         </div>
-                        
-                        
-
-                        <div class="row justify-content-end">
-    <div class="col-auto">
-        <a href="dash_products2.php">next</a>
-    </div>
-</div>
+                    </div>
                 </footer>
+            </div>
+            <!-- แสดงข้อมูลในรูปแบบ JavaScript -->
+<script>
+var ageData = <?php echo $ageDataJSON; ?>;
+</script>
+            
 
+     
       </script>
+      <script>
+chart.data = <?php echo json_encode($ageProductsData); ?>;
+</script>
+
+
+
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -453,8 +484,8 @@ $stmt = $conn->prepare($sql);
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="assets/demo/chart-pie-demo.js"></script>
-        <script src="assets/demo/graph3.js"></script>
-      
+        <script src="assets/demo/chart-pie-demo2.js"></script>
+        <script src="assets/demo/barchart.js"></script>
         
         
         
