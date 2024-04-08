@@ -223,12 +223,12 @@ th {
                         </a>
                         <a class="nav-link" href="main2.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard2
+                            Dashboard 2
                             
                         </a>
                         <a class="nav-link" href="main3.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard สินค้า
+                            Dashboard รีวิว
                             
                         </a>
                         <div class="sb-sidenav-menu-heading">Interface</div>
