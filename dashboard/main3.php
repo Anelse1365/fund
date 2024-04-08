@@ -1,65 +1,82 @@
 <?php
 session_start();
 
-    require_once '../config2/db2.php';
-    if (!isset($_SESSION['admin_login'])) {
-        $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
-        header('location:../signin2.php');
-    }
-
-    if (isset($_SESSION['admin_login'])) {
-      $user_id = $_SESSION['admin_login'];
-      $stmt = $conn->query("SELECT * FROM patien WHERE id = $user_id");
-      $stmt->execute();
-      $row = $stmt->fetch(PDO::FETCH_ASSOC);
-  }
-
-
-              // SQL query to fetch data from database
-  $sql = "SELECT * FROM reviews  WHERE 1";
-
-  if(isset($_GET['patient']) && !empty($_GET['patient'])) {
-    $patient = $_GET['patient'];
-    $sql .= " AND patient LIKE '%$patient%'";
+require_once '../config2/db2.php';
+if (!isset($_SESSION['admin_login'])) {
+    $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
+    header('location:../signin2.php');
+    exit(); // Always exit after a header redirect
 }
 
-if(isset($_GET['search_email']) && !empty($_GET['search_email'])) {
-    $search_email = $_GET['search_email'];
-    $sql .= " AND email LIKE '%$search_email%'";
-}
-if(isset($_GET['doctor_name']) && !empty($_GET['doctor_name'])) {
-    $doctor_name  = $_GET['doctor_name'];
-    $sql .= " AND  doctor_name    LIKE '%$doctor_name%'";
-}
-if(isset($_GET['rating']) && !empty($_GET['rating'])) {
-    $rating  = $_GET['rating'];
-    $sql .= " AND  rating    LIKE '%$rating%'";
-}
-if(isset($_GET['comment']) && !empty($_GET['comment'])) {
-    $comment  = $_GET['comment'];
-    $sql .= " AND  comment    LIKE '%$comment%'";
+if (isset($_SESSION['admin_login'])) {
+    $user_id = $_SESSION['admin_login'];
+    $stmt = $conn->prepare("SELECT * FROM patien WHERE id = ?");
+    $stmt->execute([$user_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-  $stmt = $conn->prepare($sql);
+// Database connection
+require_once '../config2/db2.php'; // You should include your database connection file once
 
-// เชื่อมต่อฐานข้อมูล
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "fund";
+// Fetch all reviews initially
+$sql = "SELECT * FROM reviews WHERE 1";
 
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    // เซ็ตโหมดของ PDO เพื่อให้แสดงข้อผิดพลาดออกมา
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // ดึงข้อมูลจากตาราง reviews
-    $stmt = $conn->query("SELECT * FROM reviews");
-    $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    // หากเกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล
-    echo "การเชื่อมต่อฐานข้อมูลล้มเหลว: " . $e->getMessage();
+// Apply search filters if provided
+if(isset($_GET['search_name']) && !empty($_GET['search_name'])) {
+    $search_name = '%' . $_GET['search_name'] . '%';
+    $sql .= " AND doctor_name LIKE ?";
 }
+
+if(isset($_GET['search_rating']) && !empty($_GET['search_rating'])) {
+    $search_rating = $_GET['search_rating'];
+    $sql .= " AND rating = ?";
+}
+
+$stmt = $conn->prepare($sql);
+
+if(isset($search_name) && isset($search_rating)) {
+    $stmt->execute([$search_name, $search_rating]);
+} elseif(isset($search_name)) {
+    $stmt->execute([$search_name]);
+} elseif(isset($search_rating)) {
+    $stmt->execute([$search_rating]);
+} else {
+    $stmt->execute();
+}
+
+$reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Generate chart data
+$sql = "SELECT 
+    doctor_name,
+    SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) AS 1_point,
+    SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) AS 2_point,
+    SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) AS 3_point,
+    SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) AS 4_point,
+    SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) AS 5_point,
+    SUM(CASE WHEN rating = 6 THEN 1 ELSE 0 END) AS 6_point,
+    SUM(CASE WHEN rating = 7 THEN 1 ELSE 0 END) AS 7_point,
+    SUM(CASE WHEN rating = 8 THEN 1 ELSE 0 END) AS 8_point,
+    SUM(CASE WHEN rating = 9 THEN 1 ELSE 0 END) AS 9_point,
+    SUM(CASE WHEN rating = 10 THEN 1 ELSE 0 END) AS 10_point
+FROM 
+    reviews";
+
+if(isset($search_name)) {
+    $sql .= " WHERE doctor_name LIKE ?";
+}
+
+$sql .= " GROUP BY doctor_name";
+
+$stmt = $conn->prepare($sql);
+
+if(isset($search_name)) {
+    $stmt->execute([$search_name]);
+} else {
+    $stmt->execute();
+}
+
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,9 +119,7 @@ try {
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                   
-                    
+                <div class="input-group">     
                 </div>
             </form>
             <!-- Navbar-->
@@ -141,11 +156,7 @@ try {
                                 Dashboard 2
                             
                             </a>
-                            <a class="nav-link" href="main3.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard รีวิว
-                            
-                            </a>
+                         
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -232,10 +243,7 @@ WHERE
     doctor_name IN ('หมอปกป้อง', 'หมอกอล์ฟ', 'สัภยา', 'เพชร')
 GROUP BY 
     doctor_name";
-
     $result = $conn->query($sql);
-    
-
     // ตรวจสอบว่ามีข้อมูลหรือไม่
     if ($result->num_rows > 0) {
         // สร้าง array เพื่อเก็บข้อมูล
@@ -255,11 +263,9 @@ while($row = $result->fetch_assoc()) {
         '10point' => $row['10_point'],
     );
 }
-
     } 
     $conn->close();
 ?>
-    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js" integrity="sha512-EmNxF3E6bM0Xg1zvmkeYD3HDBeGxtsG92IxFt1myNZhXdCav9MzvuH/zNMBU1DmIPN6njrhX1VTbqdJxQ2wHDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <div id="review_dashboard"></div>
@@ -324,54 +330,26 @@ while($row = $result->fetch_assoc()) {
                     show: false
                 },
                 data: [
-    { value: review[0]['1point'], name: review[0]['doc_name'] + ' - 1 Point' },
-    { value: review[0]['2point'], name: review[0]['doc_name'] + ' - 2 Point' },
-    { value: review[0]['3point'], name: review[0]['doc_name'] + ' - 3 Point' },
-    { value: review[0]['4point'], name: review[0]['doc_name'] + ' - 4 Point' },
-    { value: review[0]['5point'], name: review[0]['doc_name'] + ' - 5 Point' },
-    { value: review[0]['6point'], name: review[0]['doc_name'] + ' - 6 Point' },
-    { value: review[0]['7point'], name: review[0]['doc_name'] + ' - 7 Point' },
-    { value: review[0]['8point'], name: review[0]['doc_name'] + ' - 8 Point' },
-    { value: review[0]['9point'], name: review[0]['doc_name'] + ' - 9 Point' },
-    { value: review[0]['10point'], name: review[0]['doc_name'] + ' - 10 Point' },
-    { value: review[1]['1point'], name: review[1]['doc_name'] + ' - 1 Point' },
-    { value: review[1]['2point'], name: review[1]['doc_name'] + ' - 2 Point' },
-    { value: review[1]['3point'], name: review[1]['doc_name'] + ' - 3 Point' },
-    { value: review[1]['4point'], name: review[1]['doc_name'] + ' - 4 Point' },
-    { value: review[1]['5point'], name: review[1]['doc_name'] + ' - 5 Point' },
-    { value: review[1]['6point'], name: review[1]['doc_name'] + ' - 6 Point' },
-    { value: review[1]['7point'], name: review[1]['doc_name'] + ' - 7 Point' },
-    { value: review[1]['8point'], name: review[1]['doc_name'] + ' - 8 Point' },
-    { value: review[1]['9point'], name: review[1]['doc_name'] + ' - 9 Point' },
-    { value: review[1]['10point'], name: review[1]['doc_name'] + ' - 10 Point' },
-    { value: review[2]['1point'], name: review[2]['doc_name'] + ' - 1 Point' },
-    { value: review[2]['2point'], name: review[2]['doc_name'] + ' - 2 Point' },
-    { value: review[2]['3point'], name: review[2]['doc_name'] + ' - 3 Point' },
-    { value: review[2]['4point'], name: review[2]['doc_name'] + ' - 4 Point' },
-    { value: review[2]['5point'], name: review[2]['doc_name'] + ' - 5 Point' },
-    { value: review[2]['6point'], name: review[2]['doc_name'] + ' - 6 Point' },
-    { value: review[2]['7point'], name: review[2]['doc_name'] + ' - 7 Point' },
-    { value: review[2]['8point'], name: review[2]['doc_name'] + ' - 8 Point' },
-    { value: review[2]['9point'], name: review[2]['doc_name'] + ' - 9 Point' },
-    { value: review[2]['10point'], name: review[2]['doc_name'] + ' - 10 Point' },
-    { value: review[3]['1point'], name: review[3]['doc_name'] + ' - 1 Point' },
-    { value: review[3]['2point'], name: review[3]['doc_name'] + ' - 2 Point' },
-    { value: review[3]['3point'], name: review[3]['doc_name'] + ' - 3 Point' },
-    { value: review[3]['4point'], name: review[3]['doc_name'] + ' - 4 Point' },
-    { value: review[3]['5point'], name: review[3]['doc_name'] + ' - 5 Point' },
-    { value: review[3]['6point'], name: review[3]['doc_name'] + ' - 6 Point' },
-    { value: review[3]['7point'], name: review[3]['doc_name'] + ' - 7 Point' },
-    { value: review[3]['8point'], name: review[3]['doc_name'] + ' - 8 Point' },
-    { value: review[3]['9point'], name: review[3]['doc_name'] + ' - 9 Point' },
-    { value: review[3]['10point'], name: review[3]['doc_name'] + ' - 10 Point' },
-]
-
+                    <?php foreach($data as $review): ?>
+                        { value: <?php echo $review['1point']; ?>, name: '<?php echo $review['doc_name']; ?> - 1 Point' },
+                        { value: <?php echo $review['2point']; ?>, name: '<?php echo $review['doc_name']; ?> - 2 Point' },
+                        { value: <?php echo $review['3point']; ?>, name: '<?php echo $review['doc_name']; ?> - 3 Point' },
+                        { value: <?php echo $review['4point']; ?>, name: '<?php echo $review['doc_name']; ?> - 4 Point' },
+                        { value: <?php echo $review['5point']; ?>, name: '<?php echo $review['doc_name']; ?> - 5 Point' },
+                        { value: <?php echo $review['6point']; ?>, name: '<?php echo $review['doc_name']; ?> - 6 Point' },
+                        { value: <?php echo $review['7point']; ?>, name: '<?php echo $review['doc_name']; ?> - 7 Point' },
+                        { value: <?php echo $review['8point']; ?>, name: '<?php echo $review['doc_name']; ?> - 8 Point' },
+                        { value: <?php echo $review['9point']; ?>, name: '<?php echo $review['doc_name']; ?> - 9 Point' },
+                        { value: <?php echo $review['10point']; ?>, name: '<?php echo $review['doc_name']; ?> - 10 Point' },
+                    <?php endforeach; ?>
+                ]
             }
         ]
     };
 
     option && myChart.setOption(option);
 </script>
+
 
   <div class="container mt-5">
         <h2 class="text-center mb-4">Reviews Dashboard</h2>
@@ -394,10 +372,7 @@ while($row = $result->fetch_assoc()) {
     </select>
     <input type="submit" value="ค้นหา">
 </form>
-
     </div>
-    
-
 <!-- ลิงก์ JavaScript ของ Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
