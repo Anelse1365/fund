@@ -143,7 +143,7 @@ try {
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Main</div>
+                    <div class="sb-sidenav-menu-heading">Main</div>
                         <a class="nav-link" href="main1.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
@@ -151,7 +151,12 @@ try {
                         </a>
                         <a class="nav-link" href="main2.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard2
+                            Dashboard 2
+                            
+                        </a>
+                        <a class="nav-link" href="main3.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard รีวิว
                             
                         </a>
                         <div class="sb-sidenav-menu-heading">Interface</div>

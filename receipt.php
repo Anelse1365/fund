@@ -1,27 +1,78 @@
-<?php 
+<?php
 session_start();
 require_once 'config2/db2.php';
 
+// เช็คว่ามีการเข้าสู่ระบบหรือไม่
 if (!isset($_SESSION['user_login'])) {
     $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ!';
     header('location: signin2.php');
     exit(); 
 }
 
-if (isset($_SESSION['user_login'])) {
-    $user_id = $_SESSION['user_login'];
-    // สำหรับความปลอดภัยและป้องกันการโจมตี SQL injection ควรใช้ prepared statement
-    $stmt = $conn->prepare("SELECT * FROM receipe WHERE id = :user_id");
-    $stmt->bindParam(':user_id', $user_id);
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+$user_id = $_SESSION['user_login'];
+
+// เชื่อมต่อฐานข้อมูล
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "fund";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
+
+// เตรียมคำสั่ง SQL เริ่มต้น
+$sql = "SELECT * FROM receipe WHERE id_patient = $user_id";
+
+// การกรองข้อมูลจากฟอร์มค้นหา
+
+if(isset($_GET['nationality']) && !empty($_GET['nationality'])) {
+    $nationality  = $_GET['nationality'];
+    $sql .= " AND nationality LIKE '%$nationality%'";
+}
+if(isset($_GET['state']) && !empty($_GET['state'])) {
+    $state  = $_GET['state'];
+    $sql .= " AND state LIKE '%$state%'";
+}
+if(isset($_GET['doctor']) && !empty($_GET['doctor'])) {
+    $doctor  = $_GET['doctor'];
+    $sql .= " AND doctor LIKE '%$doctor%'";
+}
+if(isset($_GET['information']) && !empty($_GET['information'])) {
+    $information  = $_GET['information'];
+    $sql .= " AND information LIKE '%$information%'";
+}
+if(isset($_GET['comment']) && !empty($_GET['comment'])) {
+    $comment  = $_GET['comment'];
+    $sql .= " AND comment LIKE '%$comment%'";
+}
+if(isset($_GET['date']) && !empty($_GET['date'])) {
+    $date  = $_GET['date'];
+    $sql .= " AND date LIKE '%$date%'";
+}
+if(isset($_GET['timeInput']) && !empty($_GET['timeInput'])) {
+    $timeInput  = $_GET['timeInput'];
+    $sql .= " AND timeInput LIKE '%$timeInput%'";
+}
+if(isset($_GET['created_at']) && !empty($_GET['created_at'])) {
+    $created_at  = $_GET['created_at'];
+    $sql .= " AND created_at LIKE '%$created_at%'";
+}
+
+// ส่งคำสั่ง SQL ไปยังฐานข้อมูล
+$result = $conn->query($sql);
+
 ?>
 
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <title>ใบเสร็จการนัดจอง</title>
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -53,42 +104,35 @@ if (isset($_SESSION['user_login'])) {
             background-color: #F8F5FD;
             color: #695A5B;
         }
-    </style>
-</head>
-
-<?php
-// เชื่อมต่อฐานข้อมูล
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "fund";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// คำสั่ง SQL เพื่อดึงข้อมูลจากตาราง receipt
-$sql = "SELECT * FROM receipe";
-$result = $conn->query($sql);
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ใบเสร็จการนัดจอง</title>
-    <!-- Link to Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* CSS styles here */
-    </style>
+        </style>
 </head>
 <body>
-
 <div class="container">
+                  <!-- เพิ่มฟอร์มสำหรับกรองข้อมูล -->
+<form method="get" action="">    
+    <div class="row mb-3">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="คลินิก" name="state">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="หมอ" name="doctor">
+        </div>
+
+        <div class="col" >
+            <input type="text" class="form-control" placeholder="วันที่ส่ง" name="created_at">
+        </div>
+        <div class="col" >
+            <input type="text" class="form-control" placeholder="วันที่นัด" name="date">
+        </div>
+        <div class="col" >
+            <input type="text" class="form-control" placeholder="เวลานัด" name="timeInput">
+        </div>
+        <!-- เพิ่มฟิลเตอร์อื่น ๆ ตามต้องการ -->
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">ค้นหา</button>
+        </div>
+    </div>
+</form>
     <?php
     // ตรวจสอบว่ามีข้อมูลในฐานข้อมูลหรือไม่
     if ($result->num_rows > 0) {
@@ -97,8 +141,7 @@ $result = $conn->query($sql);
             // แสดงข้อมูลในตาราง
             echo "<div class='receipt'>";
             echo "<div class='receipt-header'>";
-            echo "<h2>ใบเสร็จการนัดจอง</h2>";
-            
+            echo "<h2>ใบเสร็จการนัดจอง</h2>";        
             echo "</div>";
             echo "<table class='table table-bordered'>";
             echo "<tbody>";

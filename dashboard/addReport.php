@@ -53,6 +53,10 @@ if(isset($_GET['id'])) {
                             <input type="text" class="form-control" name="patient" value="<?php echo isset($row['patient']) ? $row['patient'] : ''; ?>" required> 
                         </div>
                         <div class="form-group">
+                                <label for="number">รหัส(กรุณาอย่าแก้ไข):</label>
+                                <input type="number" class="form-control" name="id_patient" value="<?php echo isset($row['id_patient']) ? $row['id_patient'] : ''; ?>" required> 
+                            </div>
+                        <div class="form-group">
                             <label for="email">อีเมล:</label>
                             <input type="email" class="form-control" name="email" value="<?php echo isset($row['email']) ? $row['email'] : ''; ?>" required> 
                         </div>

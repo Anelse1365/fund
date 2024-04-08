@@ -104,6 +104,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
                             <a class="nav-link" href="main1.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
+                            
+                            </a>
+                            <a class="nav-link" href="main2.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard 2
+                            
+                            </a>
+                            <a class="nav-link" href="main3.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard รีวิว
+                            
                             </a>
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">

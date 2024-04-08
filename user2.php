@@ -250,13 +250,14 @@ if (isset($_SESSION['user_login'])) {
         <p class="mb-2"><strong class="pr-1">อายุ:</strong><?php echo $row['age'] ?></p>
         <p class="mb-2"><strong class="pr-1">สัญชาติ:</strong><?php echo $row['nationality'] ?></p>
         <p class="mb-2"><strong class="pr-1">ที่อยู่:</strong><?php echo $row['address'] ?></p>
+        <a href='edit.php?id=".$row["id"]."' class='btn btn-primary btn-sm'><i class='fas fa-edit'></i> Edit</a>
+                            <a href='delete.php?id=".$row["id"]."' class='btn btn-danger btn-sm'><i class='fas fa-trash-alt'></i> Delete</a>
+                       
     </div>
 </div>
 
 </div>
-
-          
-                      
+      
                     </div>
                 </div>
             </div>
